@@ -1,4 +1,4 @@
-import dotenv from 'dotenv';
+import * as dotenv from 'dotenv';
 dotenv.config();
 
 export const config = {
@@ -13,13 +13,15 @@ export const config = {
   cors: {
     origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
   },
-//   email: {
-//     host: process.env.EMAIL_HOST || 'smtp.example.com',
-//     port: parseInt(process.env.EMAIL_PORT || '587', 10),
-//     user: process.env.EMAIL_USER || 'user@example.com',
-//     pass: process.env.EMAIL_PASS || 'password',
-//     from: process.env.EMAIL_FROM || 'Bookmark Manager <noreply@bookmarkmanager.com>',
-//   },
+  email: {
+    host: process.env.EMAIL_HOST || 'smtp.example.com',
+    port: parseInt(process.env.EMAIL_PORT || '587', 10),
+    secure: process.env.EMAIL_SECURE === 'true',
+    user: process.env.EMAIL_USER || 'user@example.com',
+    password: process.env.EMAIL_PASSWORD || 'password',
+    fromName: process.env.EMAIL_FROM_NAME || 'Bookmark Manager',
+    fromEmail: process.env.EMAIL_FROM_EMAIL || 'noreply@bookmarkmanager.com',
+  },
   logging: {
     level: process.env.LOG_LEVEL || 'info',
   },

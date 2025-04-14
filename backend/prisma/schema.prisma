@@ -27,6 +27,8 @@ model User {
   refreshToken         String?
   passwordResetToken   String?
   passwordResetExpires DateTime?
+  isVerified           Boolean                  @default(false) // Added for email verification
+  verificationToken    String?                  @unique // Added for email verification
   bookmarks            Bookmark[]
   folders              Folder[]
   tags                 Tag[]
@@ -54,11 +56,16 @@ model Bookmark {
   folders        FolderBookmark[]
   tags           BookmarkTag[]
   collections    BookmarkCollection[]
+  isDeleted      Boolean                  @default(false) // Added for soft delete
+  deletedAt      DateTime?                // Added for soft delete timestamp
   fullTextSearch Unsupported("tsvector")?
 
   @@index([userId])
+  @@index([isDeleted]) // Index for querying non-deleted items
   @@index([url])
-  @@index([fullTextSearch], type: Gin)
+  @@index([fullTextSearch], type: Gin) // Add GIN index for FTS
+  @@index([userId, isDeleted, createdAt]) // Index for sorting recent
+  @@index([userId, isDeleted, visitCount]) // Index for sorting popular
 }
 
 model Folder {
@@ -76,10 +83,13 @@ model Folder {
   children      Folder[]             @relation("FolderHierarchy")
   bookmarks     FolderBookmark[]
   collaborators FolderCollaborator[]
+  isDeleted      Boolean                  @default(false) // Added for soft delete
+  deletedAt      DateTime?                // Added for soft delete timestamp
 
   @@unique([userId, name, parentId])
   @@index([userId])
   @@index([parentId])
+  @@index([userId, isDeleted, name]) // Index for sorting by name
 }
 
 model FolderBookmark {
@@ -99,7 +109,7 @@ model FolderCollaborator {
   folder     Folder   @relation(fields: [folderId], references: [id], onDelete: Cascade)
   userId     String
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  permission String   @default("view") // view, edit, admin
+  permission Role     @default(VIEW) // Use Role enum
   addedAt    DateTime @default(now())
 
   @@id([folderId, userId])
@@ -116,9 +126,12 @@ model Tag {
   userId    String
   user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   bookmarks BookmarkTag[]
+  isDeleted      Boolean                  @default(false) // Added for soft delete
+  deletedAt      DateTime?                // Added for soft delete timestamp
 
   @@unique([userId, name])
   @@index([userId])
+  @@index([userId, isDeleted, name]) // Index for sorting by name
 }
 
 model BookmarkTag {
@@ -148,18 +161,21 @@ model Collection {
   owner         User                     @relation("CollectionOwner", fields: [ownerId], references: [id], onDelete: Cascade)
   bookmarks     BookmarkCollection[]
   collaborators CollectionCollaborator[]
+  isDeleted      Boolean                  @default(false) // Added for soft delete
+  deletedAt      DateTime?                // Added for soft delete timestamp
 
   @@unique([userId, name])
   @@index([userId])
   @@index([ownerId])
   @@index([isPublic])
+  @@index([userId, isDeleted, updatedAt]) // Index for sorting by update time
 }
 
 model BookmarkCollection {
   collectionId String
   collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
   bookmarkId   String
-  bookmark     Bookmark   @relation(fields: [bookmarkId], references: [id], onDelete: Cascade)
+  bookmark   Bookmark   @relation(fields: [bookmarkId], references: [id], onDelete: Cascade)
   addedAt      DateTime   @default(now())
   order        Int        @default(0)
 
@@ -173,7 +189,7 @@ model CollectionCollaborator {
   collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
   userId       String
   user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  permission   String     @default("view") // view, edit, admin
+  permission   Role       @default(VIEW) // Use Role enum
   addedAt      DateTime   @default(now())
 
   @@id([collectionId, userId])

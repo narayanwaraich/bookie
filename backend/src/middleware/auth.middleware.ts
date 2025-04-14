@@ -1,11 +1,13 @@
 // src/middleware/auth.middleware.ts
 import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
 import { config } from '../config';
+import * as jwt from 'jsonwebtoken';
 import prisma from '../config/db';
 import logger from '../config/logger';
+import { Role } from '@prisma/client'; // Keep Role if needed for future admin checks
 
 // Extend Express Request type to include user
+// This allows us to attach user info to the request object after authentication
 declare global {
   namespace Express {
     interface Request {
@@ -13,52 +15,68 @@ declare global {
         id: string;
         email: string;
         username: string;
+        // Add other non-sensitive fields if needed later (e.g., role)
       };
     }
   }
 }
 
+/**
+ * Interface for the decoded JWT payload.
+ */
 export interface TokenPayload {
   id: string;
   email: string;
   username: string;
+  // iat: number; // Issued at timestamp (added by jwt.verify)
+  // exp: number; // Expiration timestamp (added by jwt.verify)
 }
 
+/**
+ * Middleware to protect routes by verifying JWT token.
+ * Extracts token from 'Authorization: Bearer <token>' header or 'token' cookie.
+ * Verifies the token, fetches the user, checks if active, and attaches user info to `req.user`.
+ * 
+ * @param {Request} req - Express request object.
+ * @param {Response} res - Express response object.
+ * @param {NextFunction} next - Express next middleware function.
+ */
 export const protect = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
+  let token: string | undefined;
+  const authHeader = req.headers.authorization;
+
+  // 1. Extract token
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    token = authHeader.split(' ')[1];
+    logger.debug('Token found in Authorization header.');
+  } 
+  // else if (req.cookies && req.cookies.token) { // Example: Check cookie if needed
+  //   token = req.cookies.token;
+  //    logger.debug('Token found in cookie.');
+  // }
+
+  // 2. Check if token exists
+  if (!token) {
+    logger.warn('Authorization failed: No token provided.');
+    return res.status(401).json({
+      success: false,
+      message: 'Not authorized, no token provided.',
+    });
+  }
+
   try {
-    let token;
-
-    // Get token from Authorization header
-    if (
-      req.headers.authorization &&
-      req.headers.authorization.startsWith('Bearer')
-    ) {
-      token = req.headers.authorization.split(' ')[1];
-    }
-    // Get token from cookie
-    else if (req.cookies && req.cookies.token) {
-      token = req.cookies.token;
-    }
-
-    // Check if token exists
-    if (!token) {
-      return res.status(401).json({
-        success: false,
-        message: 'Not authorized to access this route',
-      });
-    }
-
-    // Verify token
+    // 3. Verify token
     const decoded = jwt.verify(token, config.jwt.secret) as TokenPayload;
+    logger.debug(`Token verified for user ID: ${decoded.id}`);
 
-    // Check if user exists
+    // 4. Check if user exists and is active
     const user = await prisma.user.findUnique({
       where: { id: decoded.id },
-      select: {
+      select: { // Select only necessary fields
         id: true,
         email: true,
         username: true,
@@ -66,169 +84,38 @@ export const protect = async (
       },
     });
 
-    if (!user || !user.isActive) {
-      return res.status(401).json({
-        success: false,
-        message: 'Not authorized to access this route',
-      });
+    if (!user) {
+       logger.warn(`Authorization failed: User ${decoded.id} not found.`);
+       return res.status(401).json({ success: false, message: 'User belonging to this token no longer exists.' });
+    }
+    
+    if (!user.isActive) {
+        logger.warn(`Authorization failed: User ${decoded.id} is not active.`);
+        return res.status(401).json({ success: false, message: 'User account is inactive.' });
     }
 
-    // Add user to request object
+    // 5. Attach user to request object
     req.user = {
       id: user.id,
       email: user.email,
       username: user.username,
     };
 
-    next();
+    next(); // User is authenticated and authorized
+
   } catch (error) {
-    logger.error('Auth middleware error:', error);
-    return res.status(401).json({
-      success: false,
-      message: 'Not authorized to access this route',
-    });
+    logger.error('Authentication error:', error);
+
+    if (error instanceof jwt.TokenExpiredError) {
+      return res.status(401).json({ success: false, message: 'Token expired, please log in again.' });
+    }
+    if (error instanceof jwt.JsonWebTokenError) {
+      return res.status(401).json({ success: false, message: 'Invalid token.' });
+    }
+
+    // Generic fallback for other errors during verification/user fetch
+    return res.status(401).json({ success: false, message: 'Not authorized.' });
   }
 };
 
-// Middleware to check ownership of resources
-export const checkOwnership = (resourceType: string) => {
-  return async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const userId = req.user?.id;
-      const resourceId = req.params.id;
-
-      if (!userId || !resourceId) {
-        return res.status(400).json({
-          success: false,
-          message: 'Missing user ID or resource ID',
-        });
-      }
-
-      let resource;
-      
-      switch (resourceType) {
-        case 'bookmark':
-          resource = await prisma.bookmark.findUnique({
-            where: { id: resourceId },
-            select: { userId: true },
-          });
-          break;
-        case 'folder':
-          resource = await prisma.folder.findUnique({
-            where: { id: resourceId },
-            select: { userId: true },
-          });
-          break;
-        case 'tag':
-          resource = await prisma.tag.findUnique({
-            where: { id: resourceId },
-            select: { userId: true },
-          });
-          break;
-        case 'collection':
-          resource = await prisma.collection.findUnique({
-            where: { id: resourceId },
-            select: { userId: true, ownerId: true },
-          });
-          break;
-        default:
-          return res.status(400).json({
-            success: false,
-            message: 'Invalid resource type',
-          });
-      }
-
-      if (!resource) {
-        return res.status(404).json({
-          success: false,
-          message: `${resourceType} not found`,
-        });
-      }
-
-      // Check if the user is the owner of the resource
-      if (resource.userId !== userId && resource.ownerId !== userId) {
-        // For collections and folders, check if the user has collaboration rights
-        if (resourceType === 'collection') {
-          const collaborator = await prisma.collectionCollaborator.findUnique({
-            where: {
-              collectionId_userId: {
-                collectionId: resourceId,
-                userId,
-              },
-            },
-          });
-
-          if (!collaborator) {
-            return res.status(403).json({
-              success: false,
-              message: 'Not authorized to access this resource',
-            });
-          }
-
-          // Check if the operation requires admin or edit rights
-          const requiresEditRights = ['POST', 'PUT', 'PATCH', 'DELETE'].includes(req.method);
-          if (requiresEditRights && collaborator.permission === 'view') {
-            return res.status(403).json({
-              success: false,
-              message: 'You do not have permission to modify this resource',
-            });
-          }
-        } else if (resourceType === 'folder') {
-          const collaborator = await prisma.folderCollaborator.findUnique({
-            where: {
-              folderId_userId: {
-                folderId: resourceId,
-                userId,
-              },
-            },
-          });
-
-          if (!collaborator) {
-            return res.status(403).json({
-              success: false,
-              message: 'Not authorized to access this resource',
-            });
-          }
-
-          // Check if the operation requires admin or edit rights
-          const requiresEditRights = ['POST', 'PUT', 'PATCH', 'DELETE'].includes(req.method);
-          if (requiresEditRights && collaborator.permission === 'view') {
-            return res.status(403).json({
-              success: false,
-              message: 'You do not have permission to modify this resource',
-            });
-          }
-        } else {
-          return res.status(403).json({
-            success: false,
-            message: 'Not authorized to access this resource',
-          });
-        }
-      }
-
-      next();
-    } catch (error) {
-      logger.error('Check ownership middleware error:', error);
-      return res.status(500).json({
-        success: false,
-        message: 'Server error while checking resource ownership',
-      });
-    }
-  };
-};
-
-// Middleware to validate request body against Zod schema
-export const validate = (schema: any) => {
-  return (req: Request, res: Response, next: NextFunction) => {
-    try {
-      schema.parse(req.body);
-      next();
-    } catch (error: any) {
-      return res.status(400).json({
-        success: false,
-        message: 'Validation error',
-        errors: error.errors,
-      });
-    }
-  };
-};
+// Note: checkOwnership and validate middleware are now in their dedicated files.

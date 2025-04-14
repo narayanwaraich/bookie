@@ -1,0 +1,98 @@
+version: '3.8' # Specify docker-compose version
+
+services:
+  # --- Backend Service ---
+  backend:
+    build:
+      context: ./backend # Path to backend Dockerfile directory
+      dockerfile: Dockerfile
+    container_name: bookie-backend
+    ports:
+      - "3001:3000" # Map host port 3001 to container port 3000
+    environment:
+      # --- Crucial: Use service names for inter-container communication ---
+      DATABASE_URL: postgresql://bookie_user:bookie_password@db:5432/bookie_db?schema=public
+      REDIS_URL: redis://cache:6379
+      # --- Use environment variables for secrets (load from .env file ideally) ---
+      NODE_ENV: development # Set to 'production' for production builds
+      PORT: 3000 
+      JWT_SECRET: ${JWT_SECRET:-fallback_jwt_secret_replace_me} # Use host env var or fallback
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-fallback_jwt_refresh_secret_replace_me} # Use host env var or fallback
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-1h}
+      JWT_REFRESH_EXPIRES_IN: ${JWT_REFRESH_EXPIRES_IN:-7d}
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:8080} # Point to frontend container port mapping
+      # --- Email (Optional - use actual values or leave commented if not needed in dev) ---
+      # EMAIL_HOST: ${EMAIL_HOST}
+      # EMAIL_PORT: ${EMAIL_PORT}
+      # EMAIL_SECURE: ${EMAIL_SECURE}
+      # EMAIL_USER: ${EMAIL_USER}
+      # EMAIL_PASSWORD: ${EMAIL_PASSWORD}
+      # EMAIL_FROM_NAME: ${EMAIL_FROM_NAME}
+      # EMAIL_FROM_EMAIL: ${EMAIL_FROM_EMAIL}
+    depends_on:
+      - db # Wait for db service to start (doesn't guarantee readiness)
+      - cache # Wait for cache service to start
+    networks:
+      - bookie-net
+    # Add command for running migrations after DB is ready (more robust solution needed for production)
+    # command: sh -c "npx prisma migrate deploy && node build/index.js" 
+    # Consider using a wait-for-it script or dockerize entrypoint for migrations
+
+  # --- Frontend Service ---
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: bookie-frontend
+    ports:
+      - "8080:80" # Map host port 8080 to container port 80 (Nginx)
+    depends_on:
+      - backend # Frontend might need backend to be available
+    networks:
+      - bookie-net
+
+  # --- Database Service (PostgreSQL) ---
+  db:
+    image: postgres:15-alpine # Use official Postgres image
+    container_name: bookie-db
+    environment:
+      POSTGRES_USER: bookie_user # Define DB user
+      POSTGRES_PASSWORD: bookie_password # Define DB password
+      POSTGRES_DB: bookie_db # Define DB name
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Persist data using a named volume
+    ports:
+      - "5433:5432" # Map host port 5433 to container port 5432 (avoid conflict if local Postgres runs on 5432)
+    networks:
+      - bookie-net
+    healthcheck: # Basic healthcheck to wait until DB is ready
+        test: ["CMD-SHELL", "pg_isready -U bookie_user -d bookie_db"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+
+  # --- Cache Service (Redis) ---
+  cache:
+    image: redis:7-alpine # Use official Redis image
+    container_name: bookie-cache
+    ports:
+      - "6379:6379" # Map host port 6379 to container port 6379
+    volumes:
+      - redis_data:/data # Persist data using a named volume
+    networks:
+      - bookie-net
+    healthcheck: # Basic healthcheck
+        test: ["CMD", "redis-cli", "ping"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+
+# --- Networks ---
+networks:
+  bookie-net:
+    driver: bridge # Default network driver
+
+# --- Volumes ---
+volumes:
+  postgres_data: # Named volume for Postgres data persistence
+  redis_data:    # Named volume for Redis data persistence
