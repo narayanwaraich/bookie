@@ -1,62 +1,55 @@
-// React Query client instance
 import {
-    DefaultOptions,
     QueryClient,
-    UseMutationOptions,
+    QueryCache,
+    // UseMutationOptions,
   } from '@tanstack/react-query';
-  import { get, set, del } from 'idb-keyval';
-  import {
-    PersistedClient,
-    Persister,
-  } from '@tanstack/react-query-persist-client';
-  
-  export const queryConfig = {
+import type { QueryClientConfig } from '@tanstack/react-query';
+import { persistQueryClient } from '@tanstack/react-query-persist-client';
+import {createDexiePersister} from './dexiePersister';
+
+const queryClientConfig: QueryClientConfig = {
+  defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
       retry: false,
       staleTime: Infinity,
       gcTime: 1000 * 60 * 60 * 24 * 5, //  5 Days
     },
-  } satisfies DefaultOptions;
-  
-  export const queryClient = new QueryClient({
-    defaultOptions: queryConfig,
-  });
-  
-  export type ApiFnReturnType<
-    FnType extends (...args: unknown[]) => Promise<unknown>,
-  > = Awaited<ReturnType<FnType>>;
-  
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  export type QueryConfig<T extends (...args: any[]) => unknown> = Omit<
-    ReturnType<T>,
-    'queryKey' | 'queryFn'
-  >;
-  
-  export type MutationConfig<
-    MutationFnType extends (...args: unknown[]) => Promise<unknown>,
-  > = UseMutationOptions<
-    ApiFnReturnType<MutationFnType>,
-    Error,
-    Parameters<MutationFnType>[0]
-  >;
-  
-  /**
-   * Creates an Indexed DB persister
-   * @see https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API
-   */
-  export function createIDBPersister(idbValidKey: IDBValidKey = 'reactQuery') {
-    return {
-      persistClient: async (client: PersistedClient) => {
-        await set(idbValidKey, client);
-      },
-      restoreClient: async () => {
-        return await get<PersistedClient>(idbValidKey);
-      },
-      removeClient: async () => {
-        await del(idbValidKey);
-      },
-    } as Persister;
-  }
+  },
+  queryCache: new QueryCache({
+    onError: (error) => {
+      console.error('Error happened: ', error);
+    },
+  }),
+};
 
-  export const queryClient = new QueryClient();
+// 
+export const queryClient = new QueryClient(queryClientConfig);
+
+const dexiePersister = createDexiePersister('reactQuery');
+
+// Set up persistence
+persistQueryClient({
+  queryClient,
+  persister: dexiePersister,
+  maxAge: 1000 * 60 * 60 * 24 * 5, // Match your gcTime (5 days)
+});
+
+// export type ApiFnReturnType<
+//   FnType extends (...args: unknown[]) => Promise<unknown>,
+// > = Awaited<ReturnType<FnType>>;
+
+// // eslint-disable-next-line @typescript-eslint/no-explicit-any
+// export type QueryConfig<T extends (...args: any[]) => unknown> = Omit<
+//   ReturnType<T>,
+//   'queryKey' | 'queryFn'
+// >;
+
+// export type MutationConfig<
+//   MutationFnType extends (...args: unknown[]) => Promise<unknown>,
+// > = UseMutationOptions<
+//   ApiFnReturnType<MutationFnType>,
+//   Error,
+//   Parameters<MutationFnType>[0]
+// >;
+  
