@@ -1,4 +1,3 @@
-import React from 'react';
 import { createFileRoute, Outlet } from '@tanstack/react-router';
 
 // Placeholder for a public-specific layout component (optional)
@@ -9,7 +8,6 @@ export const Route = createFileRoute('/(public)/_layout')({
 });
 
 function PublicLayoutComponent() {
-  // Add any layout specific to public routes here
   return (
     <div className="public-layout"> 
       {/* <PublicLayout> */}

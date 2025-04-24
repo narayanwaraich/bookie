@@ -1,9 +1,7 @@
-import React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/(public)/reset-password/$token')({
   component: ResetPasswordComponent,
-  // Optional: Loader to validate the token or fetch related data
   // loader: ({ params }) => { /* Validate params.token */ }, 
 });
 

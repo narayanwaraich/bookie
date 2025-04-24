@@ -1,10 +1,7 @@
-import React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 
-export const Route = createFileRoute('/_authenticated/')({
+export const Route = createFileRoute('/_authenticated/dashboard')({
   component: DashboardComponent,
-  // Optional: Loader to fetch initial data for the dashboard
-  // loader: async () => { /* Fetch dashboard data */ },
 });
 
 function DashboardComponent() {

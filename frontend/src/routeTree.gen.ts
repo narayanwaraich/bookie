@@ -8,82 +8,583 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import { createFileRoute } from '@tanstack/react-router'
+
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as AboutImport } from './routes/about'
-import { Route as IndexImport } from './routes/routes/index'
+import { Route as AuthenticatedImport } from './routes/_authenticated'
+import { Route as AuthenticatedTagsImport } from './routes/_authenticated/tags'
+import { Route as AuthenticatedSyncImport } from './routes/_authenticated/sync'
+import { Route as AuthenticatedSettingsImport } from './routes/_authenticated/settings'
+import { Route as AuthenticatedImportExportImport } from './routes/_authenticated/import-export'
+import { Route as AuthenticatedFoldersImport } from './routes/_authenticated/folders'
+import { Route as AuthenticatedDashboardImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedCollectionsImport } from './routes/_authenticated/collections'
+import { Route as AuthenticatedBookmarksImport } from './routes/_authenticated/bookmarks'
+import { Route as publicRegisterImport } from './routes/(public)/register'
+import { Route as publicLoginImport } from './routes/(public)/login'
+import { Route as publicForgotPasswordImport } from './routes/(public)/forgot-password'
+import { Route as publicLayoutImport } from './routes/(public)/_layout'
+import { Route as AuthenticatedTagsTagIdImport } from './routes/_authenticated/tags.$tagId'
+import { Route as AuthenticatedSettingsProfileImport } from './routes/_authenticated/settings.profile'
+import { Route as AuthenticatedFoldersFolderIdImport } from './routes/_authenticated/folders.$folderId'
+import { Route as AuthenticatedCollectionsCollectionIdImport } from './routes/_authenticated/collections.$collectionId'
+import { Route as AuthenticatedBookmarksBookmarkIdImport } from './routes/_authenticated/bookmarks.$bookmarkId'
+import { Route as publicVerifyEmailTokenImport } from './routes/(public)/verify-email.$token'
+import { Route as publicResetPasswordTokenImport } from './routes/(public)/reset-password.$token'
+
+// Create Virtual Routes
+
+const publicImport = createFileRoute('/(public)')()
 
 // Create/Update Routes
 
-const AboutRoute = AboutImport.update({
-  id: '/about',
-  path: '/about',
+const publicRoute = publicImport.update({
+  id: '/(public)',
   getParentRoute: () => rootRoute,
 } as any)
 
-const IndexRoute = IndexImport.update({
-  id: '/',
-  path: '/',
+const AuthenticatedRoute = AuthenticatedImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRoute,
+} as any)
+
+const AuthenticatedTagsRoute = AuthenticatedTagsImport.update({
+  id: '/tags',
+  path: '/tags',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+
+const AuthenticatedSyncRoute = AuthenticatedSyncImport.update({
+  id: '/sync',
+  path: '/sync',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+
+const AuthenticatedSettingsRoute = AuthenticatedSettingsImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+
+const AuthenticatedImportExportRoute = AuthenticatedImportExportImport.update({
+  id: '/import-export',
+  path: '/import-export',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+
+const AuthenticatedFoldersRoute = AuthenticatedFoldersImport.update({
+  id: '/folders',
+  path: '/folders',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+
+const AuthenticatedDashboardRoute = AuthenticatedDashboardImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+
+const AuthenticatedCollectionsRoute = AuthenticatedCollectionsImport.update({
+  id: '/collections',
+  path: '/collections',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+
+const AuthenticatedBookmarksRoute = AuthenticatedBookmarksImport.update({
+  id: '/bookmarks',
+  path: '/bookmarks',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+
+const publicRegisterRoute = publicRegisterImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => publicRoute,
+} as any)
+
+const publicLoginRoute = publicLoginImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => publicRoute,
+} as any)
+
+const publicForgotPasswordRoute = publicForgotPasswordImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => publicRoute,
+} as any)
+
+const publicLayoutRoute = publicLayoutImport.update({
+  id: '/_layout',
+  getParentRoute: () => publicRoute,
+} as any)
+
+const AuthenticatedTagsTagIdRoute = AuthenticatedTagsTagIdImport.update({
+  id: '/$tagId',
+  path: '/$tagId',
+  getParentRoute: () => AuthenticatedTagsRoute,
+} as any)
+
+const AuthenticatedSettingsProfileRoute =
+  AuthenticatedSettingsProfileImport.update({
+    id: '/profile',
+    path: '/profile',
+    getParentRoute: () => AuthenticatedSettingsRoute,
+  } as any)
+
+const AuthenticatedFoldersFolderIdRoute =
+  AuthenticatedFoldersFolderIdImport.update({
+    id: '/$folderId',
+    path: '/$folderId',
+    getParentRoute: () => AuthenticatedFoldersRoute,
+  } as any)
+
+const AuthenticatedCollectionsCollectionIdRoute =
+  AuthenticatedCollectionsCollectionIdImport.update({
+    id: '/$collectionId',
+    path: '/$collectionId',
+    getParentRoute: () => AuthenticatedCollectionsRoute,
+  } as any)
+
+const AuthenticatedBookmarksBookmarkIdRoute =
+  AuthenticatedBookmarksBookmarkIdImport.update({
+    id: '/$bookmarkId',
+    path: '/$bookmarkId',
+    getParentRoute: () => AuthenticatedBookmarksRoute,
+  } as any)
+
+const publicVerifyEmailTokenRoute = publicVerifyEmailTokenImport.update({
+  id: '/verify-email/$token',
+  path: '/verify-email/$token',
+  getParentRoute: () => publicRoute,
+} as any)
+
+const publicResetPasswordTokenRoute = publicResetPasswordTokenImport.update({
+  id: '/reset-password/$token',
+  path: '/reset-password/$token',
+  getParentRoute: () => publicRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthenticatedImport
       parentRoute: typeof rootRoute
     }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutImport
+    '/(public)': {
+      id: '/(public)'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof publicImport
       parentRoute: typeof rootRoute
+    }
+    '/(public)/_layout': {
+      id: '/(public)/_layout'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof publicLayoutImport
+      parentRoute: typeof publicRoute
+    }
+    '/(public)/forgot-password': {
+      id: '/(public)/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof publicForgotPasswordImport
+      parentRoute: typeof publicImport
+    }
+    '/(public)/login': {
+      id: '/(public)/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof publicLoginImport
+      parentRoute: typeof publicImport
+    }
+    '/(public)/register': {
+      id: '/(public)/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof publicRegisterImport
+      parentRoute: typeof publicImport
+    }
+    '/_authenticated/bookmarks': {
+      id: '/_authenticated/bookmarks'
+      path: '/bookmarks'
+      fullPath: '/bookmarks'
+      preLoaderRoute: typeof AuthenticatedBookmarksImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/collections': {
+      id: '/_authenticated/collections'
+      path: '/collections'
+      fullPath: '/collections'
+      preLoaderRoute: typeof AuthenticatedCollectionsImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/folders': {
+      id: '/_authenticated/folders'
+      path: '/folders'
+      fullPath: '/folders'
+      preLoaderRoute: typeof AuthenticatedFoldersImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/import-export': {
+      id: '/_authenticated/import-export'
+      path: '/import-export'
+      fullPath: '/import-export'
+      preLoaderRoute: typeof AuthenticatedImportExportImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/settings': {
+      id: '/_authenticated/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AuthenticatedSettingsImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/sync': {
+      id: '/_authenticated/sync'
+      path: '/sync'
+      fullPath: '/sync'
+      preLoaderRoute: typeof AuthenticatedSyncImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/tags': {
+      id: '/_authenticated/tags'
+      path: '/tags'
+      fullPath: '/tags'
+      preLoaderRoute: typeof AuthenticatedTagsImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/(public)/reset-password/$token': {
+      id: '/(public)/reset-password/$token'
+      path: '/reset-password/$token'
+      fullPath: '/reset-password/$token'
+      preLoaderRoute: typeof publicResetPasswordTokenImport
+      parentRoute: typeof publicImport
+    }
+    '/(public)/verify-email/$token': {
+      id: '/(public)/verify-email/$token'
+      path: '/verify-email/$token'
+      fullPath: '/verify-email/$token'
+      preLoaderRoute: typeof publicVerifyEmailTokenImport
+      parentRoute: typeof publicImport
+    }
+    '/_authenticated/bookmarks/$bookmarkId': {
+      id: '/_authenticated/bookmarks/$bookmarkId'
+      path: '/$bookmarkId'
+      fullPath: '/bookmarks/$bookmarkId'
+      preLoaderRoute: typeof AuthenticatedBookmarksBookmarkIdImport
+      parentRoute: typeof AuthenticatedBookmarksImport
+    }
+    '/_authenticated/collections/$collectionId': {
+      id: '/_authenticated/collections/$collectionId'
+      path: '/$collectionId'
+      fullPath: '/collections/$collectionId'
+      preLoaderRoute: typeof AuthenticatedCollectionsCollectionIdImport
+      parentRoute: typeof AuthenticatedCollectionsImport
+    }
+    '/_authenticated/folders/$folderId': {
+      id: '/_authenticated/folders/$folderId'
+      path: '/$folderId'
+      fullPath: '/folders/$folderId'
+      preLoaderRoute: typeof AuthenticatedFoldersFolderIdImport
+      parentRoute: typeof AuthenticatedFoldersImport
+    }
+    '/_authenticated/settings/profile': {
+      id: '/_authenticated/settings/profile'
+      path: '/profile'
+      fullPath: '/settings/profile'
+      preLoaderRoute: typeof AuthenticatedSettingsProfileImport
+      parentRoute: typeof AuthenticatedSettingsImport
+    }
+    '/_authenticated/tags/$tagId': {
+      id: '/_authenticated/tags/$tagId'
+      path: '/$tagId'
+      fullPath: '/tags/$tagId'
+      preLoaderRoute: typeof AuthenticatedTagsTagIdImport
+      parentRoute: typeof AuthenticatedTagsImport
     }
   }
 }
 
 // Create and export the route tree
 
+interface AuthenticatedBookmarksRouteChildren {
+  AuthenticatedBookmarksBookmarkIdRoute: typeof AuthenticatedBookmarksBookmarkIdRoute
+}
+
+const AuthenticatedBookmarksRouteChildren: AuthenticatedBookmarksRouteChildren =
+  {
+    AuthenticatedBookmarksBookmarkIdRoute:
+      AuthenticatedBookmarksBookmarkIdRoute,
+  }
+
+const AuthenticatedBookmarksRouteWithChildren =
+  AuthenticatedBookmarksRoute._addFileChildren(
+    AuthenticatedBookmarksRouteChildren,
+  )
+
+interface AuthenticatedCollectionsRouteChildren {
+  AuthenticatedCollectionsCollectionIdRoute: typeof AuthenticatedCollectionsCollectionIdRoute
+}
+
+const AuthenticatedCollectionsRouteChildren: AuthenticatedCollectionsRouteChildren =
+  {
+    AuthenticatedCollectionsCollectionIdRoute:
+      AuthenticatedCollectionsCollectionIdRoute,
+  }
+
+const AuthenticatedCollectionsRouteWithChildren =
+  AuthenticatedCollectionsRoute._addFileChildren(
+    AuthenticatedCollectionsRouteChildren,
+  )
+
+interface AuthenticatedFoldersRouteChildren {
+  AuthenticatedFoldersFolderIdRoute: typeof AuthenticatedFoldersFolderIdRoute
+}
+
+const AuthenticatedFoldersRouteChildren: AuthenticatedFoldersRouteChildren = {
+  AuthenticatedFoldersFolderIdRoute: AuthenticatedFoldersFolderIdRoute,
+}
+
+const AuthenticatedFoldersRouteWithChildren =
+  AuthenticatedFoldersRoute._addFileChildren(AuthenticatedFoldersRouteChildren)
+
+interface AuthenticatedSettingsRouteChildren {
+  AuthenticatedSettingsProfileRoute: typeof AuthenticatedSettingsProfileRoute
+}
+
+const AuthenticatedSettingsRouteChildren: AuthenticatedSettingsRouteChildren = {
+  AuthenticatedSettingsProfileRoute: AuthenticatedSettingsProfileRoute,
+}
+
+const AuthenticatedSettingsRouteWithChildren =
+  AuthenticatedSettingsRoute._addFileChildren(
+    AuthenticatedSettingsRouteChildren,
+  )
+
+interface AuthenticatedTagsRouteChildren {
+  AuthenticatedTagsTagIdRoute: typeof AuthenticatedTagsTagIdRoute
+}
+
+const AuthenticatedTagsRouteChildren: AuthenticatedTagsRouteChildren = {
+  AuthenticatedTagsTagIdRoute: AuthenticatedTagsTagIdRoute,
+}
+
+const AuthenticatedTagsRouteWithChildren =
+  AuthenticatedTagsRoute._addFileChildren(AuthenticatedTagsRouteChildren)
+
+interface AuthenticatedRouteChildren {
+  AuthenticatedBookmarksRoute: typeof AuthenticatedBookmarksRouteWithChildren
+  AuthenticatedCollectionsRoute: typeof AuthenticatedCollectionsRouteWithChildren
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedFoldersRoute: typeof AuthenticatedFoldersRouteWithChildren
+  AuthenticatedImportExportRoute: typeof AuthenticatedImportExportRoute
+  AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRouteWithChildren
+  AuthenticatedSyncRoute: typeof AuthenticatedSyncRoute
+  AuthenticatedTagsRoute: typeof AuthenticatedTagsRouteWithChildren
+}
+
+const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedBookmarksRoute: AuthenticatedBookmarksRouteWithChildren,
+  AuthenticatedCollectionsRoute: AuthenticatedCollectionsRouteWithChildren,
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedFoldersRoute: AuthenticatedFoldersRouteWithChildren,
+  AuthenticatedImportExportRoute: AuthenticatedImportExportRoute,
+  AuthenticatedSettingsRoute: AuthenticatedSettingsRouteWithChildren,
+  AuthenticatedSyncRoute: AuthenticatedSyncRoute,
+  AuthenticatedTagsRoute: AuthenticatedTagsRouteWithChildren,
+}
+
+const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
+  AuthenticatedRouteChildren,
+)
+
+interface publicRouteChildren {
+  publicLayoutRoute: typeof publicLayoutRoute
+  publicForgotPasswordRoute: typeof publicForgotPasswordRoute
+  publicLoginRoute: typeof publicLoginRoute
+  publicRegisterRoute: typeof publicRegisterRoute
+  publicResetPasswordTokenRoute: typeof publicResetPasswordTokenRoute
+  publicVerifyEmailTokenRoute: typeof publicVerifyEmailTokenRoute
+}
+
+const publicRouteChildren: publicRouteChildren = {
+  publicLayoutRoute: publicLayoutRoute,
+  publicForgotPasswordRoute: publicForgotPasswordRoute,
+  publicLoginRoute: publicLoginRoute,
+  publicRegisterRoute: publicRegisterRoute,
+  publicResetPasswordTokenRoute: publicResetPasswordTokenRoute,
+  publicVerifyEmailTokenRoute: publicVerifyEmailTokenRoute,
+}
+
+const publicRouteWithChildren =
+  publicRoute._addFileChildren(publicRouteChildren)
+
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '': typeof AuthenticatedRouteWithChildren
+  '/': typeof publicLayoutRoute
+  '/forgot-password': typeof publicForgotPasswordRoute
+  '/login': typeof publicLoginRoute
+  '/register': typeof publicRegisterRoute
+  '/bookmarks': typeof AuthenticatedBookmarksRouteWithChildren
+  '/collections': typeof AuthenticatedCollectionsRouteWithChildren
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/folders': typeof AuthenticatedFoldersRouteWithChildren
+  '/import-export': typeof AuthenticatedImportExportRoute
+  '/settings': typeof AuthenticatedSettingsRouteWithChildren
+  '/sync': typeof AuthenticatedSyncRoute
+  '/tags': typeof AuthenticatedTagsRouteWithChildren
+  '/reset-password/$token': typeof publicResetPasswordTokenRoute
+  '/verify-email/$token': typeof publicVerifyEmailTokenRoute
+  '/bookmarks/$bookmarkId': typeof AuthenticatedBookmarksBookmarkIdRoute
+  '/collections/$collectionId': typeof AuthenticatedCollectionsCollectionIdRoute
+  '/folders/$folderId': typeof AuthenticatedFoldersFolderIdRoute
+  '/settings/profile': typeof AuthenticatedSettingsProfileRoute
+  '/tags/$tagId': typeof AuthenticatedTagsTagIdRoute
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '': typeof AuthenticatedRouteWithChildren
+  '/': typeof publicLayoutRoute
+  '/forgot-password': typeof publicForgotPasswordRoute
+  '/login': typeof publicLoginRoute
+  '/register': typeof publicRegisterRoute
+  '/bookmarks': typeof AuthenticatedBookmarksRouteWithChildren
+  '/collections': typeof AuthenticatedCollectionsRouteWithChildren
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/folders': typeof AuthenticatedFoldersRouteWithChildren
+  '/import-export': typeof AuthenticatedImportExportRoute
+  '/settings': typeof AuthenticatedSettingsRouteWithChildren
+  '/sync': typeof AuthenticatedSyncRoute
+  '/tags': typeof AuthenticatedTagsRouteWithChildren
+  '/reset-password/$token': typeof publicResetPasswordTokenRoute
+  '/verify-email/$token': typeof publicVerifyEmailTokenRoute
+  '/bookmarks/$bookmarkId': typeof AuthenticatedBookmarksBookmarkIdRoute
+  '/collections/$collectionId': typeof AuthenticatedCollectionsCollectionIdRoute
+  '/folders/$folderId': typeof AuthenticatedFoldersFolderIdRoute
+  '/settings/profile': typeof AuthenticatedSettingsProfileRoute
+  '/tags/$tagId': typeof AuthenticatedTagsTagIdRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/_authenticated': typeof AuthenticatedRouteWithChildren
+  '/(public)': typeof publicRouteWithChildren
+  '/(public)/_layout': typeof publicLayoutRoute
+  '/(public)/forgot-password': typeof publicForgotPasswordRoute
+  '/(public)/login': typeof publicLoginRoute
+  '/(public)/register': typeof publicRegisterRoute
+  '/_authenticated/bookmarks': typeof AuthenticatedBookmarksRouteWithChildren
+  '/_authenticated/collections': typeof AuthenticatedCollectionsRouteWithChildren
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/folders': typeof AuthenticatedFoldersRouteWithChildren
+  '/_authenticated/import-export': typeof AuthenticatedImportExportRoute
+  '/_authenticated/settings': typeof AuthenticatedSettingsRouteWithChildren
+  '/_authenticated/sync': typeof AuthenticatedSyncRoute
+  '/_authenticated/tags': typeof AuthenticatedTagsRouteWithChildren
+  '/(public)/reset-password/$token': typeof publicResetPasswordTokenRoute
+  '/(public)/verify-email/$token': typeof publicVerifyEmailTokenRoute
+  '/_authenticated/bookmarks/$bookmarkId': typeof AuthenticatedBookmarksBookmarkIdRoute
+  '/_authenticated/collections/$collectionId': typeof AuthenticatedCollectionsCollectionIdRoute
+  '/_authenticated/folders/$folderId': typeof AuthenticatedFoldersFolderIdRoute
+  '/_authenticated/settings/profile': typeof AuthenticatedSettingsProfileRoute
+  '/_authenticated/tags/$tagId': typeof AuthenticatedTagsTagIdRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about'
+  fullPaths:
+    | ''
+    | '/'
+    | '/forgot-password'
+    | '/login'
+    | '/register'
+    | '/bookmarks'
+    | '/collections'
+    | '/dashboard'
+    | '/folders'
+    | '/import-export'
+    | '/settings'
+    | '/sync'
+    | '/tags'
+    | '/reset-password/$token'
+    | '/verify-email/$token'
+    | '/bookmarks/$bookmarkId'
+    | '/collections/$collectionId'
+    | '/folders/$folderId'
+    | '/settings/profile'
+    | '/tags/$tagId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about'
-  id: '__root__' | '/' | '/about'
+  to:
+    | ''
+    | '/'
+    | '/forgot-password'
+    | '/login'
+    | '/register'
+    | '/bookmarks'
+    | '/collections'
+    | '/dashboard'
+    | '/folders'
+    | '/import-export'
+    | '/settings'
+    | '/sync'
+    | '/tags'
+    | '/reset-password/$token'
+    | '/verify-email/$token'
+    | '/bookmarks/$bookmarkId'
+    | '/collections/$collectionId'
+    | '/folders/$folderId'
+    | '/settings/profile'
+    | '/tags/$tagId'
+  id:
+    | '__root__'
+    | '/_authenticated'
+    | '/(public)'
+    | '/(public)/_layout'
+    | '/(public)/forgot-password'
+    | '/(public)/login'
+    | '/(public)/register'
+    | '/_authenticated/bookmarks'
+    | '/_authenticated/collections'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/folders'
+    | '/_authenticated/import-export'
+    | '/_authenticated/settings'
+    | '/_authenticated/sync'
+    | '/_authenticated/tags'
+    | '/(public)/reset-password/$token'
+    | '/(public)/verify-email/$token'
+    | '/_authenticated/bookmarks/$bookmarkId'
+    | '/_authenticated/collections/$collectionId'
+    | '/_authenticated/folders/$folderId'
+    | '/_authenticated/settings/profile'
+    | '/_authenticated/tags/$tagId'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
+  publicRoute: typeof publicRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
+  AuthenticatedRoute: AuthenticatedRouteWithChildren,
+  publicRoute: publicRouteWithChildren,
 }
 
 export const routeTree = rootRoute
@@ -96,15 +597,124 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/",
-        "/about"
+        "/_authenticated",
+        "/(public)"
       ]
     },
-    "/": {
-      "filePath": "index.tsx"
+    "/_authenticated": {
+      "filePath": "_authenticated.tsx",
+      "children": [
+        "/_authenticated/bookmarks",
+        "/_authenticated/collections",
+        "/_authenticated/dashboard",
+        "/_authenticated/folders",
+        "/_authenticated/import-export",
+        "/_authenticated/settings",
+        "/_authenticated/sync",
+        "/_authenticated/tags"
+      ]
     },
-    "/about": {
-      "filePath": "about.tsx"
+    "/(public)": {
+      "filePath": "(public)",
+      "children": [
+        "/(public)/_layout",
+        "/(public)/forgot-password",
+        "/(public)/login",
+        "/(public)/register",
+        "/(public)/reset-password/$token",
+        "/(public)/verify-email/$token"
+      ]
+    },
+    "/(public)/_layout": {
+      "filePath": "(public)/_layout.tsx",
+      "parent": "/(public)"
+    },
+    "/(public)/forgot-password": {
+      "filePath": "(public)/forgot-password.tsx",
+      "parent": "/(public)"
+    },
+    "/(public)/login": {
+      "filePath": "(public)/login.tsx",
+      "parent": "/(public)"
+    },
+    "/(public)/register": {
+      "filePath": "(public)/register.tsx",
+      "parent": "/(public)"
+    },
+    "/_authenticated/bookmarks": {
+      "filePath": "_authenticated/bookmarks.tsx",
+      "parent": "/_authenticated",
+      "children": [
+        "/_authenticated/bookmarks/$bookmarkId"
+      ]
+    },
+    "/_authenticated/collections": {
+      "filePath": "_authenticated/collections.tsx",
+      "parent": "/_authenticated",
+      "children": [
+        "/_authenticated/collections/$collectionId"
+      ]
+    },
+    "/_authenticated/dashboard": {
+      "filePath": "_authenticated/dashboard.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/folders": {
+      "filePath": "_authenticated/folders.tsx",
+      "parent": "/_authenticated",
+      "children": [
+        "/_authenticated/folders/$folderId"
+      ]
+    },
+    "/_authenticated/import-export": {
+      "filePath": "_authenticated/import-export.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/settings": {
+      "filePath": "_authenticated/settings.tsx",
+      "parent": "/_authenticated",
+      "children": [
+        "/_authenticated/settings/profile"
+      ]
+    },
+    "/_authenticated/sync": {
+      "filePath": "_authenticated/sync.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/tags": {
+      "filePath": "_authenticated/tags.tsx",
+      "parent": "/_authenticated",
+      "children": [
+        "/_authenticated/tags/$tagId"
+      ]
+    },
+    "/(public)/reset-password/$token": {
+      "filePath": "(public)/reset-password.$token.tsx",
+      "parent": "/(public)"
+    },
+    "/(public)/verify-email/$token": {
+      "filePath": "(public)/verify-email.$token.tsx",
+      "parent": "/(public)"
+    },
+    "/_authenticated/bookmarks/$bookmarkId": {
+      "filePath": "_authenticated/bookmarks.$bookmarkId.tsx",
+      "parent": "/_authenticated/bookmarks"
+    },
+    "/_authenticated/collections/$collectionId": {
+      "filePath": "_authenticated/collections.$collectionId.tsx",
+      "parent": "/_authenticated/collections"
+    },
+    "/_authenticated/folders/$folderId": {
+      "filePath": "_authenticated/folders.$folderId.tsx",
+      "parent": "/_authenticated/folders"
+    },
+    "/_authenticated/settings/profile": {
+      "filePath": "_authenticated/settings.profile.tsx",
+      "parent": "/_authenticated/settings"
+    },
+    "/_authenticated/tags/$tagId": {
+      "filePath": "_authenticated/tags.$tagId.tsx",
+      "parent": "/_authenticated/tags"
     }
   }
 }

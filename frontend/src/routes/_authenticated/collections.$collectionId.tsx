@@ -1,6 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { z } from 'zod';
-import { redirect } from '@tanstack/react-router';
 
 interface Collection {
   id: string;
@@ -15,64 +14,21 @@ interface Collection {
   }>;
 }
 
-const collectionParamsSchema = z.object({
-  collectionId: z.string().uuid().catch('invalid-uuid'),
-});
+const collectionParamsSchema = z.object({ collectionId: z.string().uuid() })
 
 export const Route = createFileRoute('/_authenticated/collections/$collectionId')({
-  loader: async ({ params }) => {
-    // Example validation - you can replace this with your actual validation logic
-    const isAuthenticated = true // Replace with your auth check
-    
-    if (!isAuthenticated) {
-      throw redirect({
-        to: '/login',
-        search: {
-          redirect: `/collections/${params.collectionId}`
-        }
-      })
-    }
-
-    // Validate collection ID
-    const validatedParams = collectionParamsSchema.parse(params);
-    if (validatedParams.collectionId === 'invalid-uuid') {
-      throw new Error('Invalid Collection ID');
-    }
-
-    // Fetch collection data
-    const collection = await fetchCollectionById(params.collectionId);
-    if (!collection) {
-      throw new Error('Collection not found');
-    }
-
-    return {
-      collection
-    }
-  },
+  loader: async ({ params }) => { const validatedParams = collectionParamsSchema.parse(params) },
   component: CollectionDetailComponent,
   pendingComponent: () => <div>Loading collection...</div>,
   errorComponent: ({ error }) => <div>Error loading collection: {error.message}</div>,
 });
 
-// Example data fetching function - replace with your actual implementation
-async function fetchCollectionById(id: string): Promise<Collection | null> {
-  // Implement your data fetching logic here
-  return {
-    id,
-    name: 'Sample Collection',
-    description: 'A sample collection description',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    bookmarks: []
-  };
-}
-
 function CollectionDetailComponent() {
-  const { collection } = Route.useLoaderData()
+  // const { collection } = Route.useLoaderData()
   
   return (
-    <div>
-      <h1>{collection.name}</h1>
+    <>
+      {/* <h1>{collection.name}</h1>
       {collection.description && <p>{collection.description}</p>}
       
       <div className="metadata">
@@ -95,7 +51,7 @@ function CollectionDetailComponent() {
             ))}
           </ul>
         )}
-      </div>
-    </div>
+      </div> */}
+    </>
   );
 }

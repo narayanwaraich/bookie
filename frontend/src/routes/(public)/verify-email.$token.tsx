@@ -1,4 +1,3 @@
-import React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/(public)/verify-email/$token')({
@@ -9,11 +8,11 @@ export const Route = createFileRoute('/(public)/verify-email/$token')({
   //   return {}; // Or return data needed by the component
   // },
   // Optional: Add error component for verification failures
-  // errorComponent: ({ error }) => <div>Verification failed: {error.message}</div>,
+  errorComponent: ({ error }) => <div>Verification failed: {error.message}</div>,
 });
 
 function VerifyEmailComponent() {
-  const { token } = Route.useParams(); // This will show a TS error until params are defined or generator runs
+  const { token } = Route.useParams();
   // Placeholder for the component displaying verification status
   return (
     <div>
