@@ -1,6 +1,6 @@
 // src/services/authService.ts
 import * as bcrypt from 'bcrypt';
-import { sign, verify } from 'jsonwebtoken'; // Import sign directly
+import jwt, { SignOptions , sign, verify } from 'jsonwebtoken'; // Import sign directly
 import { v4 as uuidv4 } from 'uuid';
 import prisma from '../config/db';
 import { config } from '../config';
@@ -45,9 +45,9 @@ const generateToken = (id: string, email: string, username: string): string => {
       algorithm: 'HS256' 
   };
   logger.debug(`Generating access token for user ID: ${id}`);
-  return sign( 
+  return jwt.sign( 
     payload,
-    config.jwt.secret as Secret, // Keep Secret cast for clarity
+    config.jwt.secret, // Keep Secret cast for clarity
     options 
   );
 };
@@ -66,7 +66,7 @@ const generateRefreshToken = (id: string): string => {
    logger.debug(`Generating refresh token for user ID: ${id}`);
   return sign( 
     payload,
-    config.jwt.refreshSecret as Secret, // Keep Secret cast for clarity
+    config.jwt.refreshSecret, // Keep Secret cast for clarity
     options 
   );
 };

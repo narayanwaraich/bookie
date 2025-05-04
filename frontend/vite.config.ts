@@ -10,7 +10,6 @@ import tailwindcss from '@tailwindcss/vite'
       TanStackRouterVite({ 
         target: 'react', 
         autoCodeSplitting: true,
-        // routesDirectory: './src/router/routes', // Specify the correct directory
       }),
       react(),
       tailwindcss(),
@@ -18,6 +17,7 @@ import tailwindcss from '@tailwindcss/vite'
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      "@server": path.resolve(__dirname, "../backend/src")
     },
   },
 })

@@ -1,13 +1,23 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, ErrorComponent } from '@tanstack/react-router';
+import { BookmarkList } from '@/components/features/bookmarks/BookmarkList';
+import { Loading } from '@/components/common/Loading';
 
 export const Route = createFileRoute('/_authenticated/bookmarks')({
-  component: RouteComponent,
-})
+  loader: async ({ context: { trpc, queryClient } }) => {
+    const queryOptions = trpc.bookmarks.search.queryOptions({})
+    await queryClient.ensureQueryData(queryOptions)
+    return
+  },
+  component: BookmarksPage,
+  errorComponent: ({ error }) => <ErrorComponent error={error} />, 
+  pendingComponent: Loading, 
+});
 
-function RouteComponent() {
+function BookmarksPage() {
+
   return (
-    <div>
-      <h1>Bookmarks</h1>
+    <div className="container mx-auto p-4">
+      <BookmarkList /> 
     </div>
-  )
+  );
 }
