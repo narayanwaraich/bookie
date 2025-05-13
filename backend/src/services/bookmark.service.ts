@@ -263,13 +263,26 @@ export const searchBookmarks = async (userId: string, searchParams: BookmarkSear
             const [bookmarksResult, countResult] = await prisma.$transaction([ prisma.$queryRaw<Bookmark[]>(bookmarksRawQuery), prisma.$queryRaw<{ count: number }[]>(countRawQuery) ]);
             const totalCount = countResult[0]?.count ?? 0;
             const bookmarkIds = bookmarksResult.map(b => b.id);
-            let bookmarksWithRelations = bookmarksResult;
-            if (bookmarkIds.length > 0) {
-                 const relations = await prisma.bookmark.findMany({ where: { id: { in: bookmarkIds } }, include: { tags: { select: { tag: { select: { id: true, name: true, color: true } } } }, folders: { select: { folder: { select: { id: true, name: true } } } } } });
-                 const relationsMap = new Map(relations.map(r => [r.id, r]));
-                 bookmarksWithRelations = bookmarksResult.map(b => ({ ...b, tags: relationsMap.get(b.id)?.tags || [], folders: relationsMap.get(b.id)?.folders || [] }));
+            // bookmarksResult is typed as Bookmark[] due to the generic in $queryRaw.
+            // The raw SQL query also adds a 'rank' field not present in the base Bookmark model.
+            // We will now enrich these results with tags and folders.
+
+            if (bookmarkIds.length > 0) { // If there are bookmarks from the FTS query
+                const relations = await prisma.bookmark.findMany({
+                    where: { id: { in: bookmarkIds } },
+                    include: {
+                        tags: { select: { tag: { select: { id: true, name: true, color: true } } } },
+                        folders: { select: { folder: { select: { id: true, name: true } } } }
+                    }
+                });
+                const relationsMap = new Map(relations.map(r => [r.id, r]));
+                const enrichedBookmarks = bookmarksResult.map(b => ({ ...b, tags: relationsMap.get(b.id)?.tags || [], folders: relationsMap.get(b.id)?.folders || [] }));
+                return { bookmarks: enrichedBookmarks, totalCount, page: Math.floor(offset / limit) + 1, limit, hasMore: offset + enrichedBookmarks.length < totalCount };
+            } else { // No bookmarks found by FTS, or no query term
+                // Ensure a consistent return structure even if bookmarksResult is empty.
+                const enrichedBookmarks = bookmarksResult.map(b => ({ ...b, tags: [], folders: [] }));
+                return { bookmarks: enrichedBookmarks, totalCount, page: Math.floor(offset / limit) + 1, limit, hasMore: offset + enrichedBookmarks.length < totalCount };
             }
-            return { bookmarks: bookmarksWithRelations, totalCount, page: Math.floor(offset / limit) + 1, limit, hasMore: offset + bookmarksWithRelations.length < totalCount };
         } catch (error) { logger.error(`Error performing raw FTS for user ${userId}:`, error); throw new BookmarkError('Failed to perform full-text search', 500); }
     } 
     else {

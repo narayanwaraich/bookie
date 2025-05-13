@@ -156,7 +156,7 @@ export const registerUser = async (userData: RegisterUserInput) => {
 
 
   // Generate tokens (User is registered but not verified yet)
-  const token = generateToken(user.id, user.email, user.username);
+  const accessToken = generateToken(user.id, user.email, user.username);
   const refreshToken = generateRefreshToken(user.id);
 
   // Update user with refresh token
@@ -166,11 +166,11 @@ export const registerUser = async (userData: RegisterUserInput) => {
   });
   logger.debug(`Stored refresh token for user ID: ${user.id}`);
 
-  // Return necessary data (indicate verification pending)
+  // indicate verification pending
   return {
-    token, 
+    accessToken, 
     refreshToken,
-    user: { // Exclude sensitive fields
+    user: {
       id: user.id,
       email: user.email,
       username: user.username,

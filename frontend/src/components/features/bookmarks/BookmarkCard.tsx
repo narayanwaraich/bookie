@@ -1,15 +1,16 @@
 import React from 'react';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from "@/components/ui/checkbox"; // Added Checkbox import
 import { Badge } from '@/components/ui/badge';
 import type { inferOutput } from '@trpc/tanstack-react-query';
-import { 
-  MoreVertical, 
-  ExternalLink, 
-  Pencil, 
-  Trash2, 
-  Folder, 
-  Tag 
+import {
+  MoreVertical,
+  ExternalLink,
+  Pencil,
+  Trash2,
+  Folder, // Re-enabled
+  Tag // Re-enabled
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -25,24 +26,29 @@ import { queryClient } from '@/lib/queryClient';
 import { toast } from 'sonner';
 
 type BookmarkSearchResult = inferOutput<typeof trpc.bookmarks.search>;
-type Bookmark = BookmarkSearchResult['bookmarks'][number]; 
+type Bookmark = BookmarkSearchResult['bookmarks'][number];
 
 interface BookmarkCardProps {
-  bookmark: Bookmark; // Use the adjusted type
+  bookmark: Bookmark;
   onEdit: (bookmark: Bookmark) => void;
   viewMode: 'grid' | 'list';
+  isSelected: boolean; // Added prop
+  onSelectChange: (bookmarkId: string, isSelected: boolean) => void; // Added prop
 }
 
-export const BookmarkCard: React.FC<BookmarkCardProps> = ({ 
-  bookmark, 
+export const BookmarkCard: React.FC<BookmarkCardProps> = ({
+  bookmark,
   onEdit,
-  viewMode 
+  viewMode,
+  isSelected, // Destructure new prop
+  onSelectChange, // Destructure new prop
 }) => {
   const deleteMutation = useMutation(trpc.bookmarks.delete.mutationOptions({
     onSuccess: () => {
       toast.success('Bookmark deleted successfully');
-      queryClient.invalidateQueries({ 
-        queryKey: trpc.bookmarks.search.queryKey({}) 
+      // Invalidate the generic search query key, specific keys handled by BookmarkList
+      queryClient.invalidateQueries({
+        queryKey: trpc.bookmarks.search.queryKey({}),
       });
     },
     onError: (error) => {
@@ -54,12 +60,31 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
     deleteMutation.mutate({ id: bookmark.id });
   };
 
+  // Handler for checkbox change
+  const handleCheckboxChange = (checked: boolean | 'indeterminate') => {
+    if (typeof checked === 'boolean') {
+      onSelectChange(bookmark.id, checked);
+    }
+  };
+
   const isGrid = viewMode === 'grid';
 
   return (
-    <Card className={`${isGrid ? 'w-full' : 'w-full'} hover:shadow-md transition-shadow`}>
+    // Add ring if selected
+    <Card className={`relative ${isGrid ? 'w-full' : 'w-full'} hover:shadow-md transition-shadow ${isSelected ? 'ring-2 ring-primary' : ''}`}>
+      {/* Checkbox for selection */}
+      <div className="absolute top-2 left-2 z-10">
+        <Checkbox
+          id={`select-${bookmark.id}`}
+          checked={isSelected}
+          onCheckedChange={handleCheckboxChange}
+          aria-label={`Select bookmark ${bookmark.title || bookmark.url}`}
+          onClick={(e) => e.stopPropagation()} // Prevent card click when clicking checkbox
+        />
+      </div>
       {isGrid && bookmark.previewImage && (
-        <div className="relative h-48 w-full overflow-hidden">
+        // Add margin-top to prevent overlap with checkbox
+        <div className="relative h-48 w-full overflow-hidden mt-8">
           <img
             src={bookmark.previewImage}
             alt={bookmark.title}
@@ -67,9 +92,11 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
           />
         </div>
       )}
-      <CardHeader className="p-4">
+      {/* Adjust padding based on image presence */}
+      <CardHeader className={`p-4 ${isGrid && bookmark.previewImage ? 'pt-2' : 'pt-8'}`}>
         <div className="flex items-start justify-between">
-          <div className="flex items-center space-x-2">
+          {/* Adjust margin-left based on view mode for checkbox space */}
+          <div className={`flex items-center space-x-2 ${isGrid ? 'ml-0' : 'ml-8'}`}>
             {bookmark.favicon && (
               <img
                 src={bookmark.favicon}
@@ -77,42 +104,58 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
                 className="w-4 h-4"
               />
             )}
-            <h3 className="font-semibold line-clamp-2">
+            {/* Make title a link, stop propagation */}
+            <a
+              href={bookmark.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold line-clamp-2 hover:underline"
+              onClick={(e) => e.stopPropagation()}
+            >
               {bookmark.title || bookmark.url}
-            </h3>
+            </a>
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-8 w-8">
+              {/* Make button smaller and non-expanding */}
+              <Button variant="ghost" size="icon" className="h-8 w-8 flex-shrink-0">
                 <MoreVertical className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
+            {/* Stop propagation on menu items */}
             <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => window.open(bookmark.url, '_blank')}>
+              <DropdownMenuItem onClick={(e) => { e.stopPropagation(); window.open(bookmark.url, '_blank'); }}>
                 <ExternalLink className="mr-2 h-4 w-4" />
                 Open
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => onEdit(bookmark)}>
+              <DropdownMenuItem onClick={(e) => { e.stopPropagation(); onEdit(bookmark); }}>
                 <Pencil className="mr-2 h-4 w-4" />
                 Edit
               </DropdownMenuItem>
               <AlertDialog>
                 <AlertDialogTrigger asChild>
-                  <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                  <DropdownMenuItem
+                    onSelect={(e) => e.preventDefault()}
+                    onClick={(e) => e.stopPropagation()}
+                    className="text-red-600 hover:text-red-600 focus:text-red-600"
+                  >
                     <Trash2 className="mr-2 h-4 w-4" />
                     Delete
                   </DropdownMenuItem>
                 </AlertDialogTrigger>
-                <AlertDialogContent>
+                <AlertDialogContent onClick={(e) => e.stopPropagation()}>
                   <AlertDialogHeader>
                     <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                     <AlertDialogDescription>
-                      This will permanently delete this bookmark.
+                      This action will permanently delete the bookmark titled "{bookmark.title || bookmark.url}". This cannot be undone.
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={handleDelete}>
+                    <AlertDialogAction
+                      onClick={handleDelete}
+                      className="bg-red-600 hover:bg-red-700"
+                    >
                       Delete
                     </AlertDialogAction>
                   </AlertDialogFooter>
@@ -122,28 +165,31 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
           </DropdownMenu>
         </div>
         {bookmark.description && (
-          <p className="text-sm text-muted-foreground mt-2 line-clamp-2">
+          // Adjust margin for checkbox space
+          <p className={`text-sm text-muted-foreground mt-2 line-clamp-2 ${isGrid ? 'ml-0' : 'ml-8'}`}>
             {bookmark.description}
           </p>
         )}
       </CardHeader>
       <CardContent className="p-4 pt-0">
-        {/* <div className="flex flex-wrap gap-2">
-          {bookmark.folders?.map((folder) => (
-            <Badge key={folder.id} variant="secondary">
+        {/* Re-enable tags/folders display, adjust margin */}
+        <div className={`flex flex-wrap gap-1 mt-2 ${isGrid ? 'ml-0' : 'ml-8'}`}>
+          {bookmark.folders?.map((folderMembership) => (
+            <Badge key={folderMembership.folder.id} variant="secondary" className="text-xs">
               <Folder className="mr-1 h-3 w-3" />
-              {folder.name}
+              {folderMembership.folder.name}
             </Badge>
           ))}
-          {bookmark.tags?.map((tag) => (
-            <Badge key={tag.id} variant="outline">
+          {bookmark.tags?.map((tagMembership) => (
+            <Badge key={tagMembership.tag.id} variant="outline" className="text-xs" style={{ backgroundColor: tagMembership.tag.color || undefined }}>
               <Tag className="mr-1 h-3 w-3" />
-              {tag.name}
+              {tagMembership.tag.name}
             </Badge>
           ))}
-        </div> */}
+        </div>
       </CardContent>
-      <CardFooter className="p-4 pt-0 text-xs text-muted-foreground">
+      {/* Adjust margin for checkbox space */}
+      <CardFooter className={`p-4 pt-2 text-xs text-muted-foreground ${isGrid ? 'ml-0' : 'ml-8'}`}>
         <div className="flex items-center space-x-4">
           <span>
             {/* Convert date string before formatting */}

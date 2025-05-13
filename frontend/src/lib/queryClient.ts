@@ -1,7 +1,6 @@
 import {
     QueryClient,
     QueryCache,
-    // UseMutationOptions,
   } from '@tanstack/react-query';
 import type { QueryClientConfig } from '@tanstack/react-query';
 import { persistQueryClient } from '@tanstack/react-query-persist-client';
@@ -13,7 +12,7 @@ const queryClientConfig: QueryClientConfig = {
       refetchOnWindowFocus: false,
       retry: false,
       staleTime: Infinity,
-      gcTime: 1000 * 60 * 60 * 24 * 5, //  5 Days
+      gcTime: 1000 * 60 * 60 * 24 * 5,
     },
   },
   queryCache: new QueryCache({
@@ -23,7 +22,6 @@ const queryClientConfig: QueryClientConfig = {
   }),
 };
 
-// 
 export const queryClient = new QueryClient(queryClientConfig);
 
 const dexiePersister = createDexiePersister('reactQuery');
@@ -32,24 +30,5 @@ const dexiePersister = createDexiePersister('reactQuery');
 persistQueryClient({
   queryClient,
   persister: dexiePersister,
-  maxAge: 1000 * 60 * 60 * 24 * 5, // Match your gcTime (5 days)
+  maxAge: 1000 * 60 * 60 * 24 * 5,
 });
-
-// export type ApiFnReturnType<
-//   FnType extends (...args: unknown[]) => Promise<unknown>,
-// > = Awaited<ReturnType<FnType>>;
-
-// // eslint-disable-next-line @typescript-eslint/no-explicit-any
-// export type QueryConfig<T extends (...args: any[]) => unknown> = Omit<
-//   ReturnType<T>,
-//   'queryKey' | 'queryFn'
-// >;
-
-// export type MutationConfig<
-//   MutationFnType extends (...args: unknown[]) => Promise<unknown>,
-// > = UseMutationOptions<
-//   ApiFnReturnType<MutationFnType>,
-//   Error,
-//   Parameters<MutationFnType>[0]
-// >;
-  

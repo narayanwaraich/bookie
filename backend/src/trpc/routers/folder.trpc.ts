@@ -52,6 +52,7 @@ export const folderTrpcRouter = router({
     .query(async ({ ctx }) => {
       const userId = ctx.user.id;
       try {
+        console.log('Fetching folder tree for user:', userId); // Debugging log
         return await folderService.getFolderTree(userId);
       } catch (error: any) {
         throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Failed to fetch folder tree', cause: error });

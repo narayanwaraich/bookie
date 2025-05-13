@@ -55,11 +55,9 @@ export const authTrpcRouter = router({
     .input(registerUserSchema)
     .mutation(async ({ ctx, input }) => { 
       try {
-        // Service returns token (access), refreshToken, and user
-        const { token, refreshToken, user } = await authService.registerUser(input);
+        const { accessToken, refreshToken, user } = await authService.registerUser(input);
         setRefreshTokenCookie(ctx.res, refreshToken); 
-        // Return access token and user info
-        return { success: true, accessToken: token, user }; 
+        return { success: true, accessToken, user }; 
       } catch (error: any) {
         if (error instanceof AuthError && (error.statusCode === 409 || error.statusCode === 400)) {
              throw new TRPCError({ code: 'BAD_REQUEST', message: error.message, cause: error });

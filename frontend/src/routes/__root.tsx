@@ -1,6 +1,8 @@
 import { createRootRouteWithContext , Outlet } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
-import type { AuthContext } from '@/lib/auth'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { Toaster } from "@/components/ui/sonner"
+import type { AuthContext } from '@/lib/auth';
 import type { TRPCOptionsProxy } from '@trpc/tanstack-react-query'
 import type { AppRouter } from '../../../backend/src/trpc/router';
 import type { QueryClient } from '@tanstack/react-query'
@@ -21,8 +23,11 @@ function RootComponent() {
 
   return (
     <>
-      <Outlet />      
+      {/* <h1>Root Component</h1> */}
+      <Outlet />
+      <Toaster />
       <TanStackRouterDevtools position="bottom-right" />
+      <ReactQueryDevtools initialIsOpen={false} buttonPosition="top-right"/>
     </>
   );
 }

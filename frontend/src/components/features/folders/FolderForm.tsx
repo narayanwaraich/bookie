@@ -20,16 +20,22 @@ import {
 import { ColorPicker } from '@/components/ui/color-picker';
 import { Icons } from '@/components/ui/icons';
 import type { inferOutput } from '@trpc/tanstack-react-query';
-import {createFolderSchema as folderSchema} from "@server/models/schemas";
+import { createFolderSchema as folderSchema } from "@server/models/schemas";
 
-
-type FolderListData = inferOutput<typeof trpc.folders.list>;
-type ApiFolder = FolderListData['data'][number]; // Type for a single node in the tree (includes children)
+// Use the FolderTreeNode type from FolderTree if it's exported and suitable,
+// or define a similar one here for the tree structure.
+interface FolderTreeNodeForForm {
+  id: string;
+  name: string;
+  parentId: string | null;
+  children: FolderTreeNodeForForm[];
+  // Add other fields if needed by the form or logic
+}
 
 type FolderFormValues = z.infer<typeof folderSchema>;
 
 interface FolderFormProps {
-  folder?: {
+  folder?: { // Existing folder data for editing
     id: string;
     name: string;
     description?: string | null;
@@ -37,15 +43,88 @@ interface FolderFormProps {
     color?: string | null;
     parentId?: string | null;
   };
-  parentId?: string;
+  parentId?: string; // Default parentId for new folders (e.g., from context menu)
   onSuccess?: () => void;
 }
 
-export const FolderForm: React.FC<FolderFormProps> = ({ folder, parentId, onSuccess }) => {
+// Helper function to flatten the folder tree for the select dropdown
+const flattenFolderTree = (
+  nodes: FolderTreeNodeForForm[],
+  level = 0,
+  disabledIds: Set<string> = new Set()
+): { label: string; value: string; disabled: boolean }[] => {
+  let options: { label: string; value: string; disabled: boolean }[] = [];
+  for (const node of nodes) {
+    options.push({
+      label: `${'— '.repeat(level)}${node.name}`,
+      value: node.id,
+      disabled: disabledIds.has(node.id),
+    });
+    if (node.children && node.children.length > 0) {
+      options = options.concat(flattenFolderTree(node.children, level + 1, disabledIds));
+    }
+  }
+  return options;
+};
 
-  // Fetch available parent folders for selection
-  const { data: foldersResponse } = useQuery(trpc.folders.list.queryOptions({}));
-  const parentFolderOptions  = foldersResponse?.data || [];
+// Helper function to get all descendant IDs of a folder
+const getAllDescendantIds = (folderId: string, nodes: FolderTreeNodeForForm[]): Set<string> => {
+  const ids = new Set<string>();
+  const findDescendants = (currentFolderId: string) => {
+    const node = nodes.find(n => n.id === currentFolderId) || 
+                 nodes.flatMap(n => n.children).find(n => n.id === currentFolderId); // Simplified search
+    
+    // A more robust search would traverse the tree properly
+    const queue: FolderTreeNodeForForm[] = [];
+    const visited = new Set<string>();
+
+    const findNode = (id: string, tree: FolderTreeNodeForForm[]): FolderTreeNodeForForm | undefined => {
+      for (const n of tree) {
+        if (n.id === id) return n;
+        if (n.children) {
+          const found = findNode(id, n.children);
+          if (found) return found;
+        }
+      }
+      return undefined;
+    }
+    const startNode = findNode(currentFolderId, nodes);
+
+    if (startNode && startNode.children) {
+      queue.push(...startNode.children);
+    }
+
+    while(queue.length > 0) {
+      const current = queue.shift();
+      if (current && !visited.has(current.id)) {
+        visited.add(current.id);
+        ids.add(current.id);
+        if (current.children) {
+          queue.push(...current.children);
+        }
+      }
+    }
+  };
+  findDescendants(folderId);
+  return ids;
+};
+
+
+export const FolderForm: React.FC<FolderFormProps> = ({ folder, parentId, onSuccess }) => {
+  // Fetch the folder tree for parent selection
+  const { data: folderTree, isLoading: isLoadingTree } = useQuery(trpc.folders.getTree.queryOptions());
+
+  const disabledParentFolderIds = React.useMemo(() => {
+    if (!folder || !folderTree) return new Set<string>();
+    const ids = getAllDescendantIds(folder.id, folderTree as FolderTreeNodeForForm[]);
+    ids.add(folder.id); // Cannot select itself as parent
+    return ids;
+  }, [folder, folderTree]);
+
+  const parentFolderOptions = React.useMemo(() => {
+    if (!folderTree) return [];
+    return flattenFolderTree(folderTree as FolderTreeNodeForForm[], 0, disabledParentFolderIds);
+  }, [folderTree, disabledParentFolderIds]);
 
   const form = useForm<FolderFormValues>({
     resolver: zodResolver(folderSchema),
@@ -59,11 +138,11 @@ export const FolderForm: React.FC<FolderFormProps> = ({ folder, parentId, onSucc
   });
 
   // Correct query key for tree (takes no input)
-  const treeQueryKey = trpc.folders.getTree.queryKey(); 
+  const treeQueryKey = trpc.folders.getTree.queryKey();
   // We might not need the list key if we only invalidate tree
-  // const listQueryKey = trpc.folders.list.queryKey({}); 
+  // const listQueryKey = trpc.folders.list.queryKey({});
 
-  const apiFolders = parentFolderOptions
+  // const apiFolders = parentFolderOptions; // This line is no longer needed as parentFolderOptions is used directly
 
   const createMutation = useMutation(trpc.folders.create.mutationOptions({
     onSuccess: () => {
@@ -231,9 +310,10 @@ export const FolderForm: React.FC<FolderFormProps> = ({ folder, parentId, onSucc
                   </FormControl>
                   <SelectContent>
                     <SelectItem value="">None (Root)</SelectItem>
-                    {apiFolders.map((folder: ApiFolder) => (
-                      <SelectItem key={folder.id} value={folder.id}>
-                        {folder.name}
+                    {/* Use parentFolderOptions directly */}
+                    {parentFolderOptions.map((option) => (
+                      <SelectItem key={option.value} value={option.value} disabled={option.disabled}>
+                        {option.label}
                       </SelectItem>
                     ))}
                   </SelectContent>

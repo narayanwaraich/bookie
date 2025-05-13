@@ -17,7 +17,7 @@ interface DecodedToken {
 }
 
 // Define the shape of the Auth Context
-export interface AuthContextType {
+export interface AuthContext {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
@@ -30,7 +30,7 @@ export interface AuthContextType {
 }
 
 // Create the Auth Context
-const AuthContext = createContext<AuthContextType | null>(null);
+const AuthContext = createContext<AuthContext | null>(null);
 
 // Local storage key for the access token
 const AUTH_TOKEN_KEY = 'authToken';

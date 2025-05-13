@@ -1,15 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
+import Dashboard from '@/components/layout/dashboard';
 
 export const Route = createFileRoute('/_authenticated/dashboard')({
-  component: DashboardComponent,
+  component: Dashboard,
 });
 
-function DashboardComponent() {
-  // Placeholder for the main dashboard/content area
-  return (
-    <div>
-      <h1>Dashboard / Bookmarks</h1>
-      {/* Display bookmarks, folders, etc. */}
-    </div>
-  );
-}

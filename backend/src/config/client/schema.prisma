@@ -1,0 +1,217 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/config/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                   String                   @id @default(uuid())
+  email                String                   @unique
+  username             String                   @unique
+  password             String
+  name                 String?
+  profileImage         String?
+  createdAt            DateTime                 @default(now())
+  updatedAt            DateTime                 @updatedAt
+  isActive             Boolean                  @default(true)
+  lastLogin            DateTime?
+  refreshToken         String?
+  passwordResetToken   String?
+  passwordResetExpires DateTime?
+  isVerified           Boolean                  @default(false) // Added for email verification
+  verificationToken    String?                  @unique // Added for email verification
+  bookmarks            Bookmark[]
+  folders              Folder[]
+  tags                 Tag[]
+  collections          Collection[]
+  ownedCollections     Collection[]             @relation("CollectionOwner")
+  collabFolders        FolderCollaborator[]
+  collabCollections    CollectionCollaborator[]
+  devices              Device[]
+}
+
+model Bookmark {
+  id             String                   @id @default(uuid())
+  url            String
+  title          String
+  description    String?
+  favicon        String?
+  previewImage   String?
+  createdAt      DateTime                 @default(now())
+  updatedAt      DateTime                 @updatedAt
+  lastVisited    DateTime?
+  visitCount     Int                      @default(0)
+  notes          String?
+  userId         String
+  user           User                     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  folders        FolderBookmark[]
+  tags           BookmarkTag[]
+  collections    BookmarkCollection[]
+  isDeleted      Boolean                  @default(false) // Added for soft delete
+  deletedAt      DateTime? // Added for soft delete timestamp
+  fullTextSearch Unsupported("tsvector")?
+
+  @@index([userId])
+  @@index([isDeleted]) // Index for querying non-deleted items
+  @@index([url])
+  @@index([fullTextSearch], type: Gin) // Add GIN index for FTS
+  @@index([userId, isDeleted, createdAt]) // Index for sorting recent
+  @@index([userId, isDeleted, visitCount]) // Index for sorting popular
+}
+
+model Folder {
+  id            String               @id @default(uuid())
+  name          String
+  description   String?
+  icon          String?
+  color         String?
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+  userId        String
+  user          User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parentId      String?
+  parent        Folder?              @relation("FolderHierarchy", fields: [parentId], references: [id])
+  children      Folder[]             @relation("FolderHierarchy")
+  bookmarks     FolderBookmark[]
+  collaborators FolderCollaborator[]
+  isDeleted     Boolean              @default(false) // Added for soft delete
+  deletedAt     DateTime? // Added for soft delete timestamp
+
+  @@unique([userId, name, parentId])
+  @@index([userId])
+  @@index([parentId])
+  @@index([userId, isDeleted, name]) // Index for sorting by name
+}
+
+model FolderBookmark {
+  folderId   String
+  folder     Folder   @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  bookmarkId String
+  bookmark   Bookmark @relation(fields: [bookmarkId], references: [id], onDelete: Cascade)
+  addedAt    DateTime @default(now())
+
+  @@id([folderId, bookmarkId])
+  @@index([folderId])
+  @@index([bookmarkId])
+}
+
+model FolderCollaborator {
+  folderId   String
+  folder     Folder   @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  permission Role     @default(VIEW) // Use Role enum
+  addedAt    DateTime @default(now())
+
+  @@id([folderId, userId])
+  @@index([folderId])
+  @@index([userId])
+}
+
+model Tag {
+  id        String        @id @default(uuid())
+  name      String
+  color     String?
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  userId    String
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bookmarks BookmarkTag[]
+  isDeleted Boolean       @default(false) // Added for soft delete
+  deletedAt DateTime? // Added for soft delete timestamp
+
+  @@unique([userId, name])
+  @@index([userId])
+  @@index([userId, isDeleted, name]) // Index for sorting by name
+}
+
+model BookmarkTag {
+  tagId      String
+  tag        Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  bookmarkId String
+  bookmark   Bookmark @relation(fields: [bookmarkId], references: [id], onDelete: Cascade)
+  addedAt    DateTime @default(now())
+
+  @@id([tagId, bookmarkId])
+  @@index([tagId])
+  @@index([bookmarkId])
+}
+
+model Collection {
+  id            String                   @id @default(uuid())
+  name          String
+  description   String?
+  isPublic      Boolean                  @default(false)
+  publicLink    String?                  @unique
+  thumbnail     String?
+  createdAt     DateTime                 @default(now())
+  updatedAt     DateTime                 @updatedAt
+  userId        String
+  user          User                     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ownerId       String
+  owner         User                     @relation("CollectionOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  bookmarks     BookmarkCollection[]
+  collaborators CollectionCollaborator[]
+  isDeleted     Boolean                  @default(false) // Added for soft delete
+  deletedAt     DateTime? // Added for soft delete timestamp
+
+  @@unique([userId, name])
+  @@index([userId])
+  @@index([ownerId])
+  @@index([isPublic])
+  @@index([userId, isDeleted, updatedAt]) // Index for sorting by update time
+}
+
+model BookmarkCollection {
+  collectionId String
+  collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  bookmarkId   String
+  bookmark     Bookmark   @relation(fields: [bookmarkId], references: [id], onDelete: Cascade)
+  addedAt      DateTime   @default(now())
+  order        Int        @default(0)
+
+  @@id([collectionId, bookmarkId])
+  @@index([collectionId])
+  @@index([bookmarkId])
+}
+
+model CollectionCollaborator {
+  collectionId String
+  collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  userId       String
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  permission   Role       @default(VIEW) // Use Role enum
+  addedAt      DateTime   @default(now())
+
+  @@id([collectionId, userId])
+  @@index([collectionId])
+  @@index([userId])
+}
+
+model Device {
+  id         String   @id @default(uuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  deviceName String
+  deviceType String
+  lastSynced DateTime @default(now())
+  lastActive DateTime @default(now())
+
+  @@index([userId])
+}
+
+enum Role {
+  VIEW
+  EDIT
+  ADMIN
+}

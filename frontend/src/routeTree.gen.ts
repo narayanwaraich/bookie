@@ -22,6 +22,8 @@ import { Route as AuthenticatedFoldersImport } from './routes/_authenticated/fol
 import { Route as AuthenticatedDashboardImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedCollectionsImport } from './routes/_authenticated/collections'
 import { Route as AuthenticatedBookmarksImport } from './routes/_authenticated/bookmarks'
+import { Route as publicVerifyEmailImport } from './routes/(public)/verify-email'
+import { Route as publicResetPasswordImport } from './routes/(public)/reset-password'
 import { Route as publicRegisterImport } from './routes/(public)/register'
 import { Route as publicLoginImport } from './routes/(public)/login'
 import { Route as publicForgotPasswordImport } from './routes/(public)/forgot-password'
@@ -98,6 +100,18 @@ const AuthenticatedBookmarksRoute = AuthenticatedBookmarksImport.update({
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 
+const publicVerifyEmailRoute = publicVerifyEmailImport.update({
+  id: '/verify-email',
+  path: '/verify-email',
+  getParentRoute: () => publicRoute,
+} as any)
+
+const publicResetPasswordRoute = publicResetPasswordImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => publicRoute,
+} as any)
+
 const publicRegisterRoute = publicRegisterImport.update({
   id: '/register',
   path: '/register',
@@ -156,15 +170,15 @@ const AuthenticatedBookmarksBookmarkIdRoute =
   } as any)
 
 const publicVerifyEmailTokenRoute = publicVerifyEmailTokenImport.update({
-  id: '/verify-email/$token',
-  path: '/verify-email/$token',
-  getParentRoute: () => publicRoute,
+  id: '/$token',
+  path: '/$token',
+  getParentRoute: () => publicVerifyEmailRoute,
 } as any)
 
 const publicResetPasswordTokenRoute = publicResetPasswordTokenImport.update({
-  id: '/reset-password/$token',
-  path: '/reset-password/$token',
-  getParentRoute: () => publicRoute,
+  id: '/$token',
+  path: '/$token',
+  getParentRoute: () => publicResetPasswordRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -211,6 +225,20 @@ declare module '@tanstack/react-router' {
       path: '/register'
       fullPath: '/register'
       preLoaderRoute: typeof publicRegisterImport
+      parentRoute: typeof publicImport
+    }
+    '/(public)/reset-password': {
+      id: '/(public)/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof publicResetPasswordImport
+      parentRoute: typeof publicImport
+    }
+    '/(public)/verify-email': {
+      id: '/(public)/verify-email'
+      path: '/verify-email'
+      fullPath: '/verify-email'
+      preLoaderRoute: typeof publicVerifyEmailImport
       parentRoute: typeof publicImport
     }
     '/_authenticated/bookmarks': {
@@ -271,17 +299,17 @@ declare module '@tanstack/react-router' {
     }
     '/(public)/reset-password/$token': {
       id: '/(public)/reset-password/$token'
-      path: '/reset-password/$token'
+      path: '/$token'
       fullPath: '/reset-password/$token'
       preLoaderRoute: typeof publicResetPasswordTokenImport
-      parentRoute: typeof publicImport
+      parentRoute: typeof publicResetPasswordImport
     }
     '/(public)/verify-email/$token': {
       id: '/(public)/verify-email/$token'
-      path: '/verify-email/$token'
+      path: '/$token'
       fullPath: '/verify-email/$token'
       preLoaderRoute: typeof publicVerifyEmailTokenImport
-      parentRoute: typeof publicImport
+      parentRoute: typeof publicVerifyEmailImport
     }
     '/_authenticated/bookmarks/$bookmarkId': {
       id: '/_authenticated/bookmarks/$bookmarkId'
@@ -414,13 +442,35 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
   AuthenticatedRouteChildren,
 )
 
+interface publicResetPasswordRouteChildren {
+  publicResetPasswordTokenRoute: typeof publicResetPasswordTokenRoute
+}
+
+const publicResetPasswordRouteChildren: publicResetPasswordRouteChildren = {
+  publicResetPasswordTokenRoute: publicResetPasswordTokenRoute,
+}
+
+const publicResetPasswordRouteWithChildren =
+  publicResetPasswordRoute._addFileChildren(publicResetPasswordRouteChildren)
+
+interface publicVerifyEmailRouteChildren {
+  publicVerifyEmailTokenRoute: typeof publicVerifyEmailTokenRoute
+}
+
+const publicVerifyEmailRouteChildren: publicVerifyEmailRouteChildren = {
+  publicVerifyEmailTokenRoute: publicVerifyEmailTokenRoute,
+}
+
+const publicVerifyEmailRouteWithChildren =
+  publicVerifyEmailRoute._addFileChildren(publicVerifyEmailRouteChildren)
+
 interface publicRouteChildren {
   publicLayoutRoute: typeof publicLayoutRoute
   publicForgotPasswordRoute: typeof publicForgotPasswordRoute
   publicLoginRoute: typeof publicLoginRoute
   publicRegisterRoute: typeof publicRegisterRoute
-  publicResetPasswordTokenRoute: typeof publicResetPasswordTokenRoute
-  publicVerifyEmailTokenRoute: typeof publicVerifyEmailTokenRoute
+  publicResetPasswordRoute: typeof publicResetPasswordRouteWithChildren
+  publicVerifyEmailRoute: typeof publicVerifyEmailRouteWithChildren
 }
 
 const publicRouteChildren: publicRouteChildren = {
@@ -428,8 +478,8 @@ const publicRouteChildren: publicRouteChildren = {
   publicForgotPasswordRoute: publicForgotPasswordRoute,
   publicLoginRoute: publicLoginRoute,
   publicRegisterRoute: publicRegisterRoute,
-  publicResetPasswordTokenRoute: publicResetPasswordTokenRoute,
-  publicVerifyEmailTokenRoute: publicVerifyEmailTokenRoute,
+  publicResetPasswordRoute: publicResetPasswordRouteWithChildren,
+  publicVerifyEmailRoute: publicVerifyEmailRouteWithChildren,
 }
 
 const publicRouteWithChildren =
@@ -441,6 +491,8 @@ export interface FileRoutesByFullPath {
   '/forgot-password': typeof publicForgotPasswordRoute
   '/login': typeof publicLoginRoute
   '/register': typeof publicRegisterRoute
+  '/reset-password': typeof publicResetPasswordRouteWithChildren
+  '/verify-email': typeof publicVerifyEmailRouteWithChildren
   '/bookmarks': typeof AuthenticatedBookmarksRouteWithChildren
   '/collections': typeof AuthenticatedCollectionsRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -464,6 +516,8 @@ export interface FileRoutesByTo {
   '/forgot-password': typeof publicForgotPasswordRoute
   '/login': typeof publicLoginRoute
   '/register': typeof publicRegisterRoute
+  '/reset-password': typeof publicResetPasswordRouteWithChildren
+  '/verify-email': typeof publicVerifyEmailRouteWithChildren
   '/bookmarks': typeof AuthenticatedBookmarksRouteWithChildren
   '/collections': typeof AuthenticatedCollectionsRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -489,6 +543,8 @@ export interface FileRoutesById {
   '/(public)/forgot-password': typeof publicForgotPasswordRoute
   '/(public)/login': typeof publicLoginRoute
   '/(public)/register': typeof publicRegisterRoute
+  '/(public)/reset-password': typeof publicResetPasswordRouteWithChildren
+  '/(public)/verify-email': typeof publicVerifyEmailRouteWithChildren
   '/_authenticated/bookmarks': typeof AuthenticatedBookmarksRouteWithChildren
   '/_authenticated/collections': typeof AuthenticatedCollectionsRouteWithChildren
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
@@ -514,6 +570,8 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/login'
     | '/register'
+    | '/reset-password'
+    | '/verify-email'
     | '/bookmarks'
     | '/collections'
     | '/dashboard'
@@ -536,6 +594,8 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/login'
     | '/register'
+    | '/reset-password'
+    | '/verify-email'
     | '/bookmarks'
     | '/collections'
     | '/dashboard'
@@ -559,6 +619,8 @@ export interface FileRouteTypes {
     | '/(public)/forgot-password'
     | '/(public)/login'
     | '/(public)/register'
+    | '/(public)/reset-password'
+    | '/(public)/verify-email'
     | '/_authenticated/bookmarks'
     | '/_authenticated/collections'
     | '/_authenticated/dashboard'
@@ -621,8 +683,8 @@ export const routeTree = rootRoute
         "/(public)/forgot-password",
         "/(public)/login",
         "/(public)/register",
-        "/(public)/reset-password/$token",
-        "/(public)/verify-email/$token"
+        "/(public)/reset-password",
+        "/(public)/verify-email"
       ]
     },
     "/(public)/_layout": {
@@ -640,6 +702,20 @@ export const routeTree = rootRoute
     "/(public)/register": {
       "filePath": "(public)/register.tsx",
       "parent": "/(public)"
+    },
+    "/(public)/reset-password": {
+      "filePath": "(public)/reset-password.tsx",
+      "parent": "/(public)",
+      "children": [
+        "/(public)/reset-password/$token"
+      ]
+    },
+    "/(public)/verify-email": {
+      "filePath": "(public)/verify-email.tsx",
+      "parent": "/(public)",
+      "children": [
+        "/(public)/verify-email/$token"
+      ]
     },
     "/_authenticated/bookmarks": {
       "filePath": "_authenticated/bookmarks.tsx",
@@ -690,11 +766,11 @@ export const routeTree = rootRoute
     },
     "/(public)/reset-password/$token": {
       "filePath": "(public)/reset-password.$token.tsx",
-      "parent": "/(public)"
+      "parent": "/(public)/reset-password"
     },
     "/(public)/verify-email/$token": {
       "filePath": "(public)/verify-email.$token.tsx",
-      "parent": "/(public)"
+      "parent": "/(public)/verify-email"
     },
     "/_authenticated/bookmarks/$bookmarkId": {
       "filePath": "_authenticated/bookmarks.$bookmarkId.tsx",
