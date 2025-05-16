@@ -1,8 +1,8 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute('/(public)/reset-password/$token')({
+export const Route = createFileRoute("/(public)/reset-password/$token")({
   component: ResetPasswordComponent,
-  // loader: ({ params }) => { /* Validate params.token */ }, 
+  // loader: ({ params }) => { /* Validate params.token */ },
 });
 
 function ResetPasswordComponent() {

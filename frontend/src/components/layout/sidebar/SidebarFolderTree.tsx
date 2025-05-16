@@ -1,20 +1,20 @@
-import React from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { trpc } from '@/lib/api';
-import { Folder, ChevronRight, File } from 'lucide-react'; // Assuming File icon is needed for non-folders if applicable
+import React from "react";
+import { useQuery } from "@tanstack/react-query";
+import { trpc } from "@/lib/api";
+import { Folder, ChevronRight, File } from "lucide-react"; // Assuming File icon is needed for non-folders if applicable
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from '@/components/ui/collapsible';
+} from "@/components/ui/collapsible";
 import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
   SidebarMenuSub,
-} from '@/components/ui/sidebar'; // Assuming these are exported from the sidebar index
-import { cn } from '@/lib/utils';
-import type { inferOutput } from '@trpc/tanstack-react-query';
+} from "@/components/ui/sidebar"; // Assuming these are exported from the sidebar index
+import { cn } from "@/lib/utils";
+import type { inferOutput } from "@trpc/tanstack-react-query";
 
 // Reuse the FolderNode type definition (or import if shared)
 type FolderTreeData = inferOutput<typeof trpc.folders.getTree>;
@@ -46,7 +46,10 @@ const TreeNode: React.FC<{
         style={{ paddingLeft: `${1 + level * 1.5}rem` }} // Indentation
       >
         {/* Use File icon if it's not a folder, otherwise Folder */}
-        <Folder className="h-4 w-4 mr-1 shrink-0" style={{ color: node.color as string | undefined }}/>
+        <Folder
+          className="h-4 w-4 mr-1 shrink-0"
+          style={{ color: node.color as string | undefined }}
+        />
         <span className="truncate">{node.name}</span>
       </SidebarMenuButton>
     );
@@ -54,7 +57,9 @@ const TreeNode: React.FC<{
 
   // If it has children - Render as a collapsible item
   return (
-    <SidebarMenuItem className="p-0"> {/* Remove padding from item */}
+    <SidebarMenuItem className="p-0">
+      {" "}
+      {/* Remove padding from item */}
       <Collapsible
         className="group/collapsible w-full [&[data-state=open]>button>svg:first-child]:rotate-90"
         // defaultOpen={node.name === "components" || node.name === "ui"} // Example default open
@@ -68,7 +73,10 @@ const TreeNode: React.FC<{
             style={{ paddingLeft: `${1 + level * 1.5}rem` }} // Indentation
           >
             <ChevronRight className="h-4 w-4 transition-transform shrink-0" />
-            <Folder className="h-4 w-4 ml-1 shrink-0" style={{ color: node.color as string | undefined }}/>
+            <Folder
+              className="h-4 w-4 ml-1 shrink-0"
+              style={{ color: node.color as string | undefined }}
+            />
             <span className="ml-1 truncate">{node.name}</span>
           </SidebarMenuButton>
         </CollapsibleTrigger>
@@ -91,23 +99,30 @@ const TreeNode: React.FC<{
   );
 };
 
-
 export const SidebarFolderTree: React.FC<SidebarFolderTreeProps> = ({
   onSelectFolder,
   selectedFolderId,
 }) => {
-  const { data: folderTree, isLoading, error } = useQuery(trpc.folders.getTree.queryOptions());
+  const {
+    data: folderTree,
+    isLoading,
+    error,
+  } = useQuery(trpc.folders.getTree.queryOptions());
 
   if (isLoading) {
     return <div className="p-4 text-sm">Loading folders...</div>;
   }
 
   if (error) {
-    return <div className="p-4 text-sm text-destructive">Error: {error.message}</div>;
+    return (
+      <div className="p-4 text-sm text-destructive">Error: {error.message}</div>
+    );
   }
 
   if (!folderTree || folderTree.length === 0) {
-    return <div className="p-4 text-sm text-muted-foreground">No folders found.</div>;
+    return (
+      <div className="p-4 text-sm text-muted-foreground">No folders found.</div>
+    );
   }
 
   return (

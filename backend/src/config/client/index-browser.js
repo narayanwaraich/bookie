@@ -148,8 +148,8 @@ exports.Prisma.BookmarkScalarFieldEnum = {
   visitCount: 'visitCount',
   notes: 'notes',
   userId: 'userId',
-  isDeleted: 'isDeleted',
-  deletedAt: 'deletedAt'
+  deletedAt: 'deletedAt',
+  isDeleted: 'isDeleted'
 };
 
 exports.Prisma.FolderScalarFieldEnum = {
@@ -162,8 +162,8 @@ exports.Prisma.FolderScalarFieldEnum = {
   updatedAt: 'updatedAt',
   userId: 'userId',
   parentId: 'parentId',
-  isDeleted: 'isDeleted',
-  deletedAt: 'deletedAt'
+  deletedAt: 'deletedAt',
+  isDeleted: 'isDeleted'
 };
 
 exports.Prisma.FolderBookmarkScalarFieldEnum = {
@@ -175,8 +175,8 @@ exports.Prisma.FolderBookmarkScalarFieldEnum = {
 exports.Prisma.FolderCollaboratorScalarFieldEnum = {
   folderId: 'folderId',
   userId: 'userId',
-  permission: 'permission',
-  addedAt: 'addedAt'
+  addedAt: 'addedAt',
+  permission: 'permission'
 };
 
 exports.Prisma.TagScalarFieldEnum = {
@@ -186,8 +186,8 @@ exports.Prisma.TagScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   userId: 'userId',
-  isDeleted: 'isDeleted',
-  deletedAt: 'deletedAt'
+  deletedAt: 'deletedAt',
+  isDeleted: 'isDeleted'
 };
 
 exports.Prisma.BookmarkTagScalarFieldEnum = {
@@ -207,8 +207,8 @@ exports.Prisma.CollectionScalarFieldEnum = {
   updatedAt: 'updatedAt',
   userId: 'userId',
   ownerId: 'ownerId',
-  isDeleted: 'isDeleted',
-  deletedAt: 'deletedAt'
+  deletedAt: 'deletedAt',
+  isDeleted: 'isDeleted'
 };
 
 exports.Prisma.BookmarkCollectionScalarFieldEnum = {
@@ -221,8 +221,8 @@ exports.Prisma.BookmarkCollectionScalarFieldEnum = {
 exports.Prisma.CollectionCollaboratorScalarFieldEnum = {
   collectionId: 'collectionId',
   userId: 'userId',
-  permission: 'permission',
-  addedAt: 'addedAt'
+  addedAt: 'addedAt',
+  permission: 'permission'
 };
 
 exports.Prisma.DeviceScalarFieldEnum = {

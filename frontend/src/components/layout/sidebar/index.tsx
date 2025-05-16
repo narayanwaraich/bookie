@@ -1,7 +1,7 @@
 import React, { useState } from "react"; // Import useState
 import { File } from "lucide-react";
 
-import { SidebarFolderTree } from './SidebarFolderTree'; // Import the new component
+import { SidebarFolderTree } from "./SidebarFolderTree"; // Import the new component
 import {
   Sidebar,
   SidebarContent,
@@ -33,8 +33,12 @@ const changesData = [
   },
 ];
 
-export default function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const [selectedFolderId, setSelectedFolderId] = useState<string | undefined>(undefined);
+export default function AppSidebar({
+  ...props
+}: React.ComponentProps<typeof Sidebar>) {
+  const [selectedFolderId, setSelectedFolderId] = useState<string | undefined>(
+    undefined,
+  );
 
   const handleSelectFolder = (folderId: string) => {
     setSelectedFolderId(folderId);

@@ -1798,24 +1798,24 @@ export namespace Prisma {
 
   export type UserCountOutputType = {
     bookmarks: number
-    folders: number
-    tags: number
-    collections: number
     ownedCollections: number
-    collabFolders: number
+    collections: number
     collabCollections: number
     devices: number
+    folders: number
+    collabFolders: number
+    tags: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     bookmarks?: boolean | UserCountOutputTypeCountBookmarksArgs
-    folders?: boolean | UserCountOutputTypeCountFoldersArgs
-    tags?: boolean | UserCountOutputTypeCountTagsArgs
-    collections?: boolean | UserCountOutputTypeCountCollectionsArgs
     ownedCollections?: boolean | UserCountOutputTypeCountOwnedCollectionsArgs
-    collabFolders?: boolean | UserCountOutputTypeCountCollabFoldersArgs
+    collections?: boolean | UserCountOutputTypeCountCollectionsArgs
     collabCollections?: boolean | UserCountOutputTypeCountCollabCollectionsArgs
     devices?: boolean | UserCountOutputTypeCountDevicesArgs
+    folders?: boolean | UserCountOutputTypeCountFoldersArgs
+    collabFolders?: boolean | UserCountOutputTypeCountCollabFoldersArgs
+    tags?: boolean | UserCountOutputTypeCountTagsArgs
   }
 
   // Custom InputTypes
@@ -1839,27 +1839,6 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountFoldersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: FolderWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountTagsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: TagWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountCollectionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CollectionWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
   export type UserCountOutputTypeCountOwnedCollectionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: CollectionWhereInput
   }
@@ -1867,8 +1846,8 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountCollabFoldersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: FolderCollaboratorWhereInput
+  export type UserCountOutputTypeCountCollectionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CollectionWhereInput
   }
 
   /**
@@ -1885,21 +1864,42 @@ export namespace Prisma {
     where?: DeviceWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountFoldersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FolderWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountCollabFoldersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FolderCollaboratorWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountTagsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TagWhereInput
+  }
+
 
   /**
    * Count Type BookmarkCountOutputType
    */
 
   export type BookmarkCountOutputType = {
-    folders: number
-    tags: number
     collections: number
+    tags: number
+    folders: number
   }
 
   export type BookmarkCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    folders?: boolean | BookmarkCountOutputTypeCountFoldersArgs
-    tags?: boolean | BookmarkCountOutputTypeCountTagsArgs
     collections?: boolean | BookmarkCountOutputTypeCountCollectionsArgs
+    tags?: boolean | BookmarkCountOutputTypeCountTagsArgs
+    folders?: boolean | BookmarkCountOutputTypeCountFoldersArgs
   }
 
   // Custom InputTypes
@@ -1916,8 +1916,8 @@ export namespace Prisma {
   /**
    * BookmarkCountOutputType without action
    */
-  export type BookmarkCountOutputTypeCountFoldersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: FolderBookmarkWhereInput
+  export type BookmarkCountOutputTypeCountCollectionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BookmarkCollectionWhereInput
   }
 
   /**
@@ -1930,8 +1930,8 @@ export namespace Prisma {
   /**
    * BookmarkCountOutputType without action
    */
-  export type BookmarkCountOutputTypeCountCollectionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: BookmarkCollectionWhereInput
+  export type BookmarkCountOutputTypeCountFoldersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FolderBookmarkWhereInput
   }
 
 
@@ -2304,13 +2304,13 @@ export namespace Prisma {
     isVerified?: boolean
     verificationToken?: boolean
     bookmarks?: boolean | User$bookmarksArgs<ExtArgs>
-    folders?: boolean | User$foldersArgs<ExtArgs>
-    tags?: boolean | User$tagsArgs<ExtArgs>
-    collections?: boolean | User$collectionsArgs<ExtArgs>
     ownedCollections?: boolean | User$ownedCollectionsArgs<ExtArgs>
-    collabFolders?: boolean | User$collabFoldersArgs<ExtArgs>
+    collections?: boolean | User$collectionsArgs<ExtArgs>
     collabCollections?: boolean | User$collabCollectionsArgs<ExtArgs>
     devices?: boolean | User$devicesArgs<ExtArgs>
+    folders?: boolean | User$foldersArgs<ExtArgs>
+    collabFolders?: boolean | User$collabFoldersArgs<ExtArgs>
+    tags?: boolean | User$tagsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2371,13 +2371,13 @@ export namespace Prisma {
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "username" | "password" | "name" | "profileImage" | "createdAt" | "updatedAt" | "isActive" | "lastLogin" | "refreshToken" | "passwordResetToken" | "passwordResetExpires" | "isVerified" | "verificationToken", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     bookmarks?: boolean | User$bookmarksArgs<ExtArgs>
-    folders?: boolean | User$foldersArgs<ExtArgs>
-    tags?: boolean | User$tagsArgs<ExtArgs>
-    collections?: boolean | User$collectionsArgs<ExtArgs>
     ownedCollections?: boolean | User$ownedCollectionsArgs<ExtArgs>
-    collabFolders?: boolean | User$collabFoldersArgs<ExtArgs>
+    collections?: boolean | User$collectionsArgs<ExtArgs>
     collabCollections?: boolean | User$collabCollectionsArgs<ExtArgs>
     devices?: boolean | User$devicesArgs<ExtArgs>
+    folders?: boolean | User$foldersArgs<ExtArgs>
+    collabFolders?: boolean | User$collabFoldersArgs<ExtArgs>
+    tags?: boolean | User$tagsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2387,13 +2387,13 @@ export namespace Prisma {
     name: "User"
     objects: {
       bookmarks: Prisma.$BookmarkPayload<ExtArgs>[]
-      folders: Prisma.$FolderPayload<ExtArgs>[]
-      tags: Prisma.$TagPayload<ExtArgs>[]
-      collections: Prisma.$CollectionPayload<ExtArgs>[]
       ownedCollections: Prisma.$CollectionPayload<ExtArgs>[]
-      collabFolders: Prisma.$FolderCollaboratorPayload<ExtArgs>[]
+      collections: Prisma.$CollectionPayload<ExtArgs>[]
       collabCollections: Prisma.$CollectionCollaboratorPayload<ExtArgs>[]
       devices: Prisma.$DevicePayload<ExtArgs>[]
+      folders: Prisma.$FolderPayload<ExtArgs>[]
+      collabFolders: Prisma.$FolderCollaboratorPayload<ExtArgs>[]
+      tags: Prisma.$TagPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2806,13 +2806,13 @@ export namespace Prisma {
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     bookmarks<T extends User$bookmarksArgs<ExtArgs> = {}>(args?: Subset<T, User$bookmarksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BookmarkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    folders<T extends User$foldersArgs<ExtArgs> = {}>(args?: Subset<T, User$foldersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FolderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    tags<T extends User$tagsArgs<ExtArgs> = {}>(args?: Subset<T, User$tagsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    collections<T extends User$collectionsArgs<ExtArgs> = {}>(args?: Subset<T, User$collectionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CollectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     ownedCollections<T extends User$ownedCollectionsArgs<ExtArgs> = {}>(args?: Subset<T, User$ownedCollectionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CollectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    collabFolders<T extends User$collabFoldersArgs<ExtArgs> = {}>(args?: Subset<T, User$collabFoldersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FolderCollaboratorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    collections<T extends User$collectionsArgs<ExtArgs> = {}>(args?: Subset<T, User$collectionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CollectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     collabCollections<T extends User$collabCollectionsArgs<ExtArgs> = {}>(args?: Subset<T, User$collabCollectionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CollectionCollaboratorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     devices<T extends User$devicesArgs<ExtArgs> = {}>(args?: Subset<T, User$devicesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DevicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    folders<T extends User$foldersArgs<ExtArgs> = {}>(args?: Subset<T, User$foldersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FolderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    collabFolders<T extends User$collabFoldersArgs<ExtArgs> = {}>(args?: Subset<T, User$collabFoldersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FolderCollaboratorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    tags<T extends User$tagsArgs<ExtArgs> = {}>(args?: Subset<T, User$tagsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3269,78 +3269,6 @@ export namespace Prisma {
   }
 
   /**
-   * User.folders
-   */
-  export type User$foldersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Folder
-     */
-    select?: FolderSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Folder
-     */
-    omit?: FolderOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: FolderInclude<ExtArgs> | null
-    where?: FolderWhereInput
-    orderBy?: FolderOrderByWithRelationInput | FolderOrderByWithRelationInput[]
-    cursor?: FolderWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: FolderScalarFieldEnum | FolderScalarFieldEnum[]
-  }
-
-  /**
-   * User.tags
-   */
-  export type User$tagsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Tag
-     */
-    select?: TagSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Tag
-     */
-    omit?: TagOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: TagInclude<ExtArgs> | null
-    where?: TagWhereInput
-    orderBy?: TagOrderByWithRelationInput | TagOrderByWithRelationInput[]
-    cursor?: TagWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: TagScalarFieldEnum | TagScalarFieldEnum[]
-  }
-
-  /**
-   * User.collections
-   */
-  export type User$collectionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Collection
-     */
-    select?: CollectionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Collection
-     */
-    omit?: CollectionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CollectionInclude<ExtArgs> | null
-    where?: CollectionWhereInput
-    orderBy?: CollectionOrderByWithRelationInput | CollectionOrderByWithRelationInput[]
-    cursor?: CollectionWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: CollectionScalarFieldEnum | CollectionScalarFieldEnum[]
-  }
-
-  /**
    * User.ownedCollections
    */
   export type User$ownedCollectionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3365,27 +3293,27 @@ export namespace Prisma {
   }
 
   /**
-   * User.collabFolders
+   * User.collections
    */
-  export type User$collabFoldersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$collectionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the FolderCollaborator
+     * Select specific fields to fetch from the Collection
      */
-    select?: FolderCollaboratorSelect<ExtArgs> | null
+    select?: CollectionSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the FolderCollaborator
+     * Omit specific fields from the Collection
      */
-    omit?: FolderCollaboratorOmit<ExtArgs> | null
+    omit?: CollectionOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: FolderCollaboratorInclude<ExtArgs> | null
-    where?: FolderCollaboratorWhereInput
-    orderBy?: FolderCollaboratorOrderByWithRelationInput | FolderCollaboratorOrderByWithRelationInput[]
-    cursor?: FolderCollaboratorWhereUniqueInput
+    include?: CollectionInclude<ExtArgs> | null
+    where?: CollectionWhereInput
+    orderBy?: CollectionOrderByWithRelationInput | CollectionOrderByWithRelationInput[]
+    cursor?: CollectionWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: FolderCollaboratorScalarFieldEnum | FolderCollaboratorScalarFieldEnum[]
+    distinct?: CollectionScalarFieldEnum | CollectionScalarFieldEnum[]
   }
 
   /**
@@ -3434,6 +3362,78 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: DeviceScalarFieldEnum | DeviceScalarFieldEnum[]
+  }
+
+  /**
+   * User.folders
+   */
+  export type User$foldersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Folder
+     */
+    select?: FolderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Folder
+     */
+    omit?: FolderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FolderInclude<ExtArgs> | null
+    where?: FolderWhereInput
+    orderBy?: FolderOrderByWithRelationInput | FolderOrderByWithRelationInput[]
+    cursor?: FolderWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FolderScalarFieldEnum | FolderScalarFieldEnum[]
+  }
+
+  /**
+   * User.collabFolders
+   */
+  export type User$collabFoldersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FolderCollaborator
+     */
+    select?: FolderCollaboratorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FolderCollaborator
+     */
+    omit?: FolderCollaboratorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FolderCollaboratorInclude<ExtArgs> | null
+    where?: FolderCollaboratorWhereInput
+    orderBy?: FolderCollaboratorOrderByWithRelationInput | FolderCollaboratorOrderByWithRelationInput[]
+    cursor?: FolderCollaboratorWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FolderCollaboratorScalarFieldEnum | FolderCollaboratorScalarFieldEnum[]
+  }
+
+  /**
+   * User.tags
+   */
+  export type User$tagsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tag
+     */
+    select?: TagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Tag
+     */
+    omit?: TagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TagInclude<ExtArgs> | null
+    where?: TagWhereInput
+    orderBy?: TagOrderByWithRelationInput | TagOrderByWithRelationInput[]
+    cursor?: TagWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TagScalarFieldEnum | TagScalarFieldEnum[]
   }
 
   /**
@@ -3488,8 +3488,8 @@ export namespace Prisma {
     visitCount: number | null
     notes: string | null
     userId: string | null
-    isDeleted: boolean | null
     deletedAt: Date | null
+    isDeleted: boolean | null
   }
 
   export type BookmarkMaxAggregateOutputType = {
@@ -3505,8 +3505,8 @@ export namespace Prisma {
     visitCount: number | null
     notes: string | null
     userId: string | null
-    isDeleted: boolean | null
     deletedAt: Date | null
+    isDeleted: boolean | null
   }
 
   export type BookmarkCountAggregateOutputType = {
@@ -3522,8 +3522,8 @@ export namespace Prisma {
     visitCount: number
     notes: number
     userId: number
-    isDeleted: number
     deletedAt: number
+    isDeleted: number
     _all: number
   }
 
@@ -3549,8 +3549,8 @@ export namespace Prisma {
     visitCount?: true
     notes?: true
     userId?: true
-    isDeleted?: true
     deletedAt?: true
+    isDeleted?: true
   }
 
   export type BookmarkMaxAggregateInputType = {
@@ -3566,8 +3566,8 @@ export namespace Prisma {
     visitCount?: true
     notes?: true
     userId?: true
-    isDeleted?: true
     deletedAt?: true
+    isDeleted?: true
   }
 
   export type BookmarkCountAggregateInputType = {
@@ -3583,8 +3583,8 @@ export namespace Prisma {
     visitCount?: true
     notes?: true
     userId?: true
-    isDeleted?: true
     deletedAt?: true
+    isDeleted?: true
     _all?: true
   }
 
@@ -3687,8 +3687,8 @@ export namespace Prisma {
     visitCount: number
     notes: string | null
     userId: string
-    isDeleted: boolean
     deletedAt: Date | null
+    isDeleted: boolean
     _count: BookmarkCountAggregateOutputType | null
     _avg: BookmarkAvgAggregateOutputType | null
     _sum: BookmarkSumAggregateOutputType | null
@@ -3723,12 +3723,12 @@ export namespace Prisma {
     visitCount?: boolean
     notes?: boolean
     userId?: boolean
-    isDeleted?: boolean
     deletedAt?: boolean
+    isDeleted?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
-    folders?: boolean | Bookmark$foldersArgs<ExtArgs>
-    tags?: boolean | Bookmark$tagsArgs<ExtArgs>
     collections?: boolean | Bookmark$collectionsArgs<ExtArgs>
+    tags?: boolean | Bookmark$tagsArgs<ExtArgs>
+    folders?: boolean | Bookmark$foldersArgs<ExtArgs>
     _count?: boolean | BookmarkCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["bookmark"]>
 
@@ -3745,8 +3745,8 @@ export namespace Prisma {
     visitCount?: boolean
     notes?: boolean
     userId?: boolean
-    isDeleted?: boolean
     deletedAt?: boolean
+    isDeleted?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["bookmark"]>
 
@@ -3763,8 +3763,8 @@ export namespace Prisma {
     visitCount?: boolean
     notes?: boolean
     userId?: boolean
-    isDeleted?: boolean
     deletedAt?: boolean
+    isDeleted?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["bookmark"]>
 
@@ -3781,16 +3781,16 @@ export namespace Prisma {
     visitCount?: boolean
     notes?: boolean
     userId?: boolean
-    isDeleted?: boolean
     deletedAt?: boolean
+    isDeleted?: boolean
   }
 
-  export type BookmarkOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "url" | "title" | "description" | "favicon" | "previewImage" | "createdAt" | "updatedAt" | "lastVisited" | "visitCount" | "notes" | "userId" | "isDeleted" | "deletedAt", ExtArgs["result"]["bookmark"]>
+  export type BookmarkOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "url" | "title" | "description" | "favicon" | "previewImage" | "createdAt" | "updatedAt" | "lastVisited" | "visitCount" | "notes" | "userId" | "deletedAt" | "isDeleted", ExtArgs["result"]["bookmark"]>
   export type BookmarkInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
-    folders?: boolean | Bookmark$foldersArgs<ExtArgs>
-    tags?: boolean | Bookmark$tagsArgs<ExtArgs>
     collections?: boolean | Bookmark$collectionsArgs<ExtArgs>
+    tags?: boolean | Bookmark$tagsArgs<ExtArgs>
+    folders?: boolean | Bookmark$foldersArgs<ExtArgs>
     _count?: boolean | BookmarkCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type BookmarkIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3804,9 +3804,9 @@ export namespace Prisma {
     name: "Bookmark"
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
-      folders: Prisma.$FolderBookmarkPayload<ExtArgs>[]
-      tags: Prisma.$BookmarkTagPayload<ExtArgs>[]
       collections: Prisma.$BookmarkCollectionPayload<ExtArgs>[]
+      tags: Prisma.$BookmarkTagPayload<ExtArgs>[]
+      folders: Prisma.$FolderBookmarkPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3821,8 +3821,8 @@ export namespace Prisma {
       visitCount: number
       notes: string | null
       userId: string
-      isDeleted: boolean
       deletedAt: Date | null
+      isDeleted: boolean
     }, ExtArgs["result"]["bookmark"]>
     composites: {}
   }
@@ -4218,9 +4218,9 @@ export namespace Prisma {
   export interface Prisma__BookmarkClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    folders<T extends Bookmark$foldersArgs<ExtArgs> = {}>(args?: Subset<T, Bookmark$foldersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FolderBookmarkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    tags<T extends Bookmark$tagsArgs<ExtArgs> = {}>(args?: Subset<T, Bookmark$tagsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BookmarkTagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     collections<T extends Bookmark$collectionsArgs<ExtArgs> = {}>(args?: Subset<T, Bookmark$collectionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BookmarkCollectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    tags<T extends Bookmark$tagsArgs<ExtArgs> = {}>(args?: Subset<T, Bookmark$tagsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BookmarkTagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    folders<T extends Bookmark$foldersArgs<ExtArgs> = {}>(args?: Subset<T, Bookmark$foldersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FolderBookmarkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4262,8 +4262,8 @@ export namespace Prisma {
     readonly visitCount: FieldRef<"Bookmark", 'Int'>
     readonly notes: FieldRef<"Bookmark", 'String'>
     readonly userId: FieldRef<"Bookmark", 'String'>
-    readonly isDeleted: FieldRef<"Bookmark", 'Boolean'>
     readonly deletedAt: FieldRef<"Bookmark", 'DateTime'>
+    readonly isDeleted: FieldRef<"Bookmark", 'Boolean'>
   }
     
 
@@ -4660,27 +4660,27 @@ export namespace Prisma {
   }
 
   /**
-   * Bookmark.folders
+   * Bookmark.collections
    */
-  export type Bookmark$foldersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Bookmark$collectionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the FolderBookmark
+     * Select specific fields to fetch from the BookmarkCollection
      */
-    select?: FolderBookmarkSelect<ExtArgs> | null
+    select?: BookmarkCollectionSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the FolderBookmark
+     * Omit specific fields from the BookmarkCollection
      */
-    omit?: FolderBookmarkOmit<ExtArgs> | null
+    omit?: BookmarkCollectionOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: FolderBookmarkInclude<ExtArgs> | null
-    where?: FolderBookmarkWhereInput
-    orderBy?: FolderBookmarkOrderByWithRelationInput | FolderBookmarkOrderByWithRelationInput[]
-    cursor?: FolderBookmarkWhereUniqueInput
+    include?: BookmarkCollectionInclude<ExtArgs> | null
+    where?: BookmarkCollectionWhereInput
+    orderBy?: BookmarkCollectionOrderByWithRelationInput | BookmarkCollectionOrderByWithRelationInput[]
+    cursor?: BookmarkCollectionWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: FolderBookmarkScalarFieldEnum | FolderBookmarkScalarFieldEnum[]
+    distinct?: BookmarkCollectionScalarFieldEnum | BookmarkCollectionScalarFieldEnum[]
   }
 
   /**
@@ -4708,27 +4708,27 @@ export namespace Prisma {
   }
 
   /**
-   * Bookmark.collections
+   * Bookmark.folders
    */
-  export type Bookmark$collectionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Bookmark$foldersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the BookmarkCollection
+     * Select specific fields to fetch from the FolderBookmark
      */
-    select?: BookmarkCollectionSelect<ExtArgs> | null
+    select?: FolderBookmarkSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the BookmarkCollection
+     * Omit specific fields from the FolderBookmark
      */
-    omit?: BookmarkCollectionOmit<ExtArgs> | null
+    omit?: FolderBookmarkOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: BookmarkCollectionInclude<ExtArgs> | null
-    where?: BookmarkCollectionWhereInput
-    orderBy?: BookmarkCollectionOrderByWithRelationInput | BookmarkCollectionOrderByWithRelationInput[]
-    cursor?: BookmarkCollectionWhereUniqueInput
+    include?: FolderBookmarkInclude<ExtArgs> | null
+    where?: FolderBookmarkWhereInput
+    orderBy?: FolderBookmarkOrderByWithRelationInput | FolderBookmarkOrderByWithRelationInput[]
+    cursor?: FolderBookmarkWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: BookmarkCollectionScalarFieldEnum | BookmarkCollectionScalarFieldEnum[]
+    distinct?: FolderBookmarkScalarFieldEnum | FolderBookmarkScalarFieldEnum[]
   }
 
   /**
@@ -4770,8 +4770,8 @@ export namespace Prisma {
     updatedAt: Date | null
     userId: string | null
     parentId: string | null
-    isDeleted: boolean | null
     deletedAt: Date | null
+    isDeleted: boolean | null
   }
 
   export type FolderMaxAggregateOutputType = {
@@ -4784,8 +4784,8 @@ export namespace Prisma {
     updatedAt: Date | null
     userId: string | null
     parentId: string | null
-    isDeleted: boolean | null
     deletedAt: Date | null
+    isDeleted: boolean | null
   }
 
   export type FolderCountAggregateOutputType = {
@@ -4798,8 +4798,8 @@ export namespace Prisma {
     updatedAt: number
     userId: number
     parentId: number
-    isDeleted: number
     deletedAt: number
+    isDeleted: number
     _all: number
   }
 
@@ -4814,8 +4814,8 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     parentId?: true
-    isDeleted?: true
     deletedAt?: true
+    isDeleted?: true
   }
 
   export type FolderMaxAggregateInputType = {
@@ -4828,8 +4828,8 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     parentId?: true
-    isDeleted?: true
     deletedAt?: true
+    isDeleted?: true
   }
 
   export type FolderCountAggregateInputType = {
@@ -4842,8 +4842,8 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     parentId?: true
-    isDeleted?: true
     deletedAt?: true
+    isDeleted?: true
     _all?: true
   }
 
@@ -4929,8 +4929,8 @@ export namespace Prisma {
     updatedAt: Date
     userId: string
     parentId: string | null
-    isDeleted: boolean
     deletedAt: Date | null
+    isDeleted: boolean
     _count: FolderCountAggregateOutputType | null
     _min: FolderMinAggregateOutputType | null
     _max: FolderMaxAggregateOutputType | null
@@ -4960,11 +4960,11 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     parentId?: boolean
-    isDeleted?: boolean
     deletedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    isDeleted?: boolean
     parent?: boolean | Folder$parentArgs<ExtArgs>
     children?: boolean | Folder$childrenArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     bookmarks?: boolean | Folder$bookmarksArgs<ExtArgs>
     collaborators?: boolean | Folder$collaboratorsArgs<ExtArgs>
     _count?: boolean | FolderCountOutputTypeDefaultArgs<ExtArgs>
@@ -4980,10 +4980,10 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     parentId?: boolean
-    isDeleted?: boolean
     deletedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    isDeleted?: boolean
     parent?: boolean | Folder$parentArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["folder"]>
 
   export type FolderSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -4996,10 +4996,10 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     parentId?: boolean
-    isDeleted?: boolean
     deletedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    isDeleted?: boolean
     parent?: boolean | Folder$parentArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["folder"]>
 
   export type FolderSelectScalar = {
@@ -5012,34 +5012,34 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     parentId?: boolean
-    isDeleted?: boolean
     deletedAt?: boolean
+    isDeleted?: boolean
   }
 
-  export type FolderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "icon" | "color" | "createdAt" | "updatedAt" | "userId" | "parentId" | "isDeleted" | "deletedAt", ExtArgs["result"]["folder"]>
+  export type FolderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "icon" | "color" | "createdAt" | "updatedAt" | "userId" | "parentId" | "deletedAt" | "isDeleted", ExtArgs["result"]["folder"]>
   export type FolderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     parent?: boolean | Folder$parentArgs<ExtArgs>
     children?: boolean | Folder$childrenArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     bookmarks?: boolean | Folder$bookmarksArgs<ExtArgs>
     collaborators?: boolean | Folder$collaboratorsArgs<ExtArgs>
     _count?: boolean | FolderCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type FolderIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     parent?: boolean | Folder$parentArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type FolderIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     parent?: boolean | Folder$parentArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $FolderPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Folder"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
       parent: Prisma.$FolderPayload<ExtArgs> | null
       children: Prisma.$FolderPayload<ExtArgs>[]
+      user: Prisma.$UserPayload<ExtArgs>
       bookmarks: Prisma.$FolderBookmarkPayload<ExtArgs>[]
       collaborators: Prisma.$FolderCollaboratorPayload<ExtArgs>[]
     }
@@ -5053,8 +5053,8 @@ export namespace Prisma {
       updatedAt: Date
       userId: string
       parentId: string | null
-      isDeleted: boolean
       deletedAt: Date | null
+      isDeleted: boolean
     }, ExtArgs["result"]["folder"]>
     composites: {}
   }
@@ -5449,9 +5449,9 @@ export namespace Prisma {
    */
   export interface Prisma__FolderClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     parent<T extends Folder$parentArgs<ExtArgs> = {}>(args?: Subset<T, Folder$parentArgs<ExtArgs>>): Prisma__FolderClient<$Result.GetResult<Prisma.$FolderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     children<T extends Folder$childrenArgs<ExtArgs> = {}>(args?: Subset<T, Folder$childrenArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FolderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     bookmarks<T extends Folder$bookmarksArgs<ExtArgs> = {}>(args?: Subset<T, Folder$bookmarksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FolderBookmarkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     collaborators<T extends Folder$collaboratorsArgs<ExtArgs> = {}>(args?: Subset<T, Folder$collaboratorsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FolderCollaboratorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -5492,8 +5492,8 @@ export namespace Prisma {
     readonly updatedAt: FieldRef<"Folder", 'DateTime'>
     readonly userId: FieldRef<"Folder", 'String'>
     readonly parentId: FieldRef<"Folder", 'String'>
-    readonly isDeleted: FieldRef<"Folder", 'Boolean'>
     readonly deletedAt: FieldRef<"Folder", 'DateTime'>
+    readonly isDeleted: FieldRef<"Folder", 'Boolean'>
   }
     
 
@@ -6147,24 +6147,24 @@ export namespace Prisma {
     folderId?: boolean
     bookmarkId?: boolean
     addedAt?: boolean
-    folder?: boolean | FolderDefaultArgs<ExtArgs>
     bookmark?: boolean | BookmarkDefaultArgs<ExtArgs>
+    folder?: boolean | FolderDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["folderBookmark"]>
 
   export type FolderBookmarkSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     folderId?: boolean
     bookmarkId?: boolean
     addedAt?: boolean
-    folder?: boolean | FolderDefaultArgs<ExtArgs>
     bookmark?: boolean | BookmarkDefaultArgs<ExtArgs>
+    folder?: boolean | FolderDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["folderBookmark"]>
 
   export type FolderBookmarkSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     folderId?: boolean
     bookmarkId?: boolean
     addedAt?: boolean
-    folder?: boolean | FolderDefaultArgs<ExtArgs>
     bookmark?: boolean | BookmarkDefaultArgs<ExtArgs>
+    folder?: boolean | FolderDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["folderBookmark"]>
 
   export type FolderBookmarkSelectScalar = {
@@ -6175,23 +6175,23 @@ export namespace Prisma {
 
   export type FolderBookmarkOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"folderId" | "bookmarkId" | "addedAt", ExtArgs["result"]["folderBookmark"]>
   export type FolderBookmarkInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    folder?: boolean | FolderDefaultArgs<ExtArgs>
     bookmark?: boolean | BookmarkDefaultArgs<ExtArgs>
+    folder?: boolean | FolderDefaultArgs<ExtArgs>
   }
   export type FolderBookmarkIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    folder?: boolean | FolderDefaultArgs<ExtArgs>
     bookmark?: boolean | BookmarkDefaultArgs<ExtArgs>
+    folder?: boolean | FolderDefaultArgs<ExtArgs>
   }
   export type FolderBookmarkIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    folder?: boolean | FolderDefaultArgs<ExtArgs>
     bookmark?: boolean | BookmarkDefaultArgs<ExtArgs>
+    folder?: boolean | FolderDefaultArgs<ExtArgs>
   }
 
   export type $FolderBookmarkPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "FolderBookmark"
     objects: {
-      folder: Prisma.$FolderPayload<ExtArgs>
       bookmark: Prisma.$BookmarkPayload<ExtArgs>
+      folder: Prisma.$FolderPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       folderId: string
@@ -6591,8 +6591,8 @@ export namespace Prisma {
    */
   export interface Prisma__FolderBookmarkClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    folder<T extends FolderDefaultArgs<ExtArgs> = {}>(args?: Subset<T, FolderDefaultArgs<ExtArgs>>): Prisma__FolderClient<$Result.GetResult<Prisma.$FolderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     bookmark<T extends BookmarkDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BookmarkDefaultArgs<ExtArgs>>): Prisma__BookmarkClient<$Result.GetResult<Prisma.$BookmarkPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    folder<T extends FolderDefaultArgs<ExtArgs> = {}>(args?: Subset<T, FolderDefaultArgs<ExtArgs>>): Prisma__FolderClient<$Result.GetResult<Prisma.$FolderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7052,22 +7052,22 @@ export namespace Prisma {
   export type FolderCollaboratorMinAggregateOutputType = {
     folderId: string | null
     userId: string | null
-    permission: $Enums.Role | null
     addedAt: Date | null
+    permission: $Enums.Role | null
   }
 
   export type FolderCollaboratorMaxAggregateOutputType = {
     folderId: string | null
     userId: string | null
-    permission: $Enums.Role | null
     addedAt: Date | null
+    permission: $Enums.Role | null
   }
 
   export type FolderCollaboratorCountAggregateOutputType = {
     folderId: number
     userId: number
-    permission: number
     addedAt: number
+    permission: number
     _all: number
   }
 
@@ -7075,22 +7075,22 @@ export namespace Prisma {
   export type FolderCollaboratorMinAggregateInputType = {
     folderId?: true
     userId?: true
-    permission?: true
     addedAt?: true
+    permission?: true
   }
 
   export type FolderCollaboratorMaxAggregateInputType = {
     folderId?: true
     userId?: true
-    permission?: true
     addedAt?: true
+    permission?: true
   }
 
   export type FolderCollaboratorCountAggregateInputType = {
     folderId?: true
     userId?: true
-    permission?: true
     addedAt?: true
+    permission?: true
     _all?: true
   }
 
@@ -7169,8 +7169,8 @@ export namespace Prisma {
   export type FolderCollaboratorGroupByOutputType = {
     folderId: string
     userId: string
-    permission: $Enums.Role
     addedAt: Date
+    permission: $Enums.Role
     _count: FolderCollaboratorCountAggregateOutputType | null
     _min: FolderCollaboratorMinAggregateOutputType | null
     _max: FolderCollaboratorMaxAggregateOutputType | null
@@ -7193,8 +7193,8 @@ export namespace Prisma {
   export type FolderCollaboratorSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     folderId?: boolean
     userId?: boolean
-    permission?: boolean
     addedAt?: boolean
+    permission?: boolean
     folder?: boolean | FolderDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["folderCollaborator"]>
@@ -7202,8 +7202,8 @@ export namespace Prisma {
   export type FolderCollaboratorSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     folderId?: boolean
     userId?: boolean
-    permission?: boolean
     addedAt?: boolean
+    permission?: boolean
     folder?: boolean | FolderDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["folderCollaborator"]>
@@ -7211,8 +7211,8 @@ export namespace Prisma {
   export type FolderCollaboratorSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     folderId?: boolean
     userId?: boolean
-    permission?: boolean
     addedAt?: boolean
+    permission?: boolean
     folder?: boolean | FolderDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["folderCollaborator"]>
@@ -7220,11 +7220,11 @@ export namespace Prisma {
   export type FolderCollaboratorSelectScalar = {
     folderId?: boolean
     userId?: boolean
-    permission?: boolean
     addedAt?: boolean
+    permission?: boolean
   }
 
-  export type FolderCollaboratorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"folderId" | "userId" | "permission" | "addedAt", ExtArgs["result"]["folderCollaborator"]>
+  export type FolderCollaboratorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"folderId" | "userId" | "addedAt" | "permission", ExtArgs["result"]["folderCollaborator"]>
   export type FolderCollaboratorInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     folder?: boolean | FolderDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -7247,8 +7247,8 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       folderId: string
       userId: string
-      permission: $Enums.Role
       addedAt: Date
+      permission: $Enums.Role
     }, ExtArgs["result"]["folderCollaborator"]>
     composites: {}
   }
@@ -7676,8 +7676,8 @@ export namespace Prisma {
   interface FolderCollaboratorFieldRefs {
     readonly folderId: FieldRef<"FolderCollaborator", 'String'>
     readonly userId: FieldRef<"FolderCollaborator", 'String'>
-    readonly permission: FieldRef<"FolderCollaborator", 'Role'>
     readonly addedAt: FieldRef<"FolderCollaborator", 'DateTime'>
+    readonly permission: FieldRef<"FolderCollaborator", 'Role'>
   }
     
 
@@ -8109,8 +8109,8 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     userId: string | null
-    isDeleted: boolean | null
     deletedAt: Date | null
+    isDeleted: boolean | null
   }
 
   export type TagMaxAggregateOutputType = {
@@ -8120,8 +8120,8 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     userId: string | null
-    isDeleted: boolean | null
     deletedAt: Date | null
+    isDeleted: boolean | null
   }
 
   export type TagCountAggregateOutputType = {
@@ -8131,8 +8131,8 @@ export namespace Prisma {
     createdAt: number
     updatedAt: number
     userId: number
-    isDeleted: number
     deletedAt: number
+    isDeleted: number
     _all: number
   }
 
@@ -8144,8 +8144,8 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     userId?: true
-    isDeleted?: true
     deletedAt?: true
+    isDeleted?: true
   }
 
   export type TagMaxAggregateInputType = {
@@ -8155,8 +8155,8 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     userId?: true
-    isDeleted?: true
     deletedAt?: true
+    isDeleted?: true
   }
 
   export type TagCountAggregateInputType = {
@@ -8166,8 +8166,8 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     userId?: true
-    isDeleted?: true
     deletedAt?: true
+    isDeleted?: true
     _all?: true
   }
 
@@ -8250,8 +8250,8 @@ export namespace Prisma {
     createdAt: Date
     updatedAt: Date
     userId: string
-    isDeleted: boolean
     deletedAt: Date | null
+    isDeleted: boolean
     _count: TagCountAggregateOutputType | null
     _min: TagMinAggregateOutputType | null
     _max: TagMaxAggregateOutputType | null
@@ -8278,10 +8278,10 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
-    isDeleted?: boolean
     deletedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    isDeleted?: boolean
     bookmarks?: boolean | Tag$bookmarksArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     _count?: boolean | TagCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["tag"]>
 
@@ -8292,8 +8292,8 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
-    isDeleted?: boolean
     deletedAt?: boolean
+    isDeleted?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["tag"]>
 
@@ -8304,8 +8304,8 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
-    isDeleted?: boolean
     deletedAt?: boolean
+    isDeleted?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["tag"]>
 
@@ -8316,14 +8316,14 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
-    isDeleted?: boolean
     deletedAt?: boolean
+    isDeleted?: boolean
   }
 
-  export type TagOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "color" | "createdAt" | "updatedAt" | "userId" | "isDeleted" | "deletedAt", ExtArgs["result"]["tag"]>
+  export type TagOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "color" | "createdAt" | "updatedAt" | "userId" | "deletedAt" | "isDeleted", ExtArgs["result"]["tag"]>
   export type TagInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     bookmarks?: boolean | Tag$bookmarksArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     _count?: boolean | TagCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type TagIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8336,8 +8336,8 @@ export namespace Prisma {
   export type $TagPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Tag"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
       bookmarks: Prisma.$BookmarkTagPayload<ExtArgs>[]
+      user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -8346,8 +8346,8 @@ export namespace Prisma {
       createdAt: Date
       updatedAt: Date
       userId: string
-      isDeleted: boolean
       deletedAt: Date | null
+      isDeleted: boolean
     }, ExtArgs["result"]["tag"]>
     composites: {}
   }
@@ -8742,8 +8742,8 @@ export namespace Prisma {
    */
   export interface Prisma__TagClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     bookmarks<T extends Tag$bookmarksArgs<ExtArgs> = {}>(args?: Subset<T, Tag$bookmarksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BookmarkTagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8779,8 +8779,8 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"Tag", 'DateTime'>
     readonly updatedAt: FieldRef<"Tag", 'DateTime'>
     readonly userId: FieldRef<"Tag", 'String'>
-    readonly isDeleted: FieldRef<"Tag", 'Boolean'>
     readonly deletedAt: FieldRef<"Tag", 'DateTime'>
+    readonly isDeleted: FieldRef<"Tag", 'Boolean'>
   }
     
 
@@ -9367,24 +9367,24 @@ export namespace Prisma {
     tagId?: boolean
     bookmarkId?: boolean
     addedAt?: boolean
-    tag?: boolean | TagDefaultArgs<ExtArgs>
     bookmark?: boolean | BookmarkDefaultArgs<ExtArgs>
+    tag?: boolean | TagDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["bookmarkTag"]>
 
   export type BookmarkTagSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     tagId?: boolean
     bookmarkId?: boolean
     addedAt?: boolean
-    tag?: boolean | TagDefaultArgs<ExtArgs>
     bookmark?: boolean | BookmarkDefaultArgs<ExtArgs>
+    tag?: boolean | TagDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["bookmarkTag"]>
 
   export type BookmarkTagSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     tagId?: boolean
     bookmarkId?: boolean
     addedAt?: boolean
-    tag?: boolean | TagDefaultArgs<ExtArgs>
     bookmark?: boolean | BookmarkDefaultArgs<ExtArgs>
+    tag?: boolean | TagDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["bookmarkTag"]>
 
   export type BookmarkTagSelectScalar = {
@@ -9395,23 +9395,23 @@ export namespace Prisma {
 
   export type BookmarkTagOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"tagId" | "bookmarkId" | "addedAt", ExtArgs["result"]["bookmarkTag"]>
   export type BookmarkTagInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    tag?: boolean | TagDefaultArgs<ExtArgs>
     bookmark?: boolean | BookmarkDefaultArgs<ExtArgs>
+    tag?: boolean | TagDefaultArgs<ExtArgs>
   }
   export type BookmarkTagIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    tag?: boolean | TagDefaultArgs<ExtArgs>
     bookmark?: boolean | BookmarkDefaultArgs<ExtArgs>
+    tag?: boolean | TagDefaultArgs<ExtArgs>
   }
   export type BookmarkTagIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    tag?: boolean | TagDefaultArgs<ExtArgs>
     bookmark?: boolean | BookmarkDefaultArgs<ExtArgs>
+    tag?: boolean | TagDefaultArgs<ExtArgs>
   }
 
   export type $BookmarkTagPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "BookmarkTag"
     objects: {
-      tag: Prisma.$TagPayload<ExtArgs>
       bookmark: Prisma.$BookmarkPayload<ExtArgs>
+      tag: Prisma.$TagPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       tagId: string
@@ -9811,8 +9811,8 @@ export namespace Prisma {
    */
   export interface Prisma__BookmarkTagClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    tag<T extends TagDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TagDefaultArgs<ExtArgs>>): Prisma__TagClient<$Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     bookmark<T extends BookmarkDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BookmarkDefaultArgs<ExtArgs>>): Prisma__BookmarkClient<$Result.GetResult<Prisma.$BookmarkPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    tag<T extends TagDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TagDefaultArgs<ExtArgs>>): Prisma__TagClient<$Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -10280,8 +10280,8 @@ export namespace Prisma {
     updatedAt: Date | null
     userId: string | null
     ownerId: string | null
-    isDeleted: boolean | null
     deletedAt: Date | null
+    isDeleted: boolean | null
   }
 
   export type CollectionMaxAggregateOutputType = {
@@ -10295,8 +10295,8 @@ export namespace Prisma {
     updatedAt: Date | null
     userId: string | null
     ownerId: string | null
-    isDeleted: boolean | null
     deletedAt: Date | null
+    isDeleted: boolean | null
   }
 
   export type CollectionCountAggregateOutputType = {
@@ -10310,8 +10310,8 @@ export namespace Prisma {
     updatedAt: number
     userId: number
     ownerId: number
-    isDeleted: number
     deletedAt: number
+    isDeleted: number
     _all: number
   }
 
@@ -10327,8 +10327,8 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     ownerId?: true
-    isDeleted?: true
     deletedAt?: true
+    isDeleted?: true
   }
 
   export type CollectionMaxAggregateInputType = {
@@ -10342,8 +10342,8 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     ownerId?: true
-    isDeleted?: true
     deletedAt?: true
+    isDeleted?: true
   }
 
   export type CollectionCountAggregateInputType = {
@@ -10357,8 +10357,8 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     ownerId?: true
-    isDeleted?: true
     deletedAt?: true
+    isDeleted?: true
     _all?: true
   }
 
@@ -10445,8 +10445,8 @@ export namespace Prisma {
     updatedAt: Date
     userId: string
     ownerId: string
-    isDeleted: boolean
     deletedAt: Date | null
+    isDeleted: boolean
     _count: CollectionCountAggregateOutputType | null
     _min: CollectionMinAggregateOutputType | null
     _max: CollectionMaxAggregateOutputType | null
@@ -10477,11 +10477,11 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     ownerId?: boolean
-    isDeleted?: boolean
     deletedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    owner?: boolean | UserDefaultArgs<ExtArgs>
+    isDeleted?: boolean
     bookmarks?: boolean | Collection$bookmarksArgs<ExtArgs>
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     collaborators?: boolean | Collection$collaboratorsArgs<ExtArgs>
     _count?: boolean | CollectionCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["collection"]>
@@ -10497,10 +10497,10 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     ownerId?: boolean
-    isDeleted?: boolean
     deletedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    isDeleted?: boolean
     owner?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["collection"]>
 
   export type CollectionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -10514,10 +10514,10 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     ownerId?: boolean
-    isDeleted?: boolean
     deletedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    isDeleted?: boolean
     owner?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["collection"]>
 
   export type CollectionSelectScalar = {
@@ -10531,33 +10531,33 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     ownerId?: boolean
-    isDeleted?: boolean
     deletedAt?: boolean
+    isDeleted?: boolean
   }
 
-  export type CollectionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "isPublic" | "publicLink" | "thumbnail" | "createdAt" | "updatedAt" | "userId" | "ownerId" | "isDeleted" | "deletedAt", ExtArgs["result"]["collection"]>
+  export type CollectionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "isPublic" | "publicLink" | "thumbnail" | "createdAt" | "updatedAt" | "userId" | "ownerId" | "deletedAt" | "isDeleted", ExtArgs["result"]["collection"]>
   export type CollectionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    owner?: boolean | UserDefaultArgs<ExtArgs>
     bookmarks?: boolean | Collection$bookmarksArgs<ExtArgs>
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     collaborators?: boolean | Collection$collaboratorsArgs<ExtArgs>
     _count?: boolean | CollectionCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type CollectionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     owner?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type CollectionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     owner?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $CollectionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Collection"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
-      owner: Prisma.$UserPayload<ExtArgs>
       bookmarks: Prisma.$BookmarkCollectionPayload<ExtArgs>[]
+      owner: Prisma.$UserPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
       collaborators: Prisma.$CollectionCollaboratorPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -10571,8 +10571,8 @@ export namespace Prisma {
       updatedAt: Date
       userId: string
       ownerId: string
-      isDeleted: boolean
       deletedAt: Date | null
+      isDeleted: boolean
     }, ExtArgs["result"]["collection"]>
     composites: {}
   }
@@ -10967,9 +10967,9 @@ export namespace Prisma {
    */
   export interface Prisma__CollectionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    owner<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     bookmarks<T extends Collection$bookmarksArgs<ExtArgs> = {}>(args?: Subset<T, Collection$bookmarksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BookmarkCollectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    owner<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     collaborators<T extends Collection$collaboratorsArgs<ExtArgs> = {}>(args?: Subset<T, Collection$collaboratorsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CollectionCollaboratorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -11010,8 +11010,8 @@ export namespace Prisma {
     readonly updatedAt: FieldRef<"Collection", 'DateTime'>
     readonly userId: FieldRef<"Collection", 'String'>
     readonly ownerId: FieldRef<"Collection", 'String'>
-    readonly isDeleted: FieldRef<"Collection", 'Boolean'>
     readonly deletedAt: FieldRef<"Collection", 'DateTime'>
+    readonly isDeleted: FieldRef<"Collection", 'Boolean'>
   }
     
 
@@ -11664,8 +11664,8 @@ export namespace Prisma {
     bookmarkId?: boolean
     addedAt?: boolean
     order?: boolean
-    collection?: boolean | CollectionDefaultArgs<ExtArgs>
     bookmark?: boolean | BookmarkDefaultArgs<ExtArgs>
+    collection?: boolean | CollectionDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["bookmarkCollection"]>
 
   export type BookmarkCollectionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -11673,8 +11673,8 @@ export namespace Prisma {
     bookmarkId?: boolean
     addedAt?: boolean
     order?: boolean
-    collection?: boolean | CollectionDefaultArgs<ExtArgs>
     bookmark?: boolean | BookmarkDefaultArgs<ExtArgs>
+    collection?: boolean | CollectionDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["bookmarkCollection"]>
 
   export type BookmarkCollectionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -11682,8 +11682,8 @@ export namespace Prisma {
     bookmarkId?: boolean
     addedAt?: boolean
     order?: boolean
-    collection?: boolean | CollectionDefaultArgs<ExtArgs>
     bookmark?: boolean | BookmarkDefaultArgs<ExtArgs>
+    collection?: boolean | CollectionDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["bookmarkCollection"]>
 
   export type BookmarkCollectionSelectScalar = {
@@ -11695,23 +11695,23 @@ export namespace Prisma {
 
   export type BookmarkCollectionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"collectionId" | "bookmarkId" | "addedAt" | "order", ExtArgs["result"]["bookmarkCollection"]>
   export type BookmarkCollectionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    collection?: boolean | CollectionDefaultArgs<ExtArgs>
     bookmark?: boolean | BookmarkDefaultArgs<ExtArgs>
+    collection?: boolean | CollectionDefaultArgs<ExtArgs>
   }
   export type BookmarkCollectionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    collection?: boolean | CollectionDefaultArgs<ExtArgs>
     bookmark?: boolean | BookmarkDefaultArgs<ExtArgs>
+    collection?: boolean | CollectionDefaultArgs<ExtArgs>
   }
   export type BookmarkCollectionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    collection?: boolean | CollectionDefaultArgs<ExtArgs>
     bookmark?: boolean | BookmarkDefaultArgs<ExtArgs>
+    collection?: boolean | CollectionDefaultArgs<ExtArgs>
   }
 
   export type $BookmarkCollectionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "BookmarkCollection"
     objects: {
-      collection: Prisma.$CollectionPayload<ExtArgs>
       bookmark: Prisma.$BookmarkPayload<ExtArgs>
+      collection: Prisma.$CollectionPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       collectionId: string
@@ -12112,8 +12112,8 @@ export namespace Prisma {
    */
   export interface Prisma__BookmarkCollectionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    collection<T extends CollectionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CollectionDefaultArgs<ExtArgs>>): Prisma__CollectionClient<$Result.GetResult<Prisma.$CollectionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     bookmark<T extends BookmarkDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BookmarkDefaultArgs<ExtArgs>>): Prisma__BookmarkClient<$Result.GetResult<Prisma.$BookmarkPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    collection<T extends CollectionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CollectionDefaultArgs<ExtArgs>>): Prisma__CollectionClient<$Result.GetResult<Prisma.$CollectionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12574,22 +12574,22 @@ export namespace Prisma {
   export type CollectionCollaboratorMinAggregateOutputType = {
     collectionId: string | null
     userId: string | null
-    permission: $Enums.Role | null
     addedAt: Date | null
+    permission: $Enums.Role | null
   }
 
   export type CollectionCollaboratorMaxAggregateOutputType = {
     collectionId: string | null
     userId: string | null
-    permission: $Enums.Role | null
     addedAt: Date | null
+    permission: $Enums.Role | null
   }
 
   export type CollectionCollaboratorCountAggregateOutputType = {
     collectionId: number
     userId: number
-    permission: number
     addedAt: number
+    permission: number
     _all: number
   }
 
@@ -12597,22 +12597,22 @@ export namespace Prisma {
   export type CollectionCollaboratorMinAggregateInputType = {
     collectionId?: true
     userId?: true
-    permission?: true
     addedAt?: true
+    permission?: true
   }
 
   export type CollectionCollaboratorMaxAggregateInputType = {
     collectionId?: true
     userId?: true
-    permission?: true
     addedAt?: true
+    permission?: true
   }
 
   export type CollectionCollaboratorCountAggregateInputType = {
     collectionId?: true
     userId?: true
-    permission?: true
     addedAt?: true
+    permission?: true
     _all?: true
   }
 
@@ -12691,8 +12691,8 @@ export namespace Prisma {
   export type CollectionCollaboratorGroupByOutputType = {
     collectionId: string
     userId: string
-    permission: $Enums.Role
     addedAt: Date
+    permission: $Enums.Role
     _count: CollectionCollaboratorCountAggregateOutputType | null
     _min: CollectionCollaboratorMinAggregateOutputType | null
     _max: CollectionCollaboratorMaxAggregateOutputType | null
@@ -12715,8 +12715,8 @@ export namespace Prisma {
   export type CollectionCollaboratorSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     collectionId?: boolean
     userId?: boolean
-    permission?: boolean
     addedAt?: boolean
+    permission?: boolean
     collection?: boolean | CollectionDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["collectionCollaborator"]>
@@ -12724,8 +12724,8 @@ export namespace Prisma {
   export type CollectionCollaboratorSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     collectionId?: boolean
     userId?: boolean
-    permission?: boolean
     addedAt?: boolean
+    permission?: boolean
     collection?: boolean | CollectionDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["collectionCollaborator"]>
@@ -12733,8 +12733,8 @@ export namespace Prisma {
   export type CollectionCollaboratorSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     collectionId?: boolean
     userId?: boolean
-    permission?: boolean
     addedAt?: boolean
+    permission?: boolean
     collection?: boolean | CollectionDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["collectionCollaborator"]>
@@ -12742,11 +12742,11 @@ export namespace Prisma {
   export type CollectionCollaboratorSelectScalar = {
     collectionId?: boolean
     userId?: boolean
-    permission?: boolean
     addedAt?: boolean
+    permission?: boolean
   }
 
-  export type CollectionCollaboratorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"collectionId" | "userId" | "permission" | "addedAt", ExtArgs["result"]["collectionCollaborator"]>
+  export type CollectionCollaboratorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"collectionId" | "userId" | "addedAt" | "permission", ExtArgs["result"]["collectionCollaborator"]>
   export type CollectionCollaboratorInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     collection?: boolean | CollectionDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -12769,8 +12769,8 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       collectionId: string
       userId: string
-      permission: $Enums.Role
       addedAt: Date
+      permission: $Enums.Role
     }, ExtArgs["result"]["collectionCollaborator"]>
     composites: {}
   }
@@ -13198,8 +13198,8 @@ export namespace Prisma {
   interface CollectionCollaboratorFieldRefs {
     readonly collectionId: FieldRef<"CollectionCollaborator", 'String'>
     readonly userId: FieldRef<"CollectionCollaborator", 'String'>
-    readonly permission: FieldRef<"CollectionCollaborator", 'Role'>
     readonly addedAt: FieldRef<"CollectionCollaborator", 'DateTime'>
+    readonly permission: FieldRef<"CollectionCollaborator", 'Role'>
   }
     
 
@@ -14733,8 +14733,8 @@ export namespace Prisma {
     visitCount: 'visitCount',
     notes: 'notes',
     userId: 'userId',
-    isDeleted: 'isDeleted',
-    deletedAt: 'deletedAt'
+    deletedAt: 'deletedAt',
+    isDeleted: 'isDeleted'
   };
 
   export type BookmarkScalarFieldEnum = (typeof BookmarkScalarFieldEnum)[keyof typeof BookmarkScalarFieldEnum]
@@ -14750,8 +14750,8 @@ export namespace Prisma {
     updatedAt: 'updatedAt',
     userId: 'userId',
     parentId: 'parentId',
-    isDeleted: 'isDeleted',
-    deletedAt: 'deletedAt'
+    deletedAt: 'deletedAt',
+    isDeleted: 'isDeleted'
   };
 
   export type FolderScalarFieldEnum = (typeof FolderScalarFieldEnum)[keyof typeof FolderScalarFieldEnum]
@@ -14769,8 +14769,8 @@ export namespace Prisma {
   export const FolderCollaboratorScalarFieldEnum: {
     folderId: 'folderId',
     userId: 'userId',
-    permission: 'permission',
-    addedAt: 'addedAt'
+    addedAt: 'addedAt',
+    permission: 'permission'
   };
 
   export type FolderCollaboratorScalarFieldEnum = (typeof FolderCollaboratorScalarFieldEnum)[keyof typeof FolderCollaboratorScalarFieldEnum]
@@ -14783,8 +14783,8 @@ export namespace Prisma {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     userId: 'userId',
-    isDeleted: 'isDeleted',
-    deletedAt: 'deletedAt'
+    deletedAt: 'deletedAt',
+    isDeleted: 'isDeleted'
   };
 
   export type TagScalarFieldEnum = (typeof TagScalarFieldEnum)[keyof typeof TagScalarFieldEnum]
@@ -14810,8 +14810,8 @@ export namespace Prisma {
     updatedAt: 'updatedAt',
     userId: 'userId',
     ownerId: 'ownerId',
-    isDeleted: 'isDeleted',
-    deletedAt: 'deletedAt'
+    deletedAt: 'deletedAt',
+    isDeleted: 'isDeleted'
   };
 
   export type CollectionScalarFieldEnum = (typeof CollectionScalarFieldEnum)[keyof typeof CollectionScalarFieldEnum]
@@ -14830,8 +14830,8 @@ export namespace Prisma {
   export const CollectionCollaboratorScalarFieldEnum: {
     collectionId: 'collectionId',
     userId: 'userId',
-    permission: 'permission',
-    addedAt: 'addedAt'
+    addedAt: 'addedAt',
+    permission: 'permission'
   };
 
   export type CollectionCollaboratorScalarFieldEnum = (typeof CollectionCollaboratorScalarFieldEnum)[keyof typeof CollectionCollaboratorScalarFieldEnum]
@@ -14978,13 +14978,13 @@ export namespace Prisma {
     isVerified?: BoolFilter<"User"> | boolean
     verificationToken?: StringNullableFilter<"User"> | string | null
     bookmarks?: BookmarkListRelationFilter
-    folders?: FolderListRelationFilter
-    tags?: TagListRelationFilter
-    collections?: CollectionListRelationFilter
     ownedCollections?: CollectionListRelationFilter
-    collabFolders?: FolderCollaboratorListRelationFilter
+    collections?: CollectionListRelationFilter
     collabCollections?: CollectionCollaboratorListRelationFilter
     devices?: DeviceListRelationFilter
+    folders?: FolderListRelationFilter
+    collabFolders?: FolderCollaboratorListRelationFilter
+    tags?: TagListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -15004,13 +15004,13 @@ export namespace Prisma {
     isVerified?: SortOrder
     verificationToken?: SortOrderInput | SortOrder
     bookmarks?: BookmarkOrderByRelationAggregateInput
-    folders?: FolderOrderByRelationAggregateInput
-    tags?: TagOrderByRelationAggregateInput
-    collections?: CollectionOrderByRelationAggregateInput
     ownedCollections?: CollectionOrderByRelationAggregateInput
-    collabFolders?: FolderCollaboratorOrderByRelationAggregateInput
+    collections?: CollectionOrderByRelationAggregateInput
     collabCollections?: CollectionCollaboratorOrderByRelationAggregateInput
     devices?: DeviceOrderByRelationAggregateInput
+    folders?: FolderOrderByRelationAggregateInput
+    collabFolders?: FolderCollaboratorOrderByRelationAggregateInput
+    tags?: TagOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -15033,13 +15033,13 @@ export namespace Prisma {
     passwordResetExpires?: DateTimeNullableFilter<"User"> | Date | string | null
     isVerified?: BoolFilter<"User"> | boolean
     bookmarks?: BookmarkListRelationFilter
-    folders?: FolderListRelationFilter
-    tags?: TagListRelationFilter
-    collections?: CollectionListRelationFilter
     ownedCollections?: CollectionListRelationFilter
-    collabFolders?: FolderCollaboratorListRelationFilter
+    collections?: CollectionListRelationFilter
     collabCollections?: CollectionCollaboratorListRelationFilter
     devices?: DeviceListRelationFilter
+    folders?: FolderListRelationFilter
+    collabFolders?: FolderCollaboratorListRelationFilter
+    tags?: TagListRelationFilter
   }, "id" | "email" | "username" | "verificationToken">
 
   export type UserOrderByWithAggregationInput = {
@@ -15100,12 +15100,12 @@ export namespace Prisma {
     visitCount?: IntFilter<"Bookmark"> | number
     notes?: StringNullableFilter<"Bookmark"> | string | null
     userId?: StringFilter<"Bookmark"> | string
-    isDeleted?: BoolFilter<"Bookmark"> | boolean
     deletedAt?: DateTimeNullableFilter<"Bookmark"> | Date | string | null
+    isDeleted?: BoolFilter<"Bookmark"> | boolean
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    folders?: FolderBookmarkListRelationFilter
-    tags?: BookmarkTagListRelationFilter
     collections?: BookmarkCollectionListRelationFilter
+    tags?: BookmarkTagListRelationFilter
+    folders?: FolderBookmarkListRelationFilter
   }
 
   export type BookmarkOrderByWithRelationInput = {
@@ -15121,12 +15121,12 @@ export namespace Prisma {
     visitCount?: SortOrder
     notes?: SortOrderInput | SortOrder
     userId?: SortOrder
-    isDeleted?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
     user?: UserOrderByWithRelationInput
-    folders?: FolderBookmarkOrderByRelationAggregateInput
-    tags?: BookmarkTagOrderByRelationAggregateInput
     collections?: BookmarkCollectionOrderByRelationAggregateInput
+    tags?: BookmarkTagOrderByRelationAggregateInput
+    folders?: FolderBookmarkOrderByRelationAggregateInput
   }
 
   export type BookmarkWhereUniqueInput = Prisma.AtLeast<{
@@ -15145,12 +15145,12 @@ export namespace Prisma {
     visitCount?: IntFilter<"Bookmark"> | number
     notes?: StringNullableFilter<"Bookmark"> | string | null
     userId?: StringFilter<"Bookmark"> | string
-    isDeleted?: BoolFilter<"Bookmark"> | boolean
     deletedAt?: DateTimeNullableFilter<"Bookmark"> | Date | string | null
+    isDeleted?: BoolFilter<"Bookmark"> | boolean
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    folders?: FolderBookmarkListRelationFilter
-    tags?: BookmarkTagListRelationFilter
     collections?: BookmarkCollectionListRelationFilter
+    tags?: BookmarkTagListRelationFilter
+    folders?: FolderBookmarkListRelationFilter
   }, "id">
 
   export type BookmarkOrderByWithAggregationInput = {
@@ -15166,8 +15166,8 @@ export namespace Prisma {
     visitCount?: SortOrder
     notes?: SortOrderInput | SortOrder
     userId?: SortOrder
-    isDeleted?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
     _count?: BookmarkCountOrderByAggregateInput
     _avg?: BookmarkAvgOrderByAggregateInput
     _max?: BookmarkMaxOrderByAggregateInput
@@ -15191,8 +15191,8 @@ export namespace Prisma {
     visitCount?: IntWithAggregatesFilter<"Bookmark"> | number
     notes?: StringNullableWithAggregatesFilter<"Bookmark"> | string | null
     userId?: StringWithAggregatesFilter<"Bookmark"> | string
-    isDeleted?: BoolWithAggregatesFilter<"Bookmark"> | boolean
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Bookmark"> | Date | string | null
+    isDeleted?: BoolWithAggregatesFilter<"Bookmark"> | boolean
   }
 
   export type FolderWhereInput = {
@@ -15208,11 +15208,11 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Folder"> | Date | string
     userId?: StringFilter<"Folder"> | string
     parentId?: StringNullableFilter<"Folder"> | string | null
-    isDeleted?: BoolFilter<"Folder"> | boolean
     deletedAt?: DateTimeNullableFilter<"Folder"> | Date | string | null
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    isDeleted?: BoolFilter<"Folder"> | boolean
     parent?: XOR<FolderNullableScalarRelationFilter, FolderWhereInput> | null
     children?: FolderListRelationFilter
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     bookmarks?: FolderBookmarkListRelationFilter
     collaborators?: FolderCollaboratorListRelationFilter
   }
@@ -15227,11 +15227,11 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     parentId?: SortOrderInput | SortOrder
-    isDeleted?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
-    user?: UserOrderByWithRelationInput
+    isDeleted?: SortOrder
     parent?: FolderOrderByWithRelationInput
     children?: FolderOrderByRelationAggregateInput
+    user?: UserOrderByWithRelationInput
     bookmarks?: FolderBookmarkOrderByRelationAggregateInput
     collaborators?: FolderCollaboratorOrderByRelationAggregateInput
   }
@@ -15250,11 +15250,11 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Folder"> | Date | string
     userId?: StringFilter<"Folder"> | string
     parentId?: StringNullableFilter<"Folder"> | string | null
-    isDeleted?: BoolFilter<"Folder"> | boolean
     deletedAt?: DateTimeNullableFilter<"Folder"> | Date | string | null
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    isDeleted?: BoolFilter<"Folder"> | boolean
     parent?: XOR<FolderNullableScalarRelationFilter, FolderWhereInput> | null
     children?: FolderListRelationFilter
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     bookmarks?: FolderBookmarkListRelationFilter
     collaborators?: FolderCollaboratorListRelationFilter
   }, "id" | "userId_name_parentId">
@@ -15269,8 +15269,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     parentId?: SortOrderInput | SortOrder
-    isDeleted?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
     _count?: FolderCountOrderByAggregateInput
     _max?: FolderMaxOrderByAggregateInput
     _min?: FolderMinOrderByAggregateInput
@@ -15289,8 +15289,8 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Folder"> | Date | string
     userId?: StringWithAggregatesFilter<"Folder"> | string
     parentId?: StringNullableWithAggregatesFilter<"Folder"> | string | null
-    isDeleted?: BoolWithAggregatesFilter<"Folder"> | boolean
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Folder"> | Date | string | null
+    isDeleted?: BoolWithAggregatesFilter<"Folder"> | boolean
   }
 
   export type FolderBookmarkWhereInput = {
@@ -15300,16 +15300,16 @@ export namespace Prisma {
     folderId?: StringFilter<"FolderBookmark"> | string
     bookmarkId?: StringFilter<"FolderBookmark"> | string
     addedAt?: DateTimeFilter<"FolderBookmark"> | Date | string
-    folder?: XOR<FolderScalarRelationFilter, FolderWhereInput>
     bookmark?: XOR<BookmarkScalarRelationFilter, BookmarkWhereInput>
+    folder?: XOR<FolderScalarRelationFilter, FolderWhereInput>
   }
 
   export type FolderBookmarkOrderByWithRelationInput = {
     folderId?: SortOrder
     bookmarkId?: SortOrder
     addedAt?: SortOrder
-    folder?: FolderOrderByWithRelationInput
     bookmark?: BookmarkOrderByWithRelationInput
+    folder?: FolderOrderByWithRelationInput
   }
 
   export type FolderBookmarkWhereUniqueInput = Prisma.AtLeast<{
@@ -15320,8 +15320,8 @@ export namespace Prisma {
     folderId?: StringFilter<"FolderBookmark"> | string
     bookmarkId?: StringFilter<"FolderBookmark"> | string
     addedAt?: DateTimeFilter<"FolderBookmark"> | Date | string
-    folder?: XOR<FolderScalarRelationFilter, FolderWhereInput>
     bookmark?: XOR<BookmarkScalarRelationFilter, BookmarkWhereInput>
+    folder?: XOR<FolderScalarRelationFilter, FolderWhereInput>
   }, "folderId_bookmarkId">
 
   export type FolderBookmarkOrderByWithAggregationInput = {
@@ -15348,8 +15348,8 @@ export namespace Prisma {
     NOT?: FolderCollaboratorWhereInput | FolderCollaboratorWhereInput[]
     folderId?: StringFilter<"FolderCollaborator"> | string
     userId?: StringFilter<"FolderCollaborator"> | string
-    permission?: EnumRoleFilter<"FolderCollaborator"> | $Enums.Role
     addedAt?: DateTimeFilter<"FolderCollaborator"> | Date | string
+    permission?: EnumRoleFilter<"FolderCollaborator"> | $Enums.Role
     folder?: XOR<FolderScalarRelationFilter, FolderWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
@@ -15357,8 +15357,8 @@ export namespace Prisma {
   export type FolderCollaboratorOrderByWithRelationInput = {
     folderId?: SortOrder
     userId?: SortOrder
-    permission?: SortOrder
     addedAt?: SortOrder
+    permission?: SortOrder
     folder?: FolderOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
   }
@@ -15370,8 +15370,8 @@ export namespace Prisma {
     NOT?: FolderCollaboratorWhereInput | FolderCollaboratorWhereInput[]
     folderId?: StringFilter<"FolderCollaborator"> | string
     userId?: StringFilter<"FolderCollaborator"> | string
-    permission?: EnumRoleFilter<"FolderCollaborator"> | $Enums.Role
     addedAt?: DateTimeFilter<"FolderCollaborator"> | Date | string
+    permission?: EnumRoleFilter<"FolderCollaborator"> | $Enums.Role
     folder?: XOR<FolderScalarRelationFilter, FolderWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "folderId_userId">
@@ -15379,8 +15379,8 @@ export namespace Prisma {
   export type FolderCollaboratorOrderByWithAggregationInput = {
     folderId?: SortOrder
     userId?: SortOrder
-    permission?: SortOrder
     addedAt?: SortOrder
+    permission?: SortOrder
     _count?: FolderCollaboratorCountOrderByAggregateInput
     _max?: FolderCollaboratorMaxOrderByAggregateInput
     _min?: FolderCollaboratorMinOrderByAggregateInput
@@ -15392,8 +15392,8 @@ export namespace Prisma {
     NOT?: FolderCollaboratorScalarWhereWithAggregatesInput | FolderCollaboratorScalarWhereWithAggregatesInput[]
     folderId?: StringWithAggregatesFilter<"FolderCollaborator"> | string
     userId?: StringWithAggregatesFilter<"FolderCollaborator"> | string
-    permission?: EnumRoleWithAggregatesFilter<"FolderCollaborator"> | $Enums.Role
     addedAt?: DateTimeWithAggregatesFilter<"FolderCollaborator"> | Date | string
+    permission?: EnumRoleWithAggregatesFilter<"FolderCollaborator"> | $Enums.Role
   }
 
   export type TagWhereInput = {
@@ -15406,10 +15406,10 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Tag"> | Date | string
     updatedAt?: DateTimeFilter<"Tag"> | Date | string
     userId?: StringFilter<"Tag"> | string
-    isDeleted?: BoolFilter<"Tag"> | boolean
     deletedAt?: DateTimeNullableFilter<"Tag"> | Date | string | null
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    isDeleted?: BoolFilter<"Tag"> | boolean
     bookmarks?: BookmarkTagListRelationFilter
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type TagOrderByWithRelationInput = {
@@ -15419,10 +15419,10 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
-    isDeleted?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
-    user?: UserOrderByWithRelationInput
+    isDeleted?: SortOrder
     bookmarks?: BookmarkTagOrderByRelationAggregateInput
+    user?: UserOrderByWithRelationInput
   }
 
   export type TagWhereUniqueInput = Prisma.AtLeast<{
@@ -15436,10 +15436,10 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Tag"> | Date | string
     updatedAt?: DateTimeFilter<"Tag"> | Date | string
     userId?: StringFilter<"Tag"> | string
-    isDeleted?: BoolFilter<"Tag"> | boolean
     deletedAt?: DateTimeNullableFilter<"Tag"> | Date | string | null
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    isDeleted?: BoolFilter<"Tag"> | boolean
     bookmarks?: BookmarkTagListRelationFilter
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id" | "userId_name">
 
   export type TagOrderByWithAggregationInput = {
@@ -15449,8 +15449,8 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
-    isDeleted?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
     _count?: TagCountOrderByAggregateInput
     _max?: TagMaxOrderByAggregateInput
     _min?: TagMinOrderByAggregateInput
@@ -15466,8 +15466,8 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"Tag"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Tag"> | Date | string
     userId?: StringWithAggregatesFilter<"Tag"> | string
-    isDeleted?: BoolWithAggregatesFilter<"Tag"> | boolean
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Tag"> | Date | string | null
+    isDeleted?: BoolWithAggregatesFilter<"Tag"> | boolean
   }
 
   export type BookmarkTagWhereInput = {
@@ -15477,16 +15477,16 @@ export namespace Prisma {
     tagId?: StringFilter<"BookmarkTag"> | string
     bookmarkId?: StringFilter<"BookmarkTag"> | string
     addedAt?: DateTimeFilter<"BookmarkTag"> | Date | string
-    tag?: XOR<TagScalarRelationFilter, TagWhereInput>
     bookmark?: XOR<BookmarkScalarRelationFilter, BookmarkWhereInput>
+    tag?: XOR<TagScalarRelationFilter, TagWhereInput>
   }
 
   export type BookmarkTagOrderByWithRelationInput = {
     tagId?: SortOrder
     bookmarkId?: SortOrder
     addedAt?: SortOrder
-    tag?: TagOrderByWithRelationInput
     bookmark?: BookmarkOrderByWithRelationInput
+    tag?: TagOrderByWithRelationInput
   }
 
   export type BookmarkTagWhereUniqueInput = Prisma.AtLeast<{
@@ -15497,8 +15497,8 @@ export namespace Prisma {
     tagId?: StringFilter<"BookmarkTag"> | string
     bookmarkId?: StringFilter<"BookmarkTag"> | string
     addedAt?: DateTimeFilter<"BookmarkTag"> | Date | string
-    tag?: XOR<TagScalarRelationFilter, TagWhereInput>
     bookmark?: XOR<BookmarkScalarRelationFilter, BookmarkWhereInput>
+    tag?: XOR<TagScalarRelationFilter, TagWhereInput>
   }, "tagId_bookmarkId">
 
   export type BookmarkTagOrderByWithAggregationInput = {
@@ -15533,11 +15533,11 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Collection"> | Date | string
     userId?: StringFilter<"Collection"> | string
     ownerId?: StringFilter<"Collection"> | string
-    isDeleted?: BoolFilter<"Collection"> | boolean
     deletedAt?: DateTimeNullableFilter<"Collection"> | Date | string | null
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    owner?: XOR<UserScalarRelationFilter, UserWhereInput>
+    isDeleted?: BoolFilter<"Collection"> | boolean
     bookmarks?: BookmarkCollectionListRelationFilter
+    owner?: XOR<UserScalarRelationFilter, UserWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     collaborators?: CollectionCollaboratorListRelationFilter
   }
 
@@ -15552,11 +15552,11 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     ownerId?: SortOrder
-    isDeleted?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
-    user?: UserOrderByWithRelationInput
-    owner?: UserOrderByWithRelationInput
+    isDeleted?: SortOrder
     bookmarks?: BookmarkCollectionOrderByRelationAggregateInput
+    owner?: UserOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
     collaborators?: CollectionCollaboratorOrderByRelationAggregateInput
   }
 
@@ -15575,11 +15575,11 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Collection"> | Date | string
     userId?: StringFilter<"Collection"> | string
     ownerId?: StringFilter<"Collection"> | string
-    isDeleted?: BoolFilter<"Collection"> | boolean
     deletedAt?: DateTimeNullableFilter<"Collection"> | Date | string | null
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    owner?: XOR<UserScalarRelationFilter, UserWhereInput>
+    isDeleted?: BoolFilter<"Collection"> | boolean
     bookmarks?: BookmarkCollectionListRelationFilter
+    owner?: XOR<UserScalarRelationFilter, UserWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     collaborators?: CollectionCollaboratorListRelationFilter
   }, "id" | "publicLink" | "userId_name">
 
@@ -15594,8 +15594,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     ownerId?: SortOrder
-    isDeleted?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
     _count?: CollectionCountOrderByAggregateInput
     _max?: CollectionMaxOrderByAggregateInput
     _min?: CollectionMinOrderByAggregateInput
@@ -15615,8 +15615,8 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Collection"> | Date | string
     userId?: StringWithAggregatesFilter<"Collection"> | string
     ownerId?: StringWithAggregatesFilter<"Collection"> | string
-    isDeleted?: BoolWithAggregatesFilter<"Collection"> | boolean
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Collection"> | Date | string | null
+    isDeleted?: BoolWithAggregatesFilter<"Collection"> | boolean
   }
 
   export type BookmarkCollectionWhereInput = {
@@ -15627,8 +15627,8 @@ export namespace Prisma {
     bookmarkId?: StringFilter<"BookmarkCollection"> | string
     addedAt?: DateTimeFilter<"BookmarkCollection"> | Date | string
     order?: IntFilter<"BookmarkCollection"> | number
-    collection?: XOR<CollectionScalarRelationFilter, CollectionWhereInput>
     bookmark?: XOR<BookmarkScalarRelationFilter, BookmarkWhereInput>
+    collection?: XOR<CollectionScalarRelationFilter, CollectionWhereInput>
   }
 
   export type BookmarkCollectionOrderByWithRelationInput = {
@@ -15636,8 +15636,8 @@ export namespace Prisma {
     bookmarkId?: SortOrder
     addedAt?: SortOrder
     order?: SortOrder
-    collection?: CollectionOrderByWithRelationInput
     bookmark?: BookmarkOrderByWithRelationInput
+    collection?: CollectionOrderByWithRelationInput
   }
 
   export type BookmarkCollectionWhereUniqueInput = Prisma.AtLeast<{
@@ -15649,8 +15649,8 @@ export namespace Prisma {
     bookmarkId?: StringFilter<"BookmarkCollection"> | string
     addedAt?: DateTimeFilter<"BookmarkCollection"> | Date | string
     order?: IntFilter<"BookmarkCollection"> | number
-    collection?: XOR<CollectionScalarRelationFilter, CollectionWhereInput>
     bookmark?: XOR<BookmarkScalarRelationFilter, BookmarkWhereInput>
+    collection?: XOR<CollectionScalarRelationFilter, CollectionWhereInput>
   }, "collectionId_bookmarkId">
 
   export type BookmarkCollectionOrderByWithAggregationInput = {
@@ -15681,8 +15681,8 @@ export namespace Prisma {
     NOT?: CollectionCollaboratorWhereInput | CollectionCollaboratorWhereInput[]
     collectionId?: StringFilter<"CollectionCollaborator"> | string
     userId?: StringFilter<"CollectionCollaborator"> | string
-    permission?: EnumRoleFilter<"CollectionCollaborator"> | $Enums.Role
     addedAt?: DateTimeFilter<"CollectionCollaborator"> | Date | string
+    permission?: EnumRoleFilter<"CollectionCollaborator"> | $Enums.Role
     collection?: XOR<CollectionScalarRelationFilter, CollectionWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
@@ -15690,8 +15690,8 @@ export namespace Prisma {
   export type CollectionCollaboratorOrderByWithRelationInput = {
     collectionId?: SortOrder
     userId?: SortOrder
-    permission?: SortOrder
     addedAt?: SortOrder
+    permission?: SortOrder
     collection?: CollectionOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
   }
@@ -15703,8 +15703,8 @@ export namespace Prisma {
     NOT?: CollectionCollaboratorWhereInput | CollectionCollaboratorWhereInput[]
     collectionId?: StringFilter<"CollectionCollaborator"> | string
     userId?: StringFilter<"CollectionCollaborator"> | string
-    permission?: EnumRoleFilter<"CollectionCollaborator"> | $Enums.Role
     addedAt?: DateTimeFilter<"CollectionCollaborator"> | Date | string
+    permission?: EnumRoleFilter<"CollectionCollaborator"> | $Enums.Role
     collection?: XOR<CollectionScalarRelationFilter, CollectionWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "collectionId_userId">
@@ -15712,8 +15712,8 @@ export namespace Prisma {
   export type CollectionCollaboratorOrderByWithAggregationInput = {
     collectionId?: SortOrder
     userId?: SortOrder
-    permission?: SortOrder
     addedAt?: SortOrder
+    permission?: SortOrder
     _count?: CollectionCollaboratorCountOrderByAggregateInput
     _max?: CollectionCollaboratorMaxOrderByAggregateInput
     _min?: CollectionCollaboratorMinOrderByAggregateInput
@@ -15725,8 +15725,8 @@ export namespace Prisma {
     NOT?: CollectionCollaboratorScalarWhereWithAggregatesInput | CollectionCollaboratorScalarWhereWithAggregatesInput[]
     collectionId?: StringWithAggregatesFilter<"CollectionCollaborator"> | string
     userId?: StringWithAggregatesFilter<"CollectionCollaborator"> | string
-    permission?: EnumRoleWithAggregatesFilter<"CollectionCollaborator"> | $Enums.Role
     addedAt?: DateTimeWithAggregatesFilter<"CollectionCollaborator"> | Date | string
+    permission?: EnumRoleWithAggregatesFilter<"CollectionCollaborator"> | $Enums.Role
   }
 
   export type DeviceWhereInput = {
@@ -15806,13 +15806,13 @@ export namespace Prisma {
     isVerified?: boolean
     verificationToken?: string | null
     bookmarks?: BookmarkCreateNestedManyWithoutUserInput
-    folders?: FolderCreateNestedManyWithoutUserInput
-    tags?: TagCreateNestedManyWithoutUserInput
-    collections?: CollectionCreateNestedManyWithoutUserInput
     ownedCollections?: CollectionCreateNestedManyWithoutOwnerInput
-    collabFolders?: FolderCollaboratorCreateNestedManyWithoutUserInput
+    collections?: CollectionCreateNestedManyWithoutUserInput
     collabCollections?: CollectionCollaboratorCreateNestedManyWithoutUserInput
     devices?: DeviceCreateNestedManyWithoutUserInput
+    folders?: FolderCreateNestedManyWithoutUserInput
+    collabFolders?: FolderCollaboratorCreateNestedManyWithoutUserInput
+    tags?: TagCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -15832,13 +15832,13 @@ export namespace Prisma {
     isVerified?: boolean
     verificationToken?: string | null
     bookmarks?: BookmarkUncheckedCreateNestedManyWithoutUserInput
-    folders?: FolderUncheckedCreateNestedManyWithoutUserInput
-    tags?: TagUncheckedCreateNestedManyWithoutUserInput
-    collections?: CollectionUncheckedCreateNestedManyWithoutUserInput
     ownedCollections?: CollectionUncheckedCreateNestedManyWithoutOwnerInput
-    collabFolders?: FolderCollaboratorUncheckedCreateNestedManyWithoutUserInput
+    collections?: CollectionUncheckedCreateNestedManyWithoutUserInput
     collabCollections?: CollectionCollaboratorUncheckedCreateNestedManyWithoutUserInput
     devices?: DeviceUncheckedCreateNestedManyWithoutUserInput
+    folders?: FolderUncheckedCreateNestedManyWithoutUserInput
+    collabFolders?: FolderCollaboratorUncheckedCreateNestedManyWithoutUserInput
+    tags?: TagUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -15858,13 +15858,13 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     bookmarks?: BookmarkUpdateManyWithoutUserNestedInput
-    folders?: FolderUpdateManyWithoutUserNestedInput
-    tags?: TagUpdateManyWithoutUserNestedInput
-    collections?: CollectionUpdateManyWithoutUserNestedInput
     ownedCollections?: CollectionUpdateManyWithoutOwnerNestedInput
-    collabFolders?: FolderCollaboratorUpdateManyWithoutUserNestedInput
+    collections?: CollectionUpdateManyWithoutUserNestedInput
     collabCollections?: CollectionCollaboratorUpdateManyWithoutUserNestedInput
     devices?: DeviceUpdateManyWithoutUserNestedInput
+    folders?: FolderUpdateManyWithoutUserNestedInput
+    collabFolders?: FolderCollaboratorUpdateManyWithoutUserNestedInput
+    tags?: TagUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -15884,13 +15884,13 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     bookmarks?: BookmarkUncheckedUpdateManyWithoutUserNestedInput
-    folders?: FolderUncheckedUpdateManyWithoutUserNestedInput
-    tags?: TagUncheckedUpdateManyWithoutUserNestedInput
-    collections?: CollectionUncheckedUpdateManyWithoutUserNestedInput
     ownedCollections?: CollectionUncheckedUpdateManyWithoutOwnerNestedInput
-    collabFolders?: FolderCollaboratorUncheckedUpdateManyWithoutUserNestedInput
+    collections?: CollectionUncheckedUpdateManyWithoutUserNestedInput
     collabCollections?: CollectionCollaboratorUncheckedUpdateManyWithoutUserNestedInput
     devices?: DeviceUncheckedUpdateManyWithoutUserNestedInput
+    folders?: FolderUncheckedUpdateManyWithoutUserNestedInput
+    collabFolders?: FolderCollaboratorUncheckedUpdateManyWithoutUserNestedInput
+    tags?: TagUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -15959,12 +15959,12 @@ export namespace Prisma {
     lastVisited?: Date | string | null
     visitCount?: number
     notes?: string | null
-    isDeleted?: boolean
     deletedAt?: Date | string | null
+    isDeleted?: boolean
     user: UserCreateNestedOneWithoutBookmarksInput
-    folders?: FolderBookmarkCreateNestedManyWithoutBookmarkInput
-    tags?: BookmarkTagCreateNestedManyWithoutBookmarkInput
     collections?: BookmarkCollectionCreateNestedManyWithoutBookmarkInput
+    tags?: BookmarkTagCreateNestedManyWithoutBookmarkInput
+    folders?: FolderBookmarkCreateNestedManyWithoutBookmarkInput
   }
 
   export type BookmarkUncheckedCreateInput = {
@@ -15980,11 +15980,11 @@ export namespace Prisma {
     visitCount?: number
     notes?: string | null
     userId: string
-    isDeleted?: boolean
     deletedAt?: Date | string | null
-    folders?: FolderBookmarkUncheckedCreateNestedManyWithoutBookmarkInput
-    tags?: BookmarkTagUncheckedCreateNestedManyWithoutBookmarkInput
+    isDeleted?: boolean
     collections?: BookmarkCollectionUncheckedCreateNestedManyWithoutBookmarkInput
+    tags?: BookmarkTagUncheckedCreateNestedManyWithoutBookmarkInput
+    folders?: FolderBookmarkUncheckedCreateNestedManyWithoutBookmarkInput
   }
 
   export type BookmarkUpdateInput = {
@@ -15999,12 +15999,12 @@ export namespace Prisma {
     lastVisited?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     visitCount?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     user?: UserUpdateOneRequiredWithoutBookmarksNestedInput
-    folders?: FolderBookmarkUpdateManyWithoutBookmarkNestedInput
-    tags?: BookmarkTagUpdateManyWithoutBookmarkNestedInput
     collections?: BookmarkCollectionUpdateManyWithoutBookmarkNestedInput
+    tags?: BookmarkTagUpdateManyWithoutBookmarkNestedInput
+    folders?: FolderBookmarkUpdateManyWithoutBookmarkNestedInput
   }
 
   export type BookmarkUncheckedUpdateInput = {
@@ -16020,11 +16020,11 @@ export namespace Prisma {
     visitCount?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: StringFieldUpdateOperationsInput | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    folders?: FolderBookmarkUncheckedUpdateManyWithoutBookmarkNestedInput
-    tags?: BookmarkTagUncheckedUpdateManyWithoutBookmarkNestedInput
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     collections?: BookmarkCollectionUncheckedUpdateManyWithoutBookmarkNestedInput
+    tags?: BookmarkTagUncheckedUpdateManyWithoutBookmarkNestedInput
+    folders?: FolderBookmarkUncheckedUpdateManyWithoutBookmarkNestedInput
   }
 
   export type BookmarkCreateManyInput = {
@@ -16040,8 +16040,8 @@ export namespace Prisma {
     visitCount?: number
     notes?: string | null
     userId: string
-    isDeleted?: boolean
     deletedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
   export type BookmarkUpdateManyMutationInput = {
@@ -16056,8 +16056,8 @@ export namespace Prisma {
     lastVisited?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     visitCount?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type BookmarkUncheckedUpdateManyInput = {
@@ -16073,8 +16073,8 @@ export namespace Prisma {
     visitCount?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: StringFieldUpdateOperationsInput | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type FolderCreateInput = {
@@ -16085,11 +16085,11 @@ export namespace Prisma {
     color?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    isDeleted?: boolean
     deletedAt?: Date | string | null
-    user: UserCreateNestedOneWithoutFoldersInput
+    isDeleted?: boolean
     parent?: FolderCreateNestedOneWithoutChildrenInput
     children?: FolderCreateNestedManyWithoutParentInput
+    user: UserCreateNestedOneWithoutFoldersInput
     bookmarks?: FolderBookmarkCreateNestedManyWithoutFolderInput
     collaborators?: FolderCollaboratorCreateNestedManyWithoutFolderInput
   }
@@ -16104,8 +16104,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     userId: string
     parentId?: string | null
-    isDeleted?: boolean
     deletedAt?: Date | string | null
+    isDeleted?: boolean
     children?: FolderUncheckedCreateNestedManyWithoutParentInput
     bookmarks?: FolderBookmarkUncheckedCreateNestedManyWithoutFolderInput
     collaborators?: FolderCollaboratorUncheckedCreateNestedManyWithoutFolderInput
@@ -16119,11 +16119,11 @@ export namespace Prisma {
     color?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    user?: UserUpdateOneRequiredWithoutFoldersNestedInput
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     parent?: FolderUpdateOneWithoutChildrenNestedInput
     children?: FolderUpdateManyWithoutParentNestedInput
+    user?: UserUpdateOneRequiredWithoutFoldersNestedInput
     bookmarks?: FolderBookmarkUpdateManyWithoutFolderNestedInput
     collaborators?: FolderCollaboratorUpdateManyWithoutFolderNestedInput
   }
@@ -16138,8 +16138,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
     parentId?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     children?: FolderUncheckedUpdateManyWithoutParentNestedInput
     bookmarks?: FolderBookmarkUncheckedUpdateManyWithoutFolderNestedInput
     collaborators?: FolderCollaboratorUncheckedUpdateManyWithoutFolderNestedInput
@@ -16155,8 +16155,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     userId: string
     parentId?: string | null
-    isDeleted?: boolean
     deletedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
   export type FolderUpdateManyMutationInput = {
@@ -16167,8 +16167,8 @@ export namespace Prisma {
     color?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type FolderUncheckedUpdateManyInput = {
@@ -16181,14 +16181,14 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
     parentId?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type FolderBookmarkCreateInput = {
     addedAt?: Date | string
-    folder: FolderCreateNestedOneWithoutBookmarksInput
     bookmark: BookmarkCreateNestedOneWithoutFoldersInput
+    folder: FolderCreateNestedOneWithoutBookmarksInput
   }
 
   export type FolderBookmarkUncheckedCreateInput = {
@@ -16199,8 +16199,8 @@ export namespace Prisma {
 
   export type FolderBookmarkUpdateInput = {
     addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    folder?: FolderUpdateOneRequiredWithoutBookmarksNestedInput
     bookmark?: BookmarkUpdateOneRequiredWithoutFoldersNestedInput
+    folder?: FolderUpdateOneRequiredWithoutBookmarksNestedInput
   }
 
   export type FolderBookmarkUncheckedUpdateInput = {
@@ -16226,8 +16226,8 @@ export namespace Prisma {
   }
 
   export type FolderCollaboratorCreateInput = {
-    permission?: $Enums.Role
     addedAt?: Date | string
+    permission?: $Enums.Role
     folder: FolderCreateNestedOneWithoutCollaboratorsInput
     user: UserCreateNestedOneWithoutCollabFoldersInput
   }
@@ -16235,13 +16235,13 @@ export namespace Prisma {
   export type FolderCollaboratorUncheckedCreateInput = {
     folderId: string
     userId: string
-    permission?: $Enums.Role
     addedAt?: Date | string
+    permission?: $Enums.Role
   }
 
   export type FolderCollaboratorUpdateInput = {
-    permission?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    permission?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     folder?: FolderUpdateOneRequiredWithoutCollaboratorsNestedInput
     user?: UserUpdateOneRequiredWithoutCollabFoldersNestedInput
   }
@@ -16249,27 +16249,27 @@ export namespace Prisma {
   export type FolderCollaboratorUncheckedUpdateInput = {
     folderId?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    permission?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    permission?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
   }
 
   export type FolderCollaboratorCreateManyInput = {
     folderId: string
     userId: string
-    permission?: $Enums.Role
     addedAt?: Date | string
+    permission?: $Enums.Role
   }
 
   export type FolderCollaboratorUpdateManyMutationInput = {
-    permission?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    permission?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
   }
 
   export type FolderCollaboratorUncheckedUpdateManyInput = {
     folderId?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    permission?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    permission?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
   }
 
   export type TagCreateInput = {
@@ -16278,10 +16278,10 @@ export namespace Prisma {
     color?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    isDeleted?: boolean
     deletedAt?: Date | string | null
-    user: UserCreateNestedOneWithoutTagsInput
+    isDeleted?: boolean
     bookmarks?: BookmarkTagCreateNestedManyWithoutTagInput
+    user: UserCreateNestedOneWithoutTagsInput
   }
 
   export type TagUncheckedCreateInput = {
@@ -16291,8 +16291,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
-    isDeleted?: boolean
     deletedAt?: Date | string | null
+    isDeleted?: boolean
     bookmarks?: BookmarkTagUncheckedCreateNestedManyWithoutTagInput
   }
 
@@ -16302,10 +16302,10 @@ export namespace Prisma {
     color?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    user?: UserUpdateOneRequiredWithoutTagsNestedInput
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     bookmarks?: BookmarkTagUpdateManyWithoutTagNestedInput
+    user?: UserUpdateOneRequiredWithoutTagsNestedInput
   }
 
   export type TagUncheckedUpdateInput = {
@@ -16315,8 +16315,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     bookmarks?: BookmarkTagUncheckedUpdateManyWithoutTagNestedInput
   }
 
@@ -16327,8 +16327,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
-    isDeleted?: boolean
     deletedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
   export type TagUpdateManyMutationInput = {
@@ -16337,8 +16337,8 @@ export namespace Prisma {
     color?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type TagUncheckedUpdateManyInput = {
@@ -16348,14 +16348,14 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type BookmarkTagCreateInput = {
     addedAt?: Date | string
-    tag: TagCreateNestedOneWithoutBookmarksInput
     bookmark: BookmarkCreateNestedOneWithoutTagsInput
+    tag: TagCreateNestedOneWithoutBookmarksInput
   }
 
   export type BookmarkTagUncheckedCreateInput = {
@@ -16366,8 +16366,8 @@ export namespace Prisma {
 
   export type BookmarkTagUpdateInput = {
     addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    tag?: TagUpdateOneRequiredWithoutBookmarksNestedInput
     bookmark?: BookmarkUpdateOneRequiredWithoutTagsNestedInput
+    tag?: TagUpdateOneRequiredWithoutBookmarksNestedInput
   }
 
   export type BookmarkTagUncheckedUpdateInput = {
@@ -16401,11 +16401,11 @@ export namespace Prisma {
     thumbnail?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    isDeleted?: boolean
     deletedAt?: Date | string | null
-    user: UserCreateNestedOneWithoutCollectionsInput
-    owner: UserCreateNestedOneWithoutOwnedCollectionsInput
+    isDeleted?: boolean
     bookmarks?: BookmarkCollectionCreateNestedManyWithoutCollectionInput
+    owner: UserCreateNestedOneWithoutOwnedCollectionsInput
+    user: UserCreateNestedOneWithoutCollectionsInput
     collaborators?: CollectionCollaboratorCreateNestedManyWithoutCollectionInput
   }
 
@@ -16420,8 +16420,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     userId: string
     ownerId: string
-    isDeleted?: boolean
     deletedAt?: Date | string | null
+    isDeleted?: boolean
     bookmarks?: BookmarkCollectionUncheckedCreateNestedManyWithoutCollectionInput
     collaborators?: CollectionCollaboratorUncheckedCreateNestedManyWithoutCollectionInput
   }
@@ -16435,11 +16435,11 @@ export namespace Prisma {
     thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    user?: UserUpdateOneRequiredWithoutCollectionsNestedInput
-    owner?: UserUpdateOneRequiredWithoutOwnedCollectionsNestedInput
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     bookmarks?: BookmarkCollectionUpdateManyWithoutCollectionNestedInput
+    owner?: UserUpdateOneRequiredWithoutOwnedCollectionsNestedInput
+    user?: UserUpdateOneRequiredWithoutCollectionsNestedInput
     collaborators?: CollectionCollaboratorUpdateManyWithoutCollectionNestedInput
   }
 
@@ -16454,8 +16454,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
     ownerId?: StringFieldUpdateOperationsInput | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     bookmarks?: BookmarkCollectionUncheckedUpdateManyWithoutCollectionNestedInput
     collaborators?: CollectionCollaboratorUncheckedUpdateManyWithoutCollectionNestedInput
   }
@@ -16471,8 +16471,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     userId: string
     ownerId: string
-    isDeleted?: boolean
     deletedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
   export type CollectionUpdateManyMutationInput = {
@@ -16484,8 +16484,8 @@ export namespace Prisma {
     thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type CollectionUncheckedUpdateManyInput = {
@@ -16499,15 +16499,15 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
     ownerId?: StringFieldUpdateOperationsInput | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type BookmarkCollectionCreateInput = {
     addedAt?: Date | string
     order?: number
-    collection: CollectionCreateNestedOneWithoutBookmarksInput
     bookmark: BookmarkCreateNestedOneWithoutCollectionsInput
+    collection: CollectionCreateNestedOneWithoutBookmarksInput
   }
 
   export type BookmarkCollectionUncheckedCreateInput = {
@@ -16520,8 +16520,8 @@ export namespace Prisma {
   export type BookmarkCollectionUpdateInput = {
     addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     order?: IntFieldUpdateOperationsInput | number
-    collection?: CollectionUpdateOneRequiredWithoutBookmarksNestedInput
     bookmark?: BookmarkUpdateOneRequiredWithoutCollectionsNestedInput
+    collection?: CollectionUpdateOneRequiredWithoutBookmarksNestedInput
   }
 
   export type BookmarkCollectionUncheckedUpdateInput = {
@@ -16551,8 +16551,8 @@ export namespace Prisma {
   }
 
   export type CollectionCollaboratorCreateInput = {
-    permission?: $Enums.Role
     addedAt?: Date | string
+    permission?: $Enums.Role
     collection: CollectionCreateNestedOneWithoutCollaboratorsInput
     user: UserCreateNestedOneWithoutCollabCollectionsInput
   }
@@ -16560,13 +16560,13 @@ export namespace Prisma {
   export type CollectionCollaboratorUncheckedCreateInput = {
     collectionId: string
     userId: string
-    permission?: $Enums.Role
     addedAt?: Date | string
+    permission?: $Enums.Role
   }
 
   export type CollectionCollaboratorUpdateInput = {
-    permission?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    permission?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     collection?: CollectionUpdateOneRequiredWithoutCollaboratorsNestedInput
     user?: UserUpdateOneRequiredWithoutCollabCollectionsNestedInput
   }
@@ -16574,27 +16574,27 @@ export namespace Prisma {
   export type CollectionCollaboratorUncheckedUpdateInput = {
     collectionId?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    permission?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    permission?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
   }
 
   export type CollectionCollaboratorCreateManyInput = {
     collectionId: string
     userId: string
-    permission?: $Enums.Role
     addedAt?: Date | string
+    permission?: $Enums.Role
   }
 
   export type CollectionCollaboratorUpdateManyMutationInput = {
-    permission?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    permission?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
   }
 
   export type CollectionCollaboratorUncheckedUpdateManyInput = {
     collectionId?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    permission?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    permission?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
   }
 
   export type DeviceCreateInput = {
@@ -16722,28 +16722,10 @@ export namespace Prisma {
     none?: BookmarkWhereInput
   }
 
-  export type FolderListRelationFilter = {
-    every?: FolderWhereInput
-    some?: FolderWhereInput
-    none?: FolderWhereInput
-  }
-
-  export type TagListRelationFilter = {
-    every?: TagWhereInput
-    some?: TagWhereInput
-    none?: TagWhereInput
-  }
-
   export type CollectionListRelationFilter = {
     every?: CollectionWhereInput
     some?: CollectionWhereInput
     none?: CollectionWhereInput
-  }
-
-  export type FolderCollaboratorListRelationFilter = {
-    every?: FolderCollaboratorWhereInput
-    some?: FolderCollaboratorWhereInput
-    none?: FolderCollaboratorWhereInput
   }
 
   export type CollectionCollaboratorListRelationFilter = {
@@ -16758,6 +16740,24 @@ export namespace Prisma {
     none?: DeviceWhereInput
   }
 
+  export type FolderListRelationFilter = {
+    every?: FolderWhereInput
+    some?: FolderWhereInput
+    none?: FolderWhereInput
+  }
+
+  export type FolderCollaboratorListRelationFilter = {
+    every?: FolderCollaboratorWhereInput
+    some?: FolderCollaboratorWhereInput
+    none?: FolderCollaboratorWhereInput
+  }
+
+  export type TagListRelationFilter = {
+    every?: TagWhereInput
+    some?: TagWhereInput
+    none?: TagWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -16767,19 +16767,7 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type FolderOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type TagOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
   export type CollectionOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type FolderCollaboratorOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -16788,6 +16776,18 @@ export namespace Prisma {
   }
 
   export type DeviceOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type FolderOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type FolderCollaboratorOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TagOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -16933,10 +16933,10 @@ export namespace Prisma {
     isNot?: UserWhereInput
   }
 
-  export type FolderBookmarkListRelationFilter = {
-    every?: FolderBookmarkWhereInput
-    some?: FolderBookmarkWhereInput
-    none?: FolderBookmarkWhereInput
+  export type BookmarkCollectionListRelationFilter = {
+    every?: BookmarkCollectionWhereInput
+    some?: BookmarkCollectionWhereInput
+    none?: BookmarkCollectionWhereInput
   }
 
   export type BookmarkTagListRelationFilter = {
@@ -16945,13 +16945,13 @@ export namespace Prisma {
     none?: BookmarkTagWhereInput
   }
 
-  export type BookmarkCollectionListRelationFilter = {
-    every?: BookmarkCollectionWhereInput
-    some?: BookmarkCollectionWhereInput
-    none?: BookmarkCollectionWhereInput
+  export type FolderBookmarkListRelationFilter = {
+    every?: FolderBookmarkWhereInput
+    some?: FolderBookmarkWhereInput
+    none?: FolderBookmarkWhereInput
   }
 
-  export type FolderBookmarkOrderByRelationAggregateInput = {
+  export type BookmarkCollectionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -16959,7 +16959,7 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type BookmarkCollectionOrderByRelationAggregateInput = {
+  export type FolderBookmarkOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -16976,8 +16976,8 @@ export namespace Prisma {
     visitCount?: SortOrder
     notes?: SortOrder
     userId?: SortOrder
-    isDeleted?: SortOrder
     deletedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type BookmarkAvgOrderByAggregateInput = {
@@ -16997,8 +16997,8 @@ export namespace Prisma {
     visitCount?: SortOrder
     notes?: SortOrder
     userId?: SortOrder
-    isDeleted?: SortOrder
     deletedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type BookmarkMinOrderByAggregateInput = {
@@ -17014,8 +17014,8 @@ export namespace Prisma {
     visitCount?: SortOrder
     notes?: SortOrder
     userId?: SortOrder
-    isDeleted?: SortOrder
     deletedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type BookmarkSumOrderByAggregateInput = {
@@ -17059,8 +17059,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     parentId?: SortOrder
-    isDeleted?: SortOrder
     deletedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type FolderMaxOrderByAggregateInput = {
@@ -17073,8 +17073,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     parentId?: SortOrder
-    isDeleted?: SortOrder
     deletedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type FolderMinOrderByAggregateInput = {
@@ -17087,18 +17087,18 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     parentId?: SortOrder
-    isDeleted?: SortOrder
     deletedAt?: SortOrder
-  }
-
-  export type FolderScalarRelationFilter = {
-    is?: FolderWhereInput
-    isNot?: FolderWhereInput
+    isDeleted?: SortOrder
   }
 
   export type BookmarkScalarRelationFilter = {
     is?: BookmarkWhereInput
     isNot?: BookmarkWhereInput
+  }
+
+  export type FolderScalarRelationFilter = {
+    is?: FolderWhereInput
+    isNot?: FolderWhereInput
   }
 
   export type FolderBookmarkFolderIdBookmarkIdCompoundUniqueInput = {
@@ -17139,22 +17139,22 @@ export namespace Prisma {
   export type FolderCollaboratorCountOrderByAggregateInput = {
     folderId?: SortOrder
     userId?: SortOrder
-    permission?: SortOrder
     addedAt?: SortOrder
+    permission?: SortOrder
   }
 
   export type FolderCollaboratorMaxOrderByAggregateInput = {
     folderId?: SortOrder
     userId?: SortOrder
-    permission?: SortOrder
     addedAt?: SortOrder
+    permission?: SortOrder
   }
 
   export type FolderCollaboratorMinOrderByAggregateInput = {
     folderId?: SortOrder
     userId?: SortOrder
-    permission?: SortOrder
     addedAt?: SortOrder
+    permission?: SortOrder
   }
 
   export type EnumRoleWithAggregatesFilter<$PrismaModel = never> = {
@@ -17179,8 +17179,8 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
-    isDeleted?: SortOrder
     deletedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type TagMaxOrderByAggregateInput = {
@@ -17190,8 +17190,8 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
-    isDeleted?: SortOrder
     deletedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type TagMinOrderByAggregateInput = {
@@ -17201,8 +17201,8 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
-    isDeleted?: SortOrder
     deletedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type TagScalarRelationFilter = {
@@ -17249,8 +17249,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     ownerId?: SortOrder
-    isDeleted?: SortOrder
     deletedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type CollectionMaxOrderByAggregateInput = {
@@ -17264,8 +17264,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     ownerId?: SortOrder
-    isDeleted?: SortOrder
     deletedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type CollectionMinOrderByAggregateInput = {
@@ -17279,8 +17279,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     ownerId?: SortOrder
-    isDeleted?: SortOrder
     deletedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type CollectionScalarRelationFilter = {
@@ -17330,22 +17330,22 @@ export namespace Prisma {
   export type CollectionCollaboratorCountOrderByAggregateInput = {
     collectionId?: SortOrder
     userId?: SortOrder
-    permission?: SortOrder
     addedAt?: SortOrder
+    permission?: SortOrder
   }
 
   export type CollectionCollaboratorMaxOrderByAggregateInput = {
     collectionId?: SortOrder
     userId?: SortOrder
-    permission?: SortOrder
     addedAt?: SortOrder
+    permission?: SortOrder
   }
 
   export type CollectionCollaboratorMinOrderByAggregateInput = {
     collectionId?: SortOrder
     userId?: SortOrder
-    permission?: SortOrder
     addedAt?: SortOrder
+    permission?: SortOrder
   }
 
   export type DeviceCountOrderByAggregateInput = {
@@ -17382,27 +17382,6 @@ export namespace Prisma {
     connect?: BookmarkWhereUniqueInput | BookmarkWhereUniqueInput[]
   }
 
-  export type FolderCreateNestedManyWithoutUserInput = {
-    create?: XOR<FolderCreateWithoutUserInput, FolderUncheckedCreateWithoutUserInput> | FolderCreateWithoutUserInput[] | FolderUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: FolderCreateOrConnectWithoutUserInput | FolderCreateOrConnectWithoutUserInput[]
-    createMany?: FolderCreateManyUserInputEnvelope
-    connect?: FolderWhereUniqueInput | FolderWhereUniqueInput[]
-  }
-
-  export type TagCreateNestedManyWithoutUserInput = {
-    create?: XOR<TagCreateWithoutUserInput, TagUncheckedCreateWithoutUserInput> | TagCreateWithoutUserInput[] | TagUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: TagCreateOrConnectWithoutUserInput | TagCreateOrConnectWithoutUserInput[]
-    createMany?: TagCreateManyUserInputEnvelope
-    connect?: TagWhereUniqueInput | TagWhereUniqueInput[]
-  }
-
-  export type CollectionCreateNestedManyWithoutUserInput = {
-    create?: XOR<CollectionCreateWithoutUserInput, CollectionUncheckedCreateWithoutUserInput> | CollectionCreateWithoutUserInput[] | CollectionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: CollectionCreateOrConnectWithoutUserInput | CollectionCreateOrConnectWithoutUserInput[]
-    createMany?: CollectionCreateManyUserInputEnvelope
-    connect?: CollectionWhereUniqueInput | CollectionWhereUniqueInput[]
-  }
-
   export type CollectionCreateNestedManyWithoutOwnerInput = {
     create?: XOR<CollectionCreateWithoutOwnerInput, CollectionUncheckedCreateWithoutOwnerInput> | CollectionCreateWithoutOwnerInput[] | CollectionUncheckedCreateWithoutOwnerInput[]
     connectOrCreate?: CollectionCreateOrConnectWithoutOwnerInput | CollectionCreateOrConnectWithoutOwnerInput[]
@@ -17410,11 +17389,11 @@ export namespace Prisma {
     connect?: CollectionWhereUniqueInput | CollectionWhereUniqueInput[]
   }
 
-  export type FolderCollaboratorCreateNestedManyWithoutUserInput = {
-    create?: XOR<FolderCollaboratorCreateWithoutUserInput, FolderCollaboratorUncheckedCreateWithoutUserInput> | FolderCollaboratorCreateWithoutUserInput[] | FolderCollaboratorUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: FolderCollaboratorCreateOrConnectWithoutUserInput | FolderCollaboratorCreateOrConnectWithoutUserInput[]
-    createMany?: FolderCollaboratorCreateManyUserInputEnvelope
-    connect?: FolderCollaboratorWhereUniqueInput | FolderCollaboratorWhereUniqueInput[]
+  export type CollectionCreateNestedManyWithoutUserInput = {
+    create?: XOR<CollectionCreateWithoutUserInput, CollectionUncheckedCreateWithoutUserInput> | CollectionCreateWithoutUserInput[] | CollectionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CollectionCreateOrConnectWithoutUserInput | CollectionCreateOrConnectWithoutUserInput[]
+    createMany?: CollectionCreateManyUserInputEnvelope
+    connect?: CollectionWhereUniqueInput | CollectionWhereUniqueInput[]
   }
 
   export type CollectionCollaboratorCreateNestedManyWithoutUserInput = {
@@ -17431,32 +17410,32 @@ export namespace Prisma {
     connect?: DeviceWhereUniqueInput | DeviceWhereUniqueInput[]
   }
 
-  export type BookmarkUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<BookmarkCreateWithoutUserInput, BookmarkUncheckedCreateWithoutUserInput> | BookmarkCreateWithoutUserInput[] | BookmarkUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: BookmarkCreateOrConnectWithoutUserInput | BookmarkCreateOrConnectWithoutUserInput[]
-    createMany?: BookmarkCreateManyUserInputEnvelope
-    connect?: BookmarkWhereUniqueInput | BookmarkWhereUniqueInput[]
-  }
-
-  export type FolderUncheckedCreateNestedManyWithoutUserInput = {
+  export type FolderCreateNestedManyWithoutUserInput = {
     create?: XOR<FolderCreateWithoutUserInput, FolderUncheckedCreateWithoutUserInput> | FolderCreateWithoutUserInput[] | FolderUncheckedCreateWithoutUserInput[]
     connectOrCreate?: FolderCreateOrConnectWithoutUserInput | FolderCreateOrConnectWithoutUserInput[]
     createMany?: FolderCreateManyUserInputEnvelope
     connect?: FolderWhereUniqueInput | FolderWhereUniqueInput[]
   }
 
-  export type TagUncheckedCreateNestedManyWithoutUserInput = {
+  export type FolderCollaboratorCreateNestedManyWithoutUserInput = {
+    create?: XOR<FolderCollaboratorCreateWithoutUserInput, FolderCollaboratorUncheckedCreateWithoutUserInput> | FolderCollaboratorCreateWithoutUserInput[] | FolderCollaboratorUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: FolderCollaboratorCreateOrConnectWithoutUserInput | FolderCollaboratorCreateOrConnectWithoutUserInput[]
+    createMany?: FolderCollaboratorCreateManyUserInputEnvelope
+    connect?: FolderCollaboratorWhereUniqueInput | FolderCollaboratorWhereUniqueInput[]
+  }
+
+  export type TagCreateNestedManyWithoutUserInput = {
     create?: XOR<TagCreateWithoutUserInput, TagUncheckedCreateWithoutUserInput> | TagCreateWithoutUserInput[] | TagUncheckedCreateWithoutUserInput[]
     connectOrCreate?: TagCreateOrConnectWithoutUserInput | TagCreateOrConnectWithoutUserInput[]
     createMany?: TagCreateManyUserInputEnvelope
     connect?: TagWhereUniqueInput | TagWhereUniqueInput[]
   }
 
-  export type CollectionUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<CollectionCreateWithoutUserInput, CollectionUncheckedCreateWithoutUserInput> | CollectionCreateWithoutUserInput[] | CollectionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: CollectionCreateOrConnectWithoutUserInput | CollectionCreateOrConnectWithoutUserInput[]
-    createMany?: CollectionCreateManyUserInputEnvelope
-    connect?: CollectionWhereUniqueInput | CollectionWhereUniqueInput[]
+  export type BookmarkUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<BookmarkCreateWithoutUserInput, BookmarkUncheckedCreateWithoutUserInput> | BookmarkCreateWithoutUserInput[] | BookmarkUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: BookmarkCreateOrConnectWithoutUserInput | BookmarkCreateOrConnectWithoutUserInput[]
+    createMany?: BookmarkCreateManyUserInputEnvelope
+    connect?: BookmarkWhereUniqueInput | BookmarkWhereUniqueInput[]
   }
 
   export type CollectionUncheckedCreateNestedManyWithoutOwnerInput = {
@@ -17466,11 +17445,11 @@ export namespace Prisma {
     connect?: CollectionWhereUniqueInput | CollectionWhereUniqueInput[]
   }
 
-  export type FolderCollaboratorUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<FolderCollaboratorCreateWithoutUserInput, FolderCollaboratorUncheckedCreateWithoutUserInput> | FolderCollaboratorCreateWithoutUserInput[] | FolderCollaboratorUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: FolderCollaboratorCreateOrConnectWithoutUserInput | FolderCollaboratorCreateOrConnectWithoutUserInput[]
-    createMany?: FolderCollaboratorCreateManyUserInputEnvelope
-    connect?: FolderCollaboratorWhereUniqueInput | FolderCollaboratorWhereUniqueInput[]
+  export type CollectionUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<CollectionCreateWithoutUserInput, CollectionUncheckedCreateWithoutUserInput> | CollectionCreateWithoutUserInput[] | CollectionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CollectionCreateOrConnectWithoutUserInput | CollectionCreateOrConnectWithoutUserInput[]
+    createMany?: CollectionCreateManyUserInputEnvelope
+    connect?: CollectionWhereUniqueInput | CollectionWhereUniqueInput[]
   }
 
   export type CollectionCollaboratorUncheckedCreateNestedManyWithoutUserInput = {
@@ -17485,6 +17464,27 @@ export namespace Prisma {
     connectOrCreate?: DeviceCreateOrConnectWithoutUserInput | DeviceCreateOrConnectWithoutUserInput[]
     createMany?: DeviceCreateManyUserInputEnvelope
     connect?: DeviceWhereUniqueInput | DeviceWhereUniqueInput[]
+  }
+
+  export type FolderUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<FolderCreateWithoutUserInput, FolderUncheckedCreateWithoutUserInput> | FolderCreateWithoutUserInput[] | FolderUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: FolderCreateOrConnectWithoutUserInput | FolderCreateOrConnectWithoutUserInput[]
+    createMany?: FolderCreateManyUserInputEnvelope
+    connect?: FolderWhereUniqueInput | FolderWhereUniqueInput[]
+  }
+
+  export type FolderCollaboratorUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<FolderCollaboratorCreateWithoutUserInput, FolderCollaboratorUncheckedCreateWithoutUserInput> | FolderCollaboratorCreateWithoutUserInput[] | FolderCollaboratorUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: FolderCollaboratorCreateOrConnectWithoutUserInput | FolderCollaboratorCreateOrConnectWithoutUserInput[]
+    createMany?: FolderCollaboratorCreateManyUserInputEnvelope
+    connect?: FolderCollaboratorWhereUniqueInput | FolderCollaboratorWhereUniqueInput[]
+  }
+
+  export type TagUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<TagCreateWithoutUserInput, TagUncheckedCreateWithoutUserInput> | TagCreateWithoutUserInput[] | TagUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TagCreateOrConnectWithoutUserInput | TagCreateOrConnectWithoutUserInput[]
+    createMany?: TagCreateManyUserInputEnvelope
+    connect?: TagWhereUniqueInput | TagWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -17521,48 +17521,6 @@ export namespace Prisma {
     deleteMany?: BookmarkScalarWhereInput | BookmarkScalarWhereInput[]
   }
 
-  export type FolderUpdateManyWithoutUserNestedInput = {
-    create?: XOR<FolderCreateWithoutUserInput, FolderUncheckedCreateWithoutUserInput> | FolderCreateWithoutUserInput[] | FolderUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: FolderCreateOrConnectWithoutUserInput | FolderCreateOrConnectWithoutUserInput[]
-    upsert?: FolderUpsertWithWhereUniqueWithoutUserInput | FolderUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: FolderCreateManyUserInputEnvelope
-    set?: FolderWhereUniqueInput | FolderWhereUniqueInput[]
-    disconnect?: FolderWhereUniqueInput | FolderWhereUniqueInput[]
-    delete?: FolderWhereUniqueInput | FolderWhereUniqueInput[]
-    connect?: FolderWhereUniqueInput | FolderWhereUniqueInput[]
-    update?: FolderUpdateWithWhereUniqueWithoutUserInput | FolderUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: FolderUpdateManyWithWhereWithoutUserInput | FolderUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: FolderScalarWhereInput | FolderScalarWhereInput[]
-  }
-
-  export type TagUpdateManyWithoutUserNestedInput = {
-    create?: XOR<TagCreateWithoutUserInput, TagUncheckedCreateWithoutUserInput> | TagCreateWithoutUserInput[] | TagUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: TagCreateOrConnectWithoutUserInput | TagCreateOrConnectWithoutUserInput[]
-    upsert?: TagUpsertWithWhereUniqueWithoutUserInput | TagUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: TagCreateManyUserInputEnvelope
-    set?: TagWhereUniqueInput | TagWhereUniqueInput[]
-    disconnect?: TagWhereUniqueInput | TagWhereUniqueInput[]
-    delete?: TagWhereUniqueInput | TagWhereUniqueInput[]
-    connect?: TagWhereUniqueInput | TagWhereUniqueInput[]
-    update?: TagUpdateWithWhereUniqueWithoutUserInput | TagUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: TagUpdateManyWithWhereWithoutUserInput | TagUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: TagScalarWhereInput | TagScalarWhereInput[]
-  }
-
-  export type CollectionUpdateManyWithoutUserNestedInput = {
-    create?: XOR<CollectionCreateWithoutUserInput, CollectionUncheckedCreateWithoutUserInput> | CollectionCreateWithoutUserInput[] | CollectionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: CollectionCreateOrConnectWithoutUserInput | CollectionCreateOrConnectWithoutUserInput[]
-    upsert?: CollectionUpsertWithWhereUniqueWithoutUserInput | CollectionUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: CollectionCreateManyUserInputEnvelope
-    set?: CollectionWhereUniqueInput | CollectionWhereUniqueInput[]
-    disconnect?: CollectionWhereUniqueInput | CollectionWhereUniqueInput[]
-    delete?: CollectionWhereUniqueInput | CollectionWhereUniqueInput[]
-    connect?: CollectionWhereUniqueInput | CollectionWhereUniqueInput[]
-    update?: CollectionUpdateWithWhereUniqueWithoutUserInput | CollectionUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: CollectionUpdateManyWithWhereWithoutUserInput | CollectionUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: CollectionScalarWhereInput | CollectionScalarWhereInput[]
-  }
-
   export type CollectionUpdateManyWithoutOwnerNestedInput = {
     create?: XOR<CollectionCreateWithoutOwnerInput, CollectionUncheckedCreateWithoutOwnerInput> | CollectionCreateWithoutOwnerInput[] | CollectionUncheckedCreateWithoutOwnerInput[]
     connectOrCreate?: CollectionCreateOrConnectWithoutOwnerInput | CollectionCreateOrConnectWithoutOwnerInput[]
@@ -17577,18 +17535,18 @@ export namespace Prisma {
     deleteMany?: CollectionScalarWhereInput | CollectionScalarWhereInput[]
   }
 
-  export type FolderCollaboratorUpdateManyWithoutUserNestedInput = {
-    create?: XOR<FolderCollaboratorCreateWithoutUserInput, FolderCollaboratorUncheckedCreateWithoutUserInput> | FolderCollaboratorCreateWithoutUserInput[] | FolderCollaboratorUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: FolderCollaboratorCreateOrConnectWithoutUserInput | FolderCollaboratorCreateOrConnectWithoutUserInput[]
-    upsert?: FolderCollaboratorUpsertWithWhereUniqueWithoutUserInput | FolderCollaboratorUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: FolderCollaboratorCreateManyUserInputEnvelope
-    set?: FolderCollaboratorWhereUniqueInput | FolderCollaboratorWhereUniqueInput[]
-    disconnect?: FolderCollaboratorWhereUniqueInput | FolderCollaboratorWhereUniqueInput[]
-    delete?: FolderCollaboratorWhereUniqueInput | FolderCollaboratorWhereUniqueInput[]
-    connect?: FolderCollaboratorWhereUniqueInput | FolderCollaboratorWhereUniqueInput[]
-    update?: FolderCollaboratorUpdateWithWhereUniqueWithoutUserInput | FolderCollaboratorUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: FolderCollaboratorUpdateManyWithWhereWithoutUserInput | FolderCollaboratorUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: FolderCollaboratorScalarWhereInput | FolderCollaboratorScalarWhereInput[]
+  export type CollectionUpdateManyWithoutUserNestedInput = {
+    create?: XOR<CollectionCreateWithoutUserInput, CollectionUncheckedCreateWithoutUserInput> | CollectionCreateWithoutUserInput[] | CollectionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CollectionCreateOrConnectWithoutUserInput | CollectionCreateOrConnectWithoutUserInput[]
+    upsert?: CollectionUpsertWithWhereUniqueWithoutUserInput | CollectionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: CollectionCreateManyUserInputEnvelope
+    set?: CollectionWhereUniqueInput | CollectionWhereUniqueInput[]
+    disconnect?: CollectionWhereUniqueInput | CollectionWhereUniqueInput[]
+    delete?: CollectionWhereUniqueInput | CollectionWhereUniqueInput[]
+    connect?: CollectionWhereUniqueInput | CollectionWhereUniqueInput[]
+    update?: CollectionUpdateWithWhereUniqueWithoutUserInput | CollectionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: CollectionUpdateManyWithWhereWithoutUserInput | CollectionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: CollectionScalarWhereInput | CollectionScalarWhereInput[]
   }
 
   export type CollectionCollaboratorUpdateManyWithoutUserNestedInput = {
@@ -17619,21 +17577,7 @@ export namespace Prisma {
     deleteMany?: DeviceScalarWhereInput | DeviceScalarWhereInput[]
   }
 
-  export type BookmarkUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<BookmarkCreateWithoutUserInput, BookmarkUncheckedCreateWithoutUserInput> | BookmarkCreateWithoutUserInput[] | BookmarkUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: BookmarkCreateOrConnectWithoutUserInput | BookmarkCreateOrConnectWithoutUserInput[]
-    upsert?: BookmarkUpsertWithWhereUniqueWithoutUserInput | BookmarkUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: BookmarkCreateManyUserInputEnvelope
-    set?: BookmarkWhereUniqueInput | BookmarkWhereUniqueInput[]
-    disconnect?: BookmarkWhereUniqueInput | BookmarkWhereUniqueInput[]
-    delete?: BookmarkWhereUniqueInput | BookmarkWhereUniqueInput[]
-    connect?: BookmarkWhereUniqueInput | BookmarkWhereUniqueInput[]
-    update?: BookmarkUpdateWithWhereUniqueWithoutUserInput | BookmarkUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: BookmarkUpdateManyWithWhereWithoutUserInput | BookmarkUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: BookmarkScalarWhereInput | BookmarkScalarWhereInput[]
-  }
-
-  export type FolderUncheckedUpdateManyWithoutUserNestedInput = {
+  export type FolderUpdateManyWithoutUserNestedInput = {
     create?: XOR<FolderCreateWithoutUserInput, FolderUncheckedCreateWithoutUserInput> | FolderCreateWithoutUserInput[] | FolderUncheckedCreateWithoutUserInput[]
     connectOrCreate?: FolderCreateOrConnectWithoutUserInput | FolderCreateOrConnectWithoutUserInput[]
     upsert?: FolderUpsertWithWhereUniqueWithoutUserInput | FolderUpsertWithWhereUniqueWithoutUserInput[]
@@ -17647,7 +17591,21 @@ export namespace Prisma {
     deleteMany?: FolderScalarWhereInput | FolderScalarWhereInput[]
   }
 
-  export type TagUncheckedUpdateManyWithoutUserNestedInput = {
+  export type FolderCollaboratorUpdateManyWithoutUserNestedInput = {
+    create?: XOR<FolderCollaboratorCreateWithoutUserInput, FolderCollaboratorUncheckedCreateWithoutUserInput> | FolderCollaboratorCreateWithoutUserInput[] | FolderCollaboratorUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: FolderCollaboratorCreateOrConnectWithoutUserInput | FolderCollaboratorCreateOrConnectWithoutUserInput[]
+    upsert?: FolderCollaboratorUpsertWithWhereUniqueWithoutUserInput | FolderCollaboratorUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: FolderCollaboratorCreateManyUserInputEnvelope
+    set?: FolderCollaboratorWhereUniqueInput | FolderCollaboratorWhereUniqueInput[]
+    disconnect?: FolderCollaboratorWhereUniqueInput | FolderCollaboratorWhereUniqueInput[]
+    delete?: FolderCollaboratorWhereUniqueInput | FolderCollaboratorWhereUniqueInput[]
+    connect?: FolderCollaboratorWhereUniqueInput | FolderCollaboratorWhereUniqueInput[]
+    update?: FolderCollaboratorUpdateWithWhereUniqueWithoutUserInput | FolderCollaboratorUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: FolderCollaboratorUpdateManyWithWhereWithoutUserInput | FolderCollaboratorUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: FolderCollaboratorScalarWhereInput | FolderCollaboratorScalarWhereInput[]
+  }
+
+  export type TagUpdateManyWithoutUserNestedInput = {
     create?: XOR<TagCreateWithoutUserInput, TagUncheckedCreateWithoutUserInput> | TagCreateWithoutUserInput[] | TagUncheckedCreateWithoutUserInput[]
     connectOrCreate?: TagCreateOrConnectWithoutUserInput | TagCreateOrConnectWithoutUserInput[]
     upsert?: TagUpsertWithWhereUniqueWithoutUserInput | TagUpsertWithWhereUniqueWithoutUserInput[]
@@ -17661,18 +17619,18 @@ export namespace Prisma {
     deleteMany?: TagScalarWhereInput | TagScalarWhereInput[]
   }
 
-  export type CollectionUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<CollectionCreateWithoutUserInput, CollectionUncheckedCreateWithoutUserInput> | CollectionCreateWithoutUserInput[] | CollectionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: CollectionCreateOrConnectWithoutUserInput | CollectionCreateOrConnectWithoutUserInput[]
-    upsert?: CollectionUpsertWithWhereUniqueWithoutUserInput | CollectionUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: CollectionCreateManyUserInputEnvelope
-    set?: CollectionWhereUniqueInput | CollectionWhereUniqueInput[]
-    disconnect?: CollectionWhereUniqueInput | CollectionWhereUniqueInput[]
-    delete?: CollectionWhereUniqueInput | CollectionWhereUniqueInput[]
-    connect?: CollectionWhereUniqueInput | CollectionWhereUniqueInput[]
-    update?: CollectionUpdateWithWhereUniqueWithoutUserInput | CollectionUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: CollectionUpdateManyWithWhereWithoutUserInput | CollectionUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: CollectionScalarWhereInput | CollectionScalarWhereInput[]
+  export type BookmarkUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<BookmarkCreateWithoutUserInput, BookmarkUncheckedCreateWithoutUserInput> | BookmarkCreateWithoutUserInput[] | BookmarkUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: BookmarkCreateOrConnectWithoutUserInput | BookmarkCreateOrConnectWithoutUserInput[]
+    upsert?: BookmarkUpsertWithWhereUniqueWithoutUserInput | BookmarkUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: BookmarkCreateManyUserInputEnvelope
+    set?: BookmarkWhereUniqueInput | BookmarkWhereUniqueInput[]
+    disconnect?: BookmarkWhereUniqueInput | BookmarkWhereUniqueInput[]
+    delete?: BookmarkWhereUniqueInput | BookmarkWhereUniqueInput[]
+    connect?: BookmarkWhereUniqueInput | BookmarkWhereUniqueInput[]
+    update?: BookmarkUpdateWithWhereUniqueWithoutUserInput | BookmarkUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: BookmarkUpdateManyWithWhereWithoutUserInput | BookmarkUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: BookmarkScalarWhereInput | BookmarkScalarWhereInput[]
   }
 
   export type CollectionUncheckedUpdateManyWithoutOwnerNestedInput = {
@@ -17689,18 +17647,18 @@ export namespace Prisma {
     deleteMany?: CollectionScalarWhereInput | CollectionScalarWhereInput[]
   }
 
-  export type FolderCollaboratorUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<FolderCollaboratorCreateWithoutUserInput, FolderCollaboratorUncheckedCreateWithoutUserInput> | FolderCollaboratorCreateWithoutUserInput[] | FolderCollaboratorUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: FolderCollaboratorCreateOrConnectWithoutUserInput | FolderCollaboratorCreateOrConnectWithoutUserInput[]
-    upsert?: FolderCollaboratorUpsertWithWhereUniqueWithoutUserInput | FolderCollaboratorUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: FolderCollaboratorCreateManyUserInputEnvelope
-    set?: FolderCollaboratorWhereUniqueInput | FolderCollaboratorWhereUniqueInput[]
-    disconnect?: FolderCollaboratorWhereUniqueInput | FolderCollaboratorWhereUniqueInput[]
-    delete?: FolderCollaboratorWhereUniqueInput | FolderCollaboratorWhereUniqueInput[]
-    connect?: FolderCollaboratorWhereUniqueInput | FolderCollaboratorWhereUniqueInput[]
-    update?: FolderCollaboratorUpdateWithWhereUniqueWithoutUserInput | FolderCollaboratorUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: FolderCollaboratorUpdateManyWithWhereWithoutUserInput | FolderCollaboratorUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: FolderCollaboratorScalarWhereInput | FolderCollaboratorScalarWhereInput[]
+  export type CollectionUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<CollectionCreateWithoutUserInput, CollectionUncheckedCreateWithoutUserInput> | CollectionCreateWithoutUserInput[] | CollectionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CollectionCreateOrConnectWithoutUserInput | CollectionCreateOrConnectWithoutUserInput[]
+    upsert?: CollectionUpsertWithWhereUniqueWithoutUserInput | CollectionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: CollectionCreateManyUserInputEnvelope
+    set?: CollectionWhereUniqueInput | CollectionWhereUniqueInput[]
+    disconnect?: CollectionWhereUniqueInput | CollectionWhereUniqueInput[]
+    delete?: CollectionWhereUniqueInput | CollectionWhereUniqueInput[]
+    connect?: CollectionWhereUniqueInput | CollectionWhereUniqueInput[]
+    update?: CollectionUpdateWithWhereUniqueWithoutUserInput | CollectionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: CollectionUpdateManyWithWhereWithoutUserInput | CollectionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: CollectionScalarWhereInput | CollectionScalarWhereInput[]
   }
 
   export type CollectionCollaboratorUncheckedUpdateManyWithoutUserNestedInput = {
@@ -17731,24 +17689,52 @@ export namespace Prisma {
     deleteMany?: DeviceScalarWhereInput | DeviceScalarWhereInput[]
   }
 
+  export type FolderUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<FolderCreateWithoutUserInput, FolderUncheckedCreateWithoutUserInput> | FolderCreateWithoutUserInput[] | FolderUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: FolderCreateOrConnectWithoutUserInput | FolderCreateOrConnectWithoutUserInput[]
+    upsert?: FolderUpsertWithWhereUniqueWithoutUserInput | FolderUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: FolderCreateManyUserInputEnvelope
+    set?: FolderWhereUniqueInput | FolderWhereUniqueInput[]
+    disconnect?: FolderWhereUniqueInput | FolderWhereUniqueInput[]
+    delete?: FolderWhereUniqueInput | FolderWhereUniqueInput[]
+    connect?: FolderWhereUniqueInput | FolderWhereUniqueInput[]
+    update?: FolderUpdateWithWhereUniqueWithoutUserInput | FolderUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: FolderUpdateManyWithWhereWithoutUserInput | FolderUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: FolderScalarWhereInput | FolderScalarWhereInput[]
+  }
+
+  export type FolderCollaboratorUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<FolderCollaboratorCreateWithoutUserInput, FolderCollaboratorUncheckedCreateWithoutUserInput> | FolderCollaboratorCreateWithoutUserInput[] | FolderCollaboratorUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: FolderCollaboratorCreateOrConnectWithoutUserInput | FolderCollaboratorCreateOrConnectWithoutUserInput[]
+    upsert?: FolderCollaboratorUpsertWithWhereUniqueWithoutUserInput | FolderCollaboratorUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: FolderCollaboratorCreateManyUserInputEnvelope
+    set?: FolderCollaboratorWhereUniqueInput | FolderCollaboratorWhereUniqueInput[]
+    disconnect?: FolderCollaboratorWhereUniqueInput | FolderCollaboratorWhereUniqueInput[]
+    delete?: FolderCollaboratorWhereUniqueInput | FolderCollaboratorWhereUniqueInput[]
+    connect?: FolderCollaboratorWhereUniqueInput | FolderCollaboratorWhereUniqueInput[]
+    update?: FolderCollaboratorUpdateWithWhereUniqueWithoutUserInput | FolderCollaboratorUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: FolderCollaboratorUpdateManyWithWhereWithoutUserInput | FolderCollaboratorUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: FolderCollaboratorScalarWhereInput | FolderCollaboratorScalarWhereInput[]
+  }
+
+  export type TagUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TagCreateWithoutUserInput, TagUncheckedCreateWithoutUserInput> | TagCreateWithoutUserInput[] | TagUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TagCreateOrConnectWithoutUserInput | TagCreateOrConnectWithoutUserInput[]
+    upsert?: TagUpsertWithWhereUniqueWithoutUserInput | TagUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TagCreateManyUserInputEnvelope
+    set?: TagWhereUniqueInput | TagWhereUniqueInput[]
+    disconnect?: TagWhereUniqueInput | TagWhereUniqueInput[]
+    delete?: TagWhereUniqueInput | TagWhereUniqueInput[]
+    connect?: TagWhereUniqueInput | TagWhereUniqueInput[]
+    update?: TagUpdateWithWhereUniqueWithoutUserInput | TagUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TagUpdateManyWithWhereWithoutUserInput | TagUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TagScalarWhereInput | TagScalarWhereInput[]
+  }
+
   export type UserCreateNestedOneWithoutBookmarksInput = {
     create?: XOR<UserCreateWithoutBookmarksInput, UserUncheckedCreateWithoutBookmarksInput>
     connectOrCreate?: UserCreateOrConnectWithoutBookmarksInput
     connect?: UserWhereUniqueInput
-  }
-
-  export type FolderBookmarkCreateNestedManyWithoutBookmarkInput = {
-    create?: XOR<FolderBookmarkCreateWithoutBookmarkInput, FolderBookmarkUncheckedCreateWithoutBookmarkInput> | FolderBookmarkCreateWithoutBookmarkInput[] | FolderBookmarkUncheckedCreateWithoutBookmarkInput[]
-    connectOrCreate?: FolderBookmarkCreateOrConnectWithoutBookmarkInput | FolderBookmarkCreateOrConnectWithoutBookmarkInput[]
-    createMany?: FolderBookmarkCreateManyBookmarkInputEnvelope
-    connect?: FolderBookmarkWhereUniqueInput | FolderBookmarkWhereUniqueInput[]
-  }
-
-  export type BookmarkTagCreateNestedManyWithoutBookmarkInput = {
-    create?: XOR<BookmarkTagCreateWithoutBookmarkInput, BookmarkTagUncheckedCreateWithoutBookmarkInput> | BookmarkTagCreateWithoutBookmarkInput[] | BookmarkTagUncheckedCreateWithoutBookmarkInput[]
-    connectOrCreate?: BookmarkTagCreateOrConnectWithoutBookmarkInput | BookmarkTagCreateOrConnectWithoutBookmarkInput[]
-    createMany?: BookmarkTagCreateManyBookmarkInputEnvelope
-    connect?: BookmarkTagWhereUniqueInput | BookmarkTagWhereUniqueInput[]
   }
 
   export type BookmarkCollectionCreateNestedManyWithoutBookmarkInput = {
@@ -17758,11 +17744,25 @@ export namespace Prisma {
     connect?: BookmarkCollectionWhereUniqueInput | BookmarkCollectionWhereUniqueInput[]
   }
 
-  export type FolderBookmarkUncheckedCreateNestedManyWithoutBookmarkInput = {
+  export type BookmarkTagCreateNestedManyWithoutBookmarkInput = {
+    create?: XOR<BookmarkTagCreateWithoutBookmarkInput, BookmarkTagUncheckedCreateWithoutBookmarkInput> | BookmarkTagCreateWithoutBookmarkInput[] | BookmarkTagUncheckedCreateWithoutBookmarkInput[]
+    connectOrCreate?: BookmarkTagCreateOrConnectWithoutBookmarkInput | BookmarkTagCreateOrConnectWithoutBookmarkInput[]
+    createMany?: BookmarkTagCreateManyBookmarkInputEnvelope
+    connect?: BookmarkTagWhereUniqueInput | BookmarkTagWhereUniqueInput[]
+  }
+
+  export type FolderBookmarkCreateNestedManyWithoutBookmarkInput = {
     create?: XOR<FolderBookmarkCreateWithoutBookmarkInput, FolderBookmarkUncheckedCreateWithoutBookmarkInput> | FolderBookmarkCreateWithoutBookmarkInput[] | FolderBookmarkUncheckedCreateWithoutBookmarkInput[]
     connectOrCreate?: FolderBookmarkCreateOrConnectWithoutBookmarkInput | FolderBookmarkCreateOrConnectWithoutBookmarkInput[]
     createMany?: FolderBookmarkCreateManyBookmarkInputEnvelope
     connect?: FolderBookmarkWhereUniqueInput | FolderBookmarkWhereUniqueInput[]
+  }
+
+  export type BookmarkCollectionUncheckedCreateNestedManyWithoutBookmarkInput = {
+    create?: XOR<BookmarkCollectionCreateWithoutBookmarkInput, BookmarkCollectionUncheckedCreateWithoutBookmarkInput> | BookmarkCollectionCreateWithoutBookmarkInput[] | BookmarkCollectionUncheckedCreateWithoutBookmarkInput[]
+    connectOrCreate?: BookmarkCollectionCreateOrConnectWithoutBookmarkInput | BookmarkCollectionCreateOrConnectWithoutBookmarkInput[]
+    createMany?: BookmarkCollectionCreateManyBookmarkInputEnvelope
+    connect?: BookmarkCollectionWhereUniqueInput | BookmarkCollectionWhereUniqueInput[]
   }
 
   export type BookmarkTagUncheckedCreateNestedManyWithoutBookmarkInput = {
@@ -17772,11 +17772,11 @@ export namespace Prisma {
     connect?: BookmarkTagWhereUniqueInput | BookmarkTagWhereUniqueInput[]
   }
 
-  export type BookmarkCollectionUncheckedCreateNestedManyWithoutBookmarkInput = {
-    create?: XOR<BookmarkCollectionCreateWithoutBookmarkInput, BookmarkCollectionUncheckedCreateWithoutBookmarkInput> | BookmarkCollectionCreateWithoutBookmarkInput[] | BookmarkCollectionUncheckedCreateWithoutBookmarkInput[]
-    connectOrCreate?: BookmarkCollectionCreateOrConnectWithoutBookmarkInput | BookmarkCollectionCreateOrConnectWithoutBookmarkInput[]
-    createMany?: BookmarkCollectionCreateManyBookmarkInputEnvelope
-    connect?: BookmarkCollectionWhereUniqueInput | BookmarkCollectionWhereUniqueInput[]
+  export type FolderBookmarkUncheckedCreateNestedManyWithoutBookmarkInput = {
+    create?: XOR<FolderBookmarkCreateWithoutBookmarkInput, FolderBookmarkUncheckedCreateWithoutBookmarkInput> | FolderBookmarkCreateWithoutBookmarkInput[] | FolderBookmarkUncheckedCreateWithoutBookmarkInput[]
+    connectOrCreate?: FolderBookmarkCreateOrConnectWithoutBookmarkInput | FolderBookmarkCreateOrConnectWithoutBookmarkInput[]
+    createMany?: FolderBookmarkCreateManyBookmarkInputEnvelope
+    connect?: FolderBookmarkWhereUniqueInput | FolderBookmarkWhereUniqueInput[]
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -17795,18 +17795,18 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutBookmarksInput, UserUpdateWithoutBookmarksInput>, UserUncheckedUpdateWithoutBookmarksInput>
   }
 
-  export type FolderBookmarkUpdateManyWithoutBookmarkNestedInput = {
-    create?: XOR<FolderBookmarkCreateWithoutBookmarkInput, FolderBookmarkUncheckedCreateWithoutBookmarkInput> | FolderBookmarkCreateWithoutBookmarkInput[] | FolderBookmarkUncheckedCreateWithoutBookmarkInput[]
-    connectOrCreate?: FolderBookmarkCreateOrConnectWithoutBookmarkInput | FolderBookmarkCreateOrConnectWithoutBookmarkInput[]
-    upsert?: FolderBookmarkUpsertWithWhereUniqueWithoutBookmarkInput | FolderBookmarkUpsertWithWhereUniqueWithoutBookmarkInput[]
-    createMany?: FolderBookmarkCreateManyBookmarkInputEnvelope
-    set?: FolderBookmarkWhereUniqueInput | FolderBookmarkWhereUniqueInput[]
-    disconnect?: FolderBookmarkWhereUniqueInput | FolderBookmarkWhereUniqueInput[]
-    delete?: FolderBookmarkWhereUniqueInput | FolderBookmarkWhereUniqueInput[]
-    connect?: FolderBookmarkWhereUniqueInput | FolderBookmarkWhereUniqueInput[]
-    update?: FolderBookmarkUpdateWithWhereUniqueWithoutBookmarkInput | FolderBookmarkUpdateWithWhereUniqueWithoutBookmarkInput[]
-    updateMany?: FolderBookmarkUpdateManyWithWhereWithoutBookmarkInput | FolderBookmarkUpdateManyWithWhereWithoutBookmarkInput[]
-    deleteMany?: FolderBookmarkScalarWhereInput | FolderBookmarkScalarWhereInput[]
+  export type BookmarkCollectionUpdateManyWithoutBookmarkNestedInput = {
+    create?: XOR<BookmarkCollectionCreateWithoutBookmarkInput, BookmarkCollectionUncheckedCreateWithoutBookmarkInput> | BookmarkCollectionCreateWithoutBookmarkInput[] | BookmarkCollectionUncheckedCreateWithoutBookmarkInput[]
+    connectOrCreate?: BookmarkCollectionCreateOrConnectWithoutBookmarkInput | BookmarkCollectionCreateOrConnectWithoutBookmarkInput[]
+    upsert?: BookmarkCollectionUpsertWithWhereUniqueWithoutBookmarkInput | BookmarkCollectionUpsertWithWhereUniqueWithoutBookmarkInput[]
+    createMany?: BookmarkCollectionCreateManyBookmarkInputEnvelope
+    set?: BookmarkCollectionWhereUniqueInput | BookmarkCollectionWhereUniqueInput[]
+    disconnect?: BookmarkCollectionWhereUniqueInput | BookmarkCollectionWhereUniqueInput[]
+    delete?: BookmarkCollectionWhereUniqueInput | BookmarkCollectionWhereUniqueInput[]
+    connect?: BookmarkCollectionWhereUniqueInput | BookmarkCollectionWhereUniqueInput[]
+    update?: BookmarkCollectionUpdateWithWhereUniqueWithoutBookmarkInput | BookmarkCollectionUpdateWithWhereUniqueWithoutBookmarkInput[]
+    updateMany?: BookmarkCollectionUpdateManyWithWhereWithoutBookmarkInput | BookmarkCollectionUpdateManyWithWhereWithoutBookmarkInput[]
+    deleteMany?: BookmarkCollectionScalarWhereInput | BookmarkCollectionScalarWhereInput[]
   }
 
   export type BookmarkTagUpdateManyWithoutBookmarkNestedInput = {
@@ -17823,21 +17823,7 @@ export namespace Prisma {
     deleteMany?: BookmarkTagScalarWhereInput | BookmarkTagScalarWhereInput[]
   }
 
-  export type BookmarkCollectionUpdateManyWithoutBookmarkNestedInput = {
-    create?: XOR<BookmarkCollectionCreateWithoutBookmarkInput, BookmarkCollectionUncheckedCreateWithoutBookmarkInput> | BookmarkCollectionCreateWithoutBookmarkInput[] | BookmarkCollectionUncheckedCreateWithoutBookmarkInput[]
-    connectOrCreate?: BookmarkCollectionCreateOrConnectWithoutBookmarkInput | BookmarkCollectionCreateOrConnectWithoutBookmarkInput[]
-    upsert?: BookmarkCollectionUpsertWithWhereUniqueWithoutBookmarkInput | BookmarkCollectionUpsertWithWhereUniqueWithoutBookmarkInput[]
-    createMany?: BookmarkCollectionCreateManyBookmarkInputEnvelope
-    set?: BookmarkCollectionWhereUniqueInput | BookmarkCollectionWhereUniqueInput[]
-    disconnect?: BookmarkCollectionWhereUniqueInput | BookmarkCollectionWhereUniqueInput[]
-    delete?: BookmarkCollectionWhereUniqueInput | BookmarkCollectionWhereUniqueInput[]
-    connect?: BookmarkCollectionWhereUniqueInput | BookmarkCollectionWhereUniqueInput[]
-    update?: BookmarkCollectionUpdateWithWhereUniqueWithoutBookmarkInput | BookmarkCollectionUpdateWithWhereUniqueWithoutBookmarkInput[]
-    updateMany?: BookmarkCollectionUpdateManyWithWhereWithoutBookmarkInput | BookmarkCollectionUpdateManyWithWhereWithoutBookmarkInput[]
-    deleteMany?: BookmarkCollectionScalarWhereInput | BookmarkCollectionScalarWhereInput[]
-  }
-
-  export type FolderBookmarkUncheckedUpdateManyWithoutBookmarkNestedInput = {
+  export type FolderBookmarkUpdateManyWithoutBookmarkNestedInput = {
     create?: XOR<FolderBookmarkCreateWithoutBookmarkInput, FolderBookmarkUncheckedCreateWithoutBookmarkInput> | FolderBookmarkCreateWithoutBookmarkInput[] | FolderBookmarkUncheckedCreateWithoutBookmarkInput[]
     connectOrCreate?: FolderBookmarkCreateOrConnectWithoutBookmarkInput | FolderBookmarkCreateOrConnectWithoutBookmarkInput[]
     upsert?: FolderBookmarkUpsertWithWhereUniqueWithoutBookmarkInput | FolderBookmarkUpsertWithWhereUniqueWithoutBookmarkInput[]
@@ -17849,20 +17835,6 @@ export namespace Prisma {
     update?: FolderBookmarkUpdateWithWhereUniqueWithoutBookmarkInput | FolderBookmarkUpdateWithWhereUniqueWithoutBookmarkInput[]
     updateMany?: FolderBookmarkUpdateManyWithWhereWithoutBookmarkInput | FolderBookmarkUpdateManyWithWhereWithoutBookmarkInput[]
     deleteMany?: FolderBookmarkScalarWhereInput | FolderBookmarkScalarWhereInput[]
-  }
-
-  export type BookmarkTagUncheckedUpdateManyWithoutBookmarkNestedInput = {
-    create?: XOR<BookmarkTagCreateWithoutBookmarkInput, BookmarkTagUncheckedCreateWithoutBookmarkInput> | BookmarkTagCreateWithoutBookmarkInput[] | BookmarkTagUncheckedCreateWithoutBookmarkInput[]
-    connectOrCreate?: BookmarkTagCreateOrConnectWithoutBookmarkInput | BookmarkTagCreateOrConnectWithoutBookmarkInput[]
-    upsert?: BookmarkTagUpsertWithWhereUniqueWithoutBookmarkInput | BookmarkTagUpsertWithWhereUniqueWithoutBookmarkInput[]
-    createMany?: BookmarkTagCreateManyBookmarkInputEnvelope
-    set?: BookmarkTagWhereUniqueInput | BookmarkTagWhereUniqueInput[]
-    disconnect?: BookmarkTagWhereUniqueInput | BookmarkTagWhereUniqueInput[]
-    delete?: BookmarkTagWhereUniqueInput | BookmarkTagWhereUniqueInput[]
-    connect?: BookmarkTagWhereUniqueInput | BookmarkTagWhereUniqueInput[]
-    update?: BookmarkTagUpdateWithWhereUniqueWithoutBookmarkInput | BookmarkTagUpdateWithWhereUniqueWithoutBookmarkInput[]
-    updateMany?: BookmarkTagUpdateManyWithWhereWithoutBookmarkInput | BookmarkTagUpdateManyWithWhereWithoutBookmarkInput[]
-    deleteMany?: BookmarkTagScalarWhereInput | BookmarkTagScalarWhereInput[]
   }
 
   export type BookmarkCollectionUncheckedUpdateManyWithoutBookmarkNestedInput = {
@@ -17879,10 +17851,32 @@ export namespace Prisma {
     deleteMany?: BookmarkCollectionScalarWhereInput | BookmarkCollectionScalarWhereInput[]
   }
 
-  export type UserCreateNestedOneWithoutFoldersInput = {
-    create?: XOR<UserCreateWithoutFoldersInput, UserUncheckedCreateWithoutFoldersInput>
-    connectOrCreate?: UserCreateOrConnectWithoutFoldersInput
-    connect?: UserWhereUniqueInput
+  export type BookmarkTagUncheckedUpdateManyWithoutBookmarkNestedInput = {
+    create?: XOR<BookmarkTagCreateWithoutBookmarkInput, BookmarkTagUncheckedCreateWithoutBookmarkInput> | BookmarkTagCreateWithoutBookmarkInput[] | BookmarkTagUncheckedCreateWithoutBookmarkInput[]
+    connectOrCreate?: BookmarkTagCreateOrConnectWithoutBookmarkInput | BookmarkTagCreateOrConnectWithoutBookmarkInput[]
+    upsert?: BookmarkTagUpsertWithWhereUniqueWithoutBookmarkInput | BookmarkTagUpsertWithWhereUniqueWithoutBookmarkInput[]
+    createMany?: BookmarkTagCreateManyBookmarkInputEnvelope
+    set?: BookmarkTagWhereUniqueInput | BookmarkTagWhereUniqueInput[]
+    disconnect?: BookmarkTagWhereUniqueInput | BookmarkTagWhereUniqueInput[]
+    delete?: BookmarkTagWhereUniqueInput | BookmarkTagWhereUniqueInput[]
+    connect?: BookmarkTagWhereUniqueInput | BookmarkTagWhereUniqueInput[]
+    update?: BookmarkTagUpdateWithWhereUniqueWithoutBookmarkInput | BookmarkTagUpdateWithWhereUniqueWithoutBookmarkInput[]
+    updateMany?: BookmarkTagUpdateManyWithWhereWithoutBookmarkInput | BookmarkTagUpdateManyWithWhereWithoutBookmarkInput[]
+    deleteMany?: BookmarkTagScalarWhereInput | BookmarkTagScalarWhereInput[]
+  }
+
+  export type FolderBookmarkUncheckedUpdateManyWithoutBookmarkNestedInput = {
+    create?: XOR<FolderBookmarkCreateWithoutBookmarkInput, FolderBookmarkUncheckedCreateWithoutBookmarkInput> | FolderBookmarkCreateWithoutBookmarkInput[] | FolderBookmarkUncheckedCreateWithoutBookmarkInput[]
+    connectOrCreate?: FolderBookmarkCreateOrConnectWithoutBookmarkInput | FolderBookmarkCreateOrConnectWithoutBookmarkInput[]
+    upsert?: FolderBookmarkUpsertWithWhereUniqueWithoutBookmarkInput | FolderBookmarkUpsertWithWhereUniqueWithoutBookmarkInput[]
+    createMany?: FolderBookmarkCreateManyBookmarkInputEnvelope
+    set?: FolderBookmarkWhereUniqueInput | FolderBookmarkWhereUniqueInput[]
+    disconnect?: FolderBookmarkWhereUniqueInput | FolderBookmarkWhereUniqueInput[]
+    delete?: FolderBookmarkWhereUniqueInput | FolderBookmarkWhereUniqueInput[]
+    connect?: FolderBookmarkWhereUniqueInput | FolderBookmarkWhereUniqueInput[]
+    update?: FolderBookmarkUpdateWithWhereUniqueWithoutBookmarkInput | FolderBookmarkUpdateWithWhereUniqueWithoutBookmarkInput[]
+    updateMany?: FolderBookmarkUpdateManyWithWhereWithoutBookmarkInput | FolderBookmarkUpdateManyWithWhereWithoutBookmarkInput[]
+    deleteMany?: FolderBookmarkScalarWhereInput | FolderBookmarkScalarWhereInput[]
   }
 
   export type FolderCreateNestedOneWithoutChildrenInput = {
@@ -17896,6 +17890,12 @@ export namespace Prisma {
     connectOrCreate?: FolderCreateOrConnectWithoutParentInput | FolderCreateOrConnectWithoutParentInput[]
     createMany?: FolderCreateManyParentInputEnvelope
     connect?: FolderWhereUniqueInput | FolderWhereUniqueInput[]
+  }
+
+  export type UserCreateNestedOneWithoutFoldersInput = {
+    create?: XOR<UserCreateWithoutFoldersInput, UserUncheckedCreateWithoutFoldersInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFoldersInput
+    connect?: UserWhereUniqueInput
   }
 
   export type FolderBookmarkCreateNestedManyWithoutFolderInput = {
@@ -17933,14 +17933,6 @@ export namespace Prisma {
     connect?: FolderCollaboratorWhereUniqueInput | FolderCollaboratorWhereUniqueInput[]
   }
 
-  export type UserUpdateOneRequiredWithoutFoldersNestedInput = {
-    create?: XOR<UserCreateWithoutFoldersInput, UserUncheckedCreateWithoutFoldersInput>
-    connectOrCreate?: UserCreateOrConnectWithoutFoldersInput
-    upsert?: UserUpsertWithoutFoldersInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutFoldersInput, UserUpdateWithoutFoldersInput>, UserUncheckedUpdateWithoutFoldersInput>
-  }
-
   export type FolderUpdateOneWithoutChildrenNestedInput = {
     create?: XOR<FolderCreateWithoutChildrenInput, FolderUncheckedCreateWithoutChildrenInput>
     connectOrCreate?: FolderCreateOrConnectWithoutChildrenInput
@@ -17963,6 +17955,14 @@ export namespace Prisma {
     update?: FolderUpdateWithWhereUniqueWithoutParentInput | FolderUpdateWithWhereUniqueWithoutParentInput[]
     updateMany?: FolderUpdateManyWithWhereWithoutParentInput | FolderUpdateManyWithWhereWithoutParentInput[]
     deleteMany?: FolderScalarWhereInput | FolderScalarWhereInput[]
+  }
+
+  export type UserUpdateOneRequiredWithoutFoldersNestedInput = {
+    create?: XOR<UserCreateWithoutFoldersInput, UserUncheckedCreateWithoutFoldersInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFoldersInput
+    upsert?: UserUpsertWithoutFoldersInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutFoldersInput, UserUpdateWithoutFoldersInput>, UserUncheckedUpdateWithoutFoldersInput>
   }
 
   export type FolderBookmarkUpdateManyWithoutFolderNestedInput = {
@@ -18035,24 +18035,16 @@ export namespace Prisma {
     deleteMany?: FolderCollaboratorScalarWhereInput | FolderCollaboratorScalarWhereInput[]
   }
 
-  export type FolderCreateNestedOneWithoutBookmarksInput = {
-    create?: XOR<FolderCreateWithoutBookmarksInput, FolderUncheckedCreateWithoutBookmarksInput>
-    connectOrCreate?: FolderCreateOrConnectWithoutBookmarksInput
-    connect?: FolderWhereUniqueInput
-  }
-
   export type BookmarkCreateNestedOneWithoutFoldersInput = {
     create?: XOR<BookmarkCreateWithoutFoldersInput, BookmarkUncheckedCreateWithoutFoldersInput>
     connectOrCreate?: BookmarkCreateOrConnectWithoutFoldersInput
     connect?: BookmarkWhereUniqueInput
   }
 
-  export type FolderUpdateOneRequiredWithoutBookmarksNestedInput = {
+  export type FolderCreateNestedOneWithoutBookmarksInput = {
     create?: XOR<FolderCreateWithoutBookmarksInput, FolderUncheckedCreateWithoutBookmarksInput>
     connectOrCreate?: FolderCreateOrConnectWithoutBookmarksInput
-    upsert?: FolderUpsertWithoutBookmarksInput
     connect?: FolderWhereUniqueInput
-    update?: XOR<XOR<FolderUpdateToOneWithWhereWithoutBookmarksInput, FolderUpdateWithoutBookmarksInput>, FolderUncheckedUpdateWithoutBookmarksInput>
   }
 
   export type BookmarkUpdateOneRequiredWithoutFoldersNestedInput = {
@@ -18061,6 +18053,14 @@ export namespace Prisma {
     upsert?: BookmarkUpsertWithoutFoldersInput
     connect?: BookmarkWhereUniqueInput
     update?: XOR<XOR<BookmarkUpdateToOneWithWhereWithoutFoldersInput, BookmarkUpdateWithoutFoldersInput>, BookmarkUncheckedUpdateWithoutFoldersInput>
+  }
+
+  export type FolderUpdateOneRequiredWithoutBookmarksNestedInput = {
+    create?: XOR<FolderCreateWithoutBookmarksInput, FolderUncheckedCreateWithoutBookmarksInput>
+    connectOrCreate?: FolderCreateOrConnectWithoutBookmarksInput
+    upsert?: FolderUpsertWithoutBookmarksInput
+    connect?: FolderWhereUniqueInput
+    update?: XOR<XOR<FolderUpdateToOneWithWhereWithoutBookmarksInput, FolderUpdateWithoutBookmarksInput>, FolderUncheckedUpdateWithoutBookmarksInput>
   }
 
   export type FolderCreateNestedOneWithoutCollaboratorsInput = {
@@ -18095,12 +18095,6 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCollabFoldersInput, UserUpdateWithoutCollabFoldersInput>, UserUncheckedUpdateWithoutCollabFoldersInput>
   }
 
-  export type UserCreateNestedOneWithoutTagsInput = {
-    create?: XOR<UserCreateWithoutTagsInput, UserUncheckedCreateWithoutTagsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutTagsInput
-    connect?: UserWhereUniqueInput
-  }
-
   export type BookmarkTagCreateNestedManyWithoutTagInput = {
     create?: XOR<BookmarkTagCreateWithoutTagInput, BookmarkTagUncheckedCreateWithoutTagInput> | BookmarkTagCreateWithoutTagInput[] | BookmarkTagUncheckedCreateWithoutTagInput[]
     connectOrCreate?: BookmarkTagCreateOrConnectWithoutTagInput | BookmarkTagCreateOrConnectWithoutTagInput[]
@@ -18108,19 +18102,17 @@ export namespace Prisma {
     connect?: BookmarkTagWhereUniqueInput | BookmarkTagWhereUniqueInput[]
   }
 
+  export type UserCreateNestedOneWithoutTagsInput = {
+    create?: XOR<UserCreateWithoutTagsInput, UserUncheckedCreateWithoutTagsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTagsInput
+    connect?: UserWhereUniqueInput
+  }
+
   export type BookmarkTagUncheckedCreateNestedManyWithoutTagInput = {
     create?: XOR<BookmarkTagCreateWithoutTagInput, BookmarkTagUncheckedCreateWithoutTagInput> | BookmarkTagCreateWithoutTagInput[] | BookmarkTagUncheckedCreateWithoutTagInput[]
     connectOrCreate?: BookmarkTagCreateOrConnectWithoutTagInput | BookmarkTagCreateOrConnectWithoutTagInput[]
     createMany?: BookmarkTagCreateManyTagInputEnvelope
     connect?: BookmarkTagWhereUniqueInput | BookmarkTagWhereUniqueInput[]
-  }
-
-  export type UserUpdateOneRequiredWithoutTagsNestedInput = {
-    create?: XOR<UserCreateWithoutTagsInput, UserUncheckedCreateWithoutTagsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutTagsInput
-    upsert?: UserUpsertWithoutTagsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTagsInput, UserUpdateWithoutTagsInput>, UserUncheckedUpdateWithoutTagsInput>
   }
 
   export type BookmarkTagUpdateManyWithoutTagNestedInput = {
@@ -18137,6 +18129,14 @@ export namespace Prisma {
     deleteMany?: BookmarkTagScalarWhereInput | BookmarkTagScalarWhereInput[]
   }
 
+  export type UserUpdateOneRequiredWithoutTagsNestedInput = {
+    create?: XOR<UserCreateWithoutTagsInput, UserUncheckedCreateWithoutTagsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTagsInput
+    upsert?: UserUpsertWithoutTagsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTagsInput, UserUpdateWithoutTagsInput>, UserUncheckedUpdateWithoutTagsInput>
+  }
+
   export type BookmarkTagUncheckedUpdateManyWithoutTagNestedInput = {
     create?: XOR<BookmarkTagCreateWithoutTagInput, BookmarkTagUncheckedCreateWithoutTagInput> | BookmarkTagCreateWithoutTagInput[] | BookmarkTagUncheckedCreateWithoutTagInput[]
     connectOrCreate?: BookmarkTagCreateOrConnectWithoutTagInput | BookmarkTagCreateOrConnectWithoutTagInput[]
@@ -18151,24 +18151,16 @@ export namespace Prisma {
     deleteMany?: BookmarkTagScalarWhereInput | BookmarkTagScalarWhereInput[]
   }
 
-  export type TagCreateNestedOneWithoutBookmarksInput = {
-    create?: XOR<TagCreateWithoutBookmarksInput, TagUncheckedCreateWithoutBookmarksInput>
-    connectOrCreate?: TagCreateOrConnectWithoutBookmarksInput
-    connect?: TagWhereUniqueInput
-  }
-
   export type BookmarkCreateNestedOneWithoutTagsInput = {
     create?: XOR<BookmarkCreateWithoutTagsInput, BookmarkUncheckedCreateWithoutTagsInput>
     connectOrCreate?: BookmarkCreateOrConnectWithoutTagsInput
     connect?: BookmarkWhereUniqueInput
   }
 
-  export type TagUpdateOneRequiredWithoutBookmarksNestedInput = {
+  export type TagCreateNestedOneWithoutBookmarksInput = {
     create?: XOR<TagCreateWithoutBookmarksInput, TagUncheckedCreateWithoutBookmarksInput>
     connectOrCreate?: TagCreateOrConnectWithoutBookmarksInput
-    upsert?: TagUpsertWithoutBookmarksInput
     connect?: TagWhereUniqueInput
-    update?: XOR<XOR<TagUpdateToOneWithWhereWithoutBookmarksInput, TagUpdateWithoutBookmarksInput>, TagUncheckedUpdateWithoutBookmarksInput>
   }
 
   export type BookmarkUpdateOneRequiredWithoutTagsNestedInput = {
@@ -18179,10 +18171,19 @@ export namespace Prisma {
     update?: XOR<XOR<BookmarkUpdateToOneWithWhereWithoutTagsInput, BookmarkUpdateWithoutTagsInput>, BookmarkUncheckedUpdateWithoutTagsInput>
   }
 
-  export type UserCreateNestedOneWithoutCollectionsInput = {
-    create?: XOR<UserCreateWithoutCollectionsInput, UserUncheckedCreateWithoutCollectionsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutCollectionsInput
-    connect?: UserWhereUniqueInput
+  export type TagUpdateOneRequiredWithoutBookmarksNestedInput = {
+    create?: XOR<TagCreateWithoutBookmarksInput, TagUncheckedCreateWithoutBookmarksInput>
+    connectOrCreate?: TagCreateOrConnectWithoutBookmarksInput
+    upsert?: TagUpsertWithoutBookmarksInput
+    connect?: TagWhereUniqueInput
+    update?: XOR<XOR<TagUpdateToOneWithWhereWithoutBookmarksInput, TagUpdateWithoutBookmarksInput>, TagUncheckedUpdateWithoutBookmarksInput>
+  }
+
+  export type BookmarkCollectionCreateNestedManyWithoutCollectionInput = {
+    create?: XOR<BookmarkCollectionCreateWithoutCollectionInput, BookmarkCollectionUncheckedCreateWithoutCollectionInput> | BookmarkCollectionCreateWithoutCollectionInput[] | BookmarkCollectionUncheckedCreateWithoutCollectionInput[]
+    connectOrCreate?: BookmarkCollectionCreateOrConnectWithoutCollectionInput | BookmarkCollectionCreateOrConnectWithoutCollectionInput[]
+    createMany?: BookmarkCollectionCreateManyCollectionInputEnvelope
+    connect?: BookmarkCollectionWhereUniqueInput | BookmarkCollectionWhereUniqueInput[]
   }
 
   export type UserCreateNestedOneWithoutOwnedCollectionsInput = {
@@ -18191,11 +18192,10 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
-  export type BookmarkCollectionCreateNestedManyWithoutCollectionInput = {
-    create?: XOR<BookmarkCollectionCreateWithoutCollectionInput, BookmarkCollectionUncheckedCreateWithoutCollectionInput> | BookmarkCollectionCreateWithoutCollectionInput[] | BookmarkCollectionUncheckedCreateWithoutCollectionInput[]
-    connectOrCreate?: BookmarkCollectionCreateOrConnectWithoutCollectionInput | BookmarkCollectionCreateOrConnectWithoutCollectionInput[]
-    createMany?: BookmarkCollectionCreateManyCollectionInputEnvelope
-    connect?: BookmarkCollectionWhereUniqueInput | BookmarkCollectionWhereUniqueInput[]
+  export type UserCreateNestedOneWithoutCollectionsInput = {
+    create?: XOR<UserCreateWithoutCollectionsInput, UserUncheckedCreateWithoutCollectionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCollectionsInput
+    connect?: UserWhereUniqueInput
   }
 
   export type CollectionCollaboratorCreateNestedManyWithoutCollectionInput = {
@@ -18219,22 +18219,6 @@ export namespace Prisma {
     connect?: CollectionCollaboratorWhereUniqueInput | CollectionCollaboratorWhereUniqueInput[]
   }
 
-  export type UserUpdateOneRequiredWithoutCollectionsNestedInput = {
-    create?: XOR<UserCreateWithoutCollectionsInput, UserUncheckedCreateWithoutCollectionsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutCollectionsInput
-    upsert?: UserUpsertWithoutCollectionsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCollectionsInput, UserUpdateWithoutCollectionsInput>, UserUncheckedUpdateWithoutCollectionsInput>
-  }
-
-  export type UserUpdateOneRequiredWithoutOwnedCollectionsNestedInput = {
-    create?: XOR<UserCreateWithoutOwnedCollectionsInput, UserUncheckedCreateWithoutOwnedCollectionsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutOwnedCollectionsInput
-    upsert?: UserUpsertWithoutOwnedCollectionsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutOwnedCollectionsInput, UserUpdateWithoutOwnedCollectionsInput>, UserUncheckedUpdateWithoutOwnedCollectionsInput>
-  }
-
   export type BookmarkCollectionUpdateManyWithoutCollectionNestedInput = {
     create?: XOR<BookmarkCollectionCreateWithoutCollectionInput, BookmarkCollectionUncheckedCreateWithoutCollectionInput> | BookmarkCollectionCreateWithoutCollectionInput[] | BookmarkCollectionUncheckedCreateWithoutCollectionInput[]
     connectOrCreate?: BookmarkCollectionCreateOrConnectWithoutCollectionInput | BookmarkCollectionCreateOrConnectWithoutCollectionInput[]
@@ -18247,6 +18231,22 @@ export namespace Prisma {
     update?: BookmarkCollectionUpdateWithWhereUniqueWithoutCollectionInput | BookmarkCollectionUpdateWithWhereUniqueWithoutCollectionInput[]
     updateMany?: BookmarkCollectionUpdateManyWithWhereWithoutCollectionInput | BookmarkCollectionUpdateManyWithWhereWithoutCollectionInput[]
     deleteMany?: BookmarkCollectionScalarWhereInput | BookmarkCollectionScalarWhereInput[]
+  }
+
+  export type UserUpdateOneRequiredWithoutOwnedCollectionsNestedInput = {
+    create?: XOR<UserCreateWithoutOwnedCollectionsInput, UserUncheckedCreateWithoutOwnedCollectionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutOwnedCollectionsInput
+    upsert?: UserUpsertWithoutOwnedCollectionsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutOwnedCollectionsInput, UserUpdateWithoutOwnedCollectionsInput>, UserUncheckedUpdateWithoutOwnedCollectionsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutCollectionsNestedInput = {
+    create?: XOR<UserCreateWithoutCollectionsInput, UserUncheckedCreateWithoutCollectionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCollectionsInput
+    upsert?: UserUpsertWithoutCollectionsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCollectionsInput, UserUpdateWithoutCollectionsInput>, UserUncheckedUpdateWithoutCollectionsInput>
   }
 
   export type CollectionCollaboratorUpdateManyWithoutCollectionNestedInput = {
@@ -18291,24 +18291,16 @@ export namespace Prisma {
     deleteMany?: CollectionCollaboratorScalarWhereInput | CollectionCollaboratorScalarWhereInput[]
   }
 
-  export type CollectionCreateNestedOneWithoutBookmarksInput = {
-    create?: XOR<CollectionCreateWithoutBookmarksInput, CollectionUncheckedCreateWithoutBookmarksInput>
-    connectOrCreate?: CollectionCreateOrConnectWithoutBookmarksInput
-    connect?: CollectionWhereUniqueInput
-  }
-
   export type BookmarkCreateNestedOneWithoutCollectionsInput = {
     create?: XOR<BookmarkCreateWithoutCollectionsInput, BookmarkUncheckedCreateWithoutCollectionsInput>
     connectOrCreate?: BookmarkCreateOrConnectWithoutCollectionsInput
     connect?: BookmarkWhereUniqueInput
   }
 
-  export type CollectionUpdateOneRequiredWithoutBookmarksNestedInput = {
+  export type CollectionCreateNestedOneWithoutBookmarksInput = {
     create?: XOR<CollectionCreateWithoutBookmarksInput, CollectionUncheckedCreateWithoutBookmarksInput>
     connectOrCreate?: CollectionCreateOrConnectWithoutBookmarksInput
-    upsert?: CollectionUpsertWithoutBookmarksInput
     connect?: CollectionWhereUniqueInput
-    update?: XOR<XOR<CollectionUpdateToOneWithWhereWithoutBookmarksInput, CollectionUpdateWithoutBookmarksInput>, CollectionUncheckedUpdateWithoutBookmarksInput>
   }
 
   export type BookmarkUpdateOneRequiredWithoutCollectionsNestedInput = {
@@ -18317,6 +18309,14 @@ export namespace Prisma {
     upsert?: BookmarkUpsertWithoutCollectionsInput
     connect?: BookmarkWhereUniqueInput
     update?: XOR<XOR<BookmarkUpdateToOneWithWhereWithoutCollectionsInput, BookmarkUpdateWithoutCollectionsInput>, BookmarkUncheckedUpdateWithoutCollectionsInput>
+  }
+
+  export type CollectionUpdateOneRequiredWithoutBookmarksNestedInput = {
+    create?: XOR<CollectionCreateWithoutBookmarksInput, CollectionUncheckedCreateWithoutBookmarksInput>
+    connectOrCreate?: CollectionCreateOrConnectWithoutBookmarksInput
+    upsert?: CollectionUpsertWithoutBookmarksInput
+    connect?: CollectionWhereUniqueInput
+    update?: XOR<XOR<CollectionUpdateToOneWithWhereWithoutBookmarksInput, CollectionUpdateWithoutBookmarksInput>, CollectionUncheckedUpdateWithoutBookmarksInput>
   }
 
   export type CollectionCreateNestedOneWithoutCollaboratorsInput = {
@@ -18564,11 +18564,11 @@ export namespace Prisma {
     lastVisited?: Date | string | null
     visitCount?: number
     notes?: string | null
-    isDeleted?: boolean
     deletedAt?: Date | string | null
-    folders?: FolderBookmarkCreateNestedManyWithoutBookmarkInput
-    tags?: BookmarkTagCreateNestedManyWithoutBookmarkInput
+    isDeleted?: boolean
     collections?: BookmarkCollectionCreateNestedManyWithoutBookmarkInput
+    tags?: BookmarkTagCreateNestedManyWithoutBookmarkInput
+    folders?: FolderBookmarkCreateNestedManyWithoutBookmarkInput
   }
 
   export type BookmarkUncheckedCreateWithoutUserInput = {
@@ -18583,11 +18583,11 @@ export namespace Prisma {
     lastVisited?: Date | string | null
     visitCount?: number
     notes?: string | null
-    isDeleted?: boolean
     deletedAt?: Date | string | null
-    folders?: FolderBookmarkUncheckedCreateNestedManyWithoutBookmarkInput
-    tags?: BookmarkTagUncheckedCreateNestedManyWithoutBookmarkInput
+    isDeleted?: boolean
     collections?: BookmarkCollectionUncheckedCreateNestedManyWithoutBookmarkInput
+    tags?: BookmarkTagUncheckedCreateNestedManyWithoutBookmarkInput
+    folders?: FolderBookmarkUncheckedCreateNestedManyWithoutBookmarkInput
   }
 
   export type BookmarkCreateOrConnectWithoutUserInput = {
@@ -18600,122 +18600,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type FolderCreateWithoutUserInput = {
-    id?: string
-    name: string
-    description?: string | null
-    icon?: string | null
-    color?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    parent?: FolderCreateNestedOneWithoutChildrenInput
-    children?: FolderCreateNestedManyWithoutParentInput
-    bookmarks?: FolderBookmarkCreateNestedManyWithoutFolderInput
-    collaborators?: FolderCollaboratorCreateNestedManyWithoutFolderInput
-  }
-
-  export type FolderUncheckedCreateWithoutUserInput = {
-    id?: string
-    name: string
-    description?: string | null
-    icon?: string | null
-    color?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    parentId?: string | null
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    children?: FolderUncheckedCreateNestedManyWithoutParentInput
-    bookmarks?: FolderBookmarkUncheckedCreateNestedManyWithoutFolderInput
-    collaborators?: FolderCollaboratorUncheckedCreateNestedManyWithoutFolderInput
-  }
-
-  export type FolderCreateOrConnectWithoutUserInput = {
-    where: FolderWhereUniqueInput
-    create: XOR<FolderCreateWithoutUserInput, FolderUncheckedCreateWithoutUserInput>
-  }
-
-  export type FolderCreateManyUserInputEnvelope = {
-    data: FolderCreateManyUserInput | FolderCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type TagCreateWithoutUserInput = {
-    id?: string
-    name: string
-    color?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    bookmarks?: BookmarkTagCreateNestedManyWithoutTagInput
-  }
-
-  export type TagUncheckedCreateWithoutUserInput = {
-    id?: string
-    name: string
-    color?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    bookmarks?: BookmarkTagUncheckedCreateNestedManyWithoutTagInput
-  }
-
-  export type TagCreateOrConnectWithoutUserInput = {
-    where: TagWhereUniqueInput
-    create: XOR<TagCreateWithoutUserInput, TagUncheckedCreateWithoutUserInput>
-  }
-
-  export type TagCreateManyUserInputEnvelope = {
-    data: TagCreateManyUserInput | TagCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type CollectionCreateWithoutUserInput = {
-    id?: string
-    name: string
-    description?: string | null
-    isPublic?: boolean
-    publicLink?: string | null
-    thumbnail?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    owner: UserCreateNestedOneWithoutOwnedCollectionsInput
-    bookmarks?: BookmarkCollectionCreateNestedManyWithoutCollectionInput
-    collaborators?: CollectionCollaboratorCreateNestedManyWithoutCollectionInput
-  }
-
-  export type CollectionUncheckedCreateWithoutUserInput = {
-    id?: string
-    name: string
-    description?: string | null
-    isPublic?: boolean
-    publicLink?: string | null
-    thumbnail?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    ownerId: string
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    bookmarks?: BookmarkCollectionUncheckedCreateNestedManyWithoutCollectionInput
-    collaborators?: CollectionCollaboratorUncheckedCreateNestedManyWithoutCollectionInput
-  }
-
-  export type CollectionCreateOrConnectWithoutUserInput = {
-    where: CollectionWhereUniqueInput
-    create: XOR<CollectionCreateWithoutUserInput, CollectionUncheckedCreateWithoutUserInput>
-  }
-
-  export type CollectionCreateManyUserInputEnvelope = {
-    data: CollectionCreateManyUserInput | CollectionCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
   export type CollectionCreateWithoutOwnerInput = {
     id?: string
     name: string
@@ -18725,10 +18609,10 @@ export namespace Prisma {
     thumbnail?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    isDeleted?: boolean
     deletedAt?: Date | string | null
-    user: UserCreateNestedOneWithoutCollectionsInput
+    isDeleted?: boolean
     bookmarks?: BookmarkCollectionCreateNestedManyWithoutCollectionInput
+    user: UserCreateNestedOneWithoutCollectionsInput
     collaborators?: CollectionCollaboratorCreateNestedManyWithoutCollectionInput
   }
 
@@ -18742,8 +18626,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
-    isDeleted?: boolean
     deletedAt?: Date | string | null
+    isDeleted?: boolean
     bookmarks?: BookmarkCollectionUncheckedCreateNestedManyWithoutCollectionInput
     collaborators?: CollectionCollaboratorUncheckedCreateNestedManyWithoutCollectionInput
   }
@@ -18758,38 +18642,58 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type FolderCollaboratorCreateWithoutUserInput = {
-    permission?: $Enums.Role
-    addedAt?: Date | string
-    folder: FolderCreateNestedOneWithoutCollaboratorsInput
+  export type CollectionCreateWithoutUserInput = {
+    id?: string
+    name: string
+    description?: string | null
+    isPublic?: boolean
+    publicLink?: string | null
+    thumbnail?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    isDeleted?: boolean
+    bookmarks?: BookmarkCollectionCreateNestedManyWithoutCollectionInput
+    owner: UserCreateNestedOneWithoutOwnedCollectionsInput
+    collaborators?: CollectionCollaboratorCreateNestedManyWithoutCollectionInput
   }
 
-  export type FolderCollaboratorUncheckedCreateWithoutUserInput = {
-    folderId: string
-    permission?: $Enums.Role
-    addedAt?: Date | string
+  export type CollectionUncheckedCreateWithoutUserInput = {
+    id?: string
+    name: string
+    description?: string | null
+    isPublic?: boolean
+    publicLink?: string | null
+    thumbnail?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    ownerId: string
+    deletedAt?: Date | string | null
+    isDeleted?: boolean
+    bookmarks?: BookmarkCollectionUncheckedCreateNestedManyWithoutCollectionInput
+    collaborators?: CollectionCollaboratorUncheckedCreateNestedManyWithoutCollectionInput
   }
 
-  export type FolderCollaboratorCreateOrConnectWithoutUserInput = {
-    where: FolderCollaboratorWhereUniqueInput
-    create: XOR<FolderCollaboratorCreateWithoutUserInput, FolderCollaboratorUncheckedCreateWithoutUserInput>
+  export type CollectionCreateOrConnectWithoutUserInput = {
+    where: CollectionWhereUniqueInput
+    create: XOR<CollectionCreateWithoutUserInput, CollectionUncheckedCreateWithoutUserInput>
   }
 
-  export type FolderCollaboratorCreateManyUserInputEnvelope = {
-    data: FolderCollaboratorCreateManyUserInput | FolderCollaboratorCreateManyUserInput[]
+  export type CollectionCreateManyUserInputEnvelope = {
+    data: CollectionCreateManyUserInput | CollectionCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
   export type CollectionCollaboratorCreateWithoutUserInput = {
-    permission?: $Enums.Role
     addedAt?: Date | string
+    permission?: $Enums.Role
     collection: CollectionCreateNestedOneWithoutCollaboratorsInput
   }
 
   export type CollectionCollaboratorUncheckedCreateWithoutUserInput = {
     collectionId: string
-    permission?: $Enums.Role
     addedAt?: Date | string
+    permission?: $Enums.Role
   }
 
   export type CollectionCollaboratorCreateOrConnectWithoutUserInput = {
@@ -18828,6 +18732,102 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type FolderCreateWithoutUserInput = {
+    id?: string
+    name: string
+    description?: string | null
+    icon?: string | null
+    color?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    isDeleted?: boolean
+    parent?: FolderCreateNestedOneWithoutChildrenInput
+    children?: FolderCreateNestedManyWithoutParentInput
+    bookmarks?: FolderBookmarkCreateNestedManyWithoutFolderInput
+    collaborators?: FolderCollaboratorCreateNestedManyWithoutFolderInput
+  }
+
+  export type FolderUncheckedCreateWithoutUserInput = {
+    id?: string
+    name: string
+    description?: string | null
+    icon?: string | null
+    color?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    parentId?: string | null
+    deletedAt?: Date | string | null
+    isDeleted?: boolean
+    children?: FolderUncheckedCreateNestedManyWithoutParentInput
+    bookmarks?: FolderBookmarkUncheckedCreateNestedManyWithoutFolderInput
+    collaborators?: FolderCollaboratorUncheckedCreateNestedManyWithoutFolderInput
+  }
+
+  export type FolderCreateOrConnectWithoutUserInput = {
+    where: FolderWhereUniqueInput
+    create: XOR<FolderCreateWithoutUserInput, FolderUncheckedCreateWithoutUserInput>
+  }
+
+  export type FolderCreateManyUserInputEnvelope = {
+    data: FolderCreateManyUserInput | FolderCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type FolderCollaboratorCreateWithoutUserInput = {
+    addedAt?: Date | string
+    permission?: $Enums.Role
+    folder: FolderCreateNestedOneWithoutCollaboratorsInput
+  }
+
+  export type FolderCollaboratorUncheckedCreateWithoutUserInput = {
+    folderId: string
+    addedAt?: Date | string
+    permission?: $Enums.Role
+  }
+
+  export type FolderCollaboratorCreateOrConnectWithoutUserInput = {
+    where: FolderCollaboratorWhereUniqueInput
+    create: XOR<FolderCollaboratorCreateWithoutUserInput, FolderCollaboratorUncheckedCreateWithoutUserInput>
+  }
+
+  export type FolderCollaboratorCreateManyUserInputEnvelope = {
+    data: FolderCollaboratorCreateManyUserInput | FolderCollaboratorCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TagCreateWithoutUserInput = {
+    id?: string
+    name: string
+    color?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    isDeleted?: boolean
+    bookmarks?: BookmarkTagCreateNestedManyWithoutTagInput
+  }
+
+  export type TagUncheckedCreateWithoutUserInput = {
+    id?: string
+    name: string
+    color?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    isDeleted?: boolean
+    bookmarks?: BookmarkTagUncheckedCreateNestedManyWithoutTagInput
+  }
+
+  export type TagCreateOrConnectWithoutUserInput = {
+    where: TagWhereUniqueInput
+    create: XOR<TagCreateWithoutUserInput, TagUncheckedCreateWithoutUserInput>
+  }
+
+  export type TagCreateManyUserInputEnvelope = {
+    data: TagCreateManyUserInput | TagCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type BookmarkUpsertWithWhereUniqueWithoutUserInput = {
     where: BookmarkWhereUniqueInput
     update: XOR<BookmarkUpdateWithoutUserInput, BookmarkUncheckedUpdateWithoutUserInput>
@@ -18860,8 +18860,112 @@ export namespace Prisma {
     visitCount?: IntFilter<"Bookmark"> | number
     notes?: StringNullableFilter<"Bookmark"> | string | null
     userId?: StringFilter<"Bookmark"> | string
-    isDeleted?: BoolFilter<"Bookmark"> | boolean
     deletedAt?: DateTimeNullableFilter<"Bookmark"> | Date | string | null
+    isDeleted?: BoolFilter<"Bookmark"> | boolean
+  }
+
+  export type CollectionUpsertWithWhereUniqueWithoutOwnerInput = {
+    where: CollectionWhereUniqueInput
+    update: XOR<CollectionUpdateWithoutOwnerInput, CollectionUncheckedUpdateWithoutOwnerInput>
+    create: XOR<CollectionCreateWithoutOwnerInput, CollectionUncheckedCreateWithoutOwnerInput>
+  }
+
+  export type CollectionUpdateWithWhereUniqueWithoutOwnerInput = {
+    where: CollectionWhereUniqueInput
+    data: XOR<CollectionUpdateWithoutOwnerInput, CollectionUncheckedUpdateWithoutOwnerInput>
+  }
+
+  export type CollectionUpdateManyWithWhereWithoutOwnerInput = {
+    where: CollectionScalarWhereInput
+    data: XOR<CollectionUpdateManyMutationInput, CollectionUncheckedUpdateManyWithoutOwnerInput>
+  }
+
+  export type CollectionScalarWhereInput = {
+    AND?: CollectionScalarWhereInput | CollectionScalarWhereInput[]
+    OR?: CollectionScalarWhereInput[]
+    NOT?: CollectionScalarWhereInput | CollectionScalarWhereInput[]
+    id?: StringFilter<"Collection"> | string
+    name?: StringFilter<"Collection"> | string
+    description?: StringNullableFilter<"Collection"> | string | null
+    isPublic?: BoolFilter<"Collection"> | boolean
+    publicLink?: StringNullableFilter<"Collection"> | string | null
+    thumbnail?: StringNullableFilter<"Collection"> | string | null
+    createdAt?: DateTimeFilter<"Collection"> | Date | string
+    updatedAt?: DateTimeFilter<"Collection"> | Date | string
+    userId?: StringFilter<"Collection"> | string
+    ownerId?: StringFilter<"Collection"> | string
+    deletedAt?: DateTimeNullableFilter<"Collection"> | Date | string | null
+    isDeleted?: BoolFilter<"Collection"> | boolean
+  }
+
+  export type CollectionUpsertWithWhereUniqueWithoutUserInput = {
+    where: CollectionWhereUniqueInput
+    update: XOR<CollectionUpdateWithoutUserInput, CollectionUncheckedUpdateWithoutUserInput>
+    create: XOR<CollectionCreateWithoutUserInput, CollectionUncheckedCreateWithoutUserInput>
+  }
+
+  export type CollectionUpdateWithWhereUniqueWithoutUserInput = {
+    where: CollectionWhereUniqueInput
+    data: XOR<CollectionUpdateWithoutUserInput, CollectionUncheckedUpdateWithoutUserInput>
+  }
+
+  export type CollectionUpdateManyWithWhereWithoutUserInput = {
+    where: CollectionScalarWhereInput
+    data: XOR<CollectionUpdateManyMutationInput, CollectionUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type CollectionCollaboratorUpsertWithWhereUniqueWithoutUserInput = {
+    where: CollectionCollaboratorWhereUniqueInput
+    update: XOR<CollectionCollaboratorUpdateWithoutUserInput, CollectionCollaboratorUncheckedUpdateWithoutUserInput>
+    create: XOR<CollectionCollaboratorCreateWithoutUserInput, CollectionCollaboratorUncheckedCreateWithoutUserInput>
+  }
+
+  export type CollectionCollaboratorUpdateWithWhereUniqueWithoutUserInput = {
+    where: CollectionCollaboratorWhereUniqueInput
+    data: XOR<CollectionCollaboratorUpdateWithoutUserInput, CollectionCollaboratorUncheckedUpdateWithoutUserInput>
+  }
+
+  export type CollectionCollaboratorUpdateManyWithWhereWithoutUserInput = {
+    where: CollectionCollaboratorScalarWhereInput
+    data: XOR<CollectionCollaboratorUpdateManyMutationInput, CollectionCollaboratorUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type CollectionCollaboratorScalarWhereInput = {
+    AND?: CollectionCollaboratorScalarWhereInput | CollectionCollaboratorScalarWhereInput[]
+    OR?: CollectionCollaboratorScalarWhereInput[]
+    NOT?: CollectionCollaboratorScalarWhereInput | CollectionCollaboratorScalarWhereInput[]
+    collectionId?: StringFilter<"CollectionCollaborator"> | string
+    userId?: StringFilter<"CollectionCollaborator"> | string
+    addedAt?: DateTimeFilter<"CollectionCollaborator"> | Date | string
+    permission?: EnumRoleFilter<"CollectionCollaborator"> | $Enums.Role
+  }
+
+  export type DeviceUpsertWithWhereUniqueWithoutUserInput = {
+    where: DeviceWhereUniqueInput
+    update: XOR<DeviceUpdateWithoutUserInput, DeviceUncheckedUpdateWithoutUserInput>
+    create: XOR<DeviceCreateWithoutUserInput, DeviceUncheckedCreateWithoutUserInput>
+  }
+
+  export type DeviceUpdateWithWhereUniqueWithoutUserInput = {
+    where: DeviceWhereUniqueInput
+    data: XOR<DeviceUpdateWithoutUserInput, DeviceUncheckedUpdateWithoutUserInput>
+  }
+
+  export type DeviceUpdateManyWithWhereWithoutUserInput = {
+    where: DeviceScalarWhereInput
+    data: XOR<DeviceUpdateManyMutationInput, DeviceUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type DeviceScalarWhereInput = {
+    AND?: DeviceScalarWhereInput | DeviceScalarWhereInput[]
+    OR?: DeviceScalarWhereInput[]
+    NOT?: DeviceScalarWhereInput | DeviceScalarWhereInput[]
+    id?: StringFilter<"Device"> | string
+    userId?: StringFilter<"Device"> | string
+    deviceName?: StringFilter<"Device"> | string
+    deviceType?: StringFilter<"Device"> | string
+    lastSynced?: DateTimeFilter<"Device"> | Date | string
+    lastActive?: DateTimeFilter<"Device"> | Date | string
   }
 
   export type FolderUpsertWithWhereUniqueWithoutUserInput = {
@@ -18893,8 +18997,34 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Folder"> | Date | string
     userId?: StringFilter<"Folder"> | string
     parentId?: StringNullableFilter<"Folder"> | string | null
-    isDeleted?: BoolFilter<"Folder"> | boolean
     deletedAt?: DateTimeNullableFilter<"Folder"> | Date | string | null
+    isDeleted?: BoolFilter<"Folder"> | boolean
+  }
+
+  export type FolderCollaboratorUpsertWithWhereUniqueWithoutUserInput = {
+    where: FolderCollaboratorWhereUniqueInput
+    update: XOR<FolderCollaboratorUpdateWithoutUserInput, FolderCollaboratorUncheckedUpdateWithoutUserInput>
+    create: XOR<FolderCollaboratorCreateWithoutUserInput, FolderCollaboratorUncheckedCreateWithoutUserInput>
+  }
+
+  export type FolderCollaboratorUpdateWithWhereUniqueWithoutUserInput = {
+    where: FolderCollaboratorWhereUniqueInput
+    data: XOR<FolderCollaboratorUpdateWithoutUserInput, FolderCollaboratorUncheckedUpdateWithoutUserInput>
+  }
+
+  export type FolderCollaboratorUpdateManyWithWhereWithoutUserInput = {
+    where: FolderCollaboratorScalarWhereInput
+    data: XOR<FolderCollaboratorUpdateManyMutationInput, FolderCollaboratorUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type FolderCollaboratorScalarWhereInput = {
+    AND?: FolderCollaboratorScalarWhereInput | FolderCollaboratorScalarWhereInput[]
+    OR?: FolderCollaboratorScalarWhereInput[]
+    NOT?: FolderCollaboratorScalarWhereInput | FolderCollaboratorScalarWhereInput[]
+    folderId?: StringFilter<"FolderCollaborator"> | string
+    userId?: StringFilter<"FolderCollaborator"> | string
+    addedAt?: DateTimeFilter<"FolderCollaborator"> | Date | string
+    permission?: EnumRoleFilter<"FolderCollaborator"> | $Enums.Role
   }
 
   export type TagUpsertWithWhereUniqueWithoutUserInput = {
@@ -18923,138 +19053,8 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Tag"> | Date | string
     updatedAt?: DateTimeFilter<"Tag"> | Date | string
     userId?: StringFilter<"Tag"> | string
-    isDeleted?: BoolFilter<"Tag"> | boolean
     deletedAt?: DateTimeNullableFilter<"Tag"> | Date | string | null
-  }
-
-  export type CollectionUpsertWithWhereUniqueWithoutUserInput = {
-    where: CollectionWhereUniqueInput
-    update: XOR<CollectionUpdateWithoutUserInput, CollectionUncheckedUpdateWithoutUserInput>
-    create: XOR<CollectionCreateWithoutUserInput, CollectionUncheckedCreateWithoutUserInput>
-  }
-
-  export type CollectionUpdateWithWhereUniqueWithoutUserInput = {
-    where: CollectionWhereUniqueInput
-    data: XOR<CollectionUpdateWithoutUserInput, CollectionUncheckedUpdateWithoutUserInput>
-  }
-
-  export type CollectionUpdateManyWithWhereWithoutUserInput = {
-    where: CollectionScalarWhereInput
-    data: XOR<CollectionUpdateManyMutationInput, CollectionUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type CollectionScalarWhereInput = {
-    AND?: CollectionScalarWhereInput | CollectionScalarWhereInput[]
-    OR?: CollectionScalarWhereInput[]
-    NOT?: CollectionScalarWhereInput | CollectionScalarWhereInput[]
-    id?: StringFilter<"Collection"> | string
-    name?: StringFilter<"Collection"> | string
-    description?: StringNullableFilter<"Collection"> | string | null
-    isPublic?: BoolFilter<"Collection"> | boolean
-    publicLink?: StringNullableFilter<"Collection"> | string | null
-    thumbnail?: StringNullableFilter<"Collection"> | string | null
-    createdAt?: DateTimeFilter<"Collection"> | Date | string
-    updatedAt?: DateTimeFilter<"Collection"> | Date | string
-    userId?: StringFilter<"Collection"> | string
-    ownerId?: StringFilter<"Collection"> | string
-    isDeleted?: BoolFilter<"Collection"> | boolean
-    deletedAt?: DateTimeNullableFilter<"Collection"> | Date | string | null
-  }
-
-  export type CollectionUpsertWithWhereUniqueWithoutOwnerInput = {
-    where: CollectionWhereUniqueInput
-    update: XOR<CollectionUpdateWithoutOwnerInput, CollectionUncheckedUpdateWithoutOwnerInput>
-    create: XOR<CollectionCreateWithoutOwnerInput, CollectionUncheckedCreateWithoutOwnerInput>
-  }
-
-  export type CollectionUpdateWithWhereUniqueWithoutOwnerInput = {
-    where: CollectionWhereUniqueInput
-    data: XOR<CollectionUpdateWithoutOwnerInput, CollectionUncheckedUpdateWithoutOwnerInput>
-  }
-
-  export type CollectionUpdateManyWithWhereWithoutOwnerInput = {
-    where: CollectionScalarWhereInput
-    data: XOR<CollectionUpdateManyMutationInput, CollectionUncheckedUpdateManyWithoutOwnerInput>
-  }
-
-  export type FolderCollaboratorUpsertWithWhereUniqueWithoutUserInput = {
-    where: FolderCollaboratorWhereUniqueInput
-    update: XOR<FolderCollaboratorUpdateWithoutUserInput, FolderCollaboratorUncheckedUpdateWithoutUserInput>
-    create: XOR<FolderCollaboratorCreateWithoutUserInput, FolderCollaboratorUncheckedCreateWithoutUserInput>
-  }
-
-  export type FolderCollaboratorUpdateWithWhereUniqueWithoutUserInput = {
-    where: FolderCollaboratorWhereUniqueInput
-    data: XOR<FolderCollaboratorUpdateWithoutUserInput, FolderCollaboratorUncheckedUpdateWithoutUserInput>
-  }
-
-  export type FolderCollaboratorUpdateManyWithWhereWithoutUserInput = {
-    where: FolderCollaboratorScalarWhereInput
-    data: XOR<FolderCollaboratorUpdateManyMutationInput, FolderCollaboratorUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type FolderCollaboratorScalarWhereInput = {
-    AND?: FolderCollaboratorScalarWhereInput | FolderCollaboratorScalarWhereInput[]
-    OR?: FolderCollaboratorScalarWhereInput[]
-    NOT?: FolderCollaboratorScalarWhereInput | FolderCollaboratorScalarWhereInput[]
-    folderId?: StringFilter<"FolderCollaborator"> | string
-    userId?: StringFilter<"FolderCollaborator"> | string
-    permission?: EnumRoleFilter<"FolderCollaborator"> | $Enums.Role
-    addedAt?: DateTimeFilter<"FolderCollaborator"> | Date | string
-  }
-
-  export type CollectionCollaboratorUpsertWithWhereUniqueWithoutUserInput = {
-    where: CollectionCollaboratorWhereUniqueInput
-    update: XOR<CollectionCollaboratorUpdateWithoutUserInput, CollectionCollaboratorUncheckedUpdateWithoutUserInput>
-    create: XOR<CollectionCollaboratorCreateWithoutUserInput, CollectionCollaboratorUncheckedCreateWithoutUserInput>
-  }
-
-  export type CollectionCollaboratorUpdateWithWhereUniqueWithoutUserInput = {
-    where: CollectionCollaboratorWhereUniqueInput
-    data: XOR<CollectionCollaboratorUpdateWithoutUserInput, CollectionCollaboratorUncheckedUpdateWithoutUserInput>
-  }
-
-  export type CollectionCollaboratorUpdateManyWithWhereWithoutUserInput = {
-    where: CollectionCollaboratorScalarWhereInput
-    data: XOR<CollectionCollaboratorUpdateManyMutationInput, CollectionCollaboratorUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type CollectionCollaboratorScalarWhereInput = {
-    AND?: CollectionCollaboratorScalarWhereInput | CollectionCollaboratorScalarWhereInput[]
-    OR?: CollectionCollaboratorScalarWhereInput[]
-    NOT?: CollectionCollaboratorScalarWhereInput | CollectionCollaboratorScalarWhereInput[]
-    collectionId?: StringFilter<"CollectionCollaborator"> | string
-    userId?: StringFilter<"CollectionCollaborator"> | string
-    permission?: EnumRoleFilter<"CollectionCollaborator"> | $Enums.Role
-    addedAt?: DateTimeFilter<"CollectionCollaborator"> | Date | string
-  }
-
-  export type DeviceUpsertWithWhereUniqueWithoutUserInput = {
-    where: DeviceWhereUniqueInput
-    update: XOR<DeviceUpdateWithoutUserInput, DeviceUncheckedUpdateWithoutUserInput>
-    create: XOR<DeviceCreateWithoutUserInput, DeviceUncheckedCreateWithoutUserInput>
-  }
-
-  export type DeviceUpdateWithWhereUniqueWithoutUserInput = {
-    where: DeviceWhereUniqueInput
-    data: XOR<DeviceUpdateWithoutUserInput, DeviceUncheckedUpdateWithoutUserInput>
-  }
-
-  export type DeviceUpdateManyWithWhereWithoutUserInput = {
-    where: DeviceScalarWhereInput
-    data: XOR<DeviceUpdateManyMutationInput, DeviceUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type DeviceScalarWhereInput = {
-    AND?: DeviceScalarWhereInput | DeviceScalarWhereInput[]
-    OR?: DeviceScalarWhereInput[]
-    NOT?: DeviceScalarWhereInput | DeviceScalarWhereInput[]
-    id?: StringFilter<"Device"> | string
-    userId?: StringFilter<"Device"> | string
-    deviceName?: StringFilter<"Device"> | string
-    deviceType?: StringFilter<"Device"> | string
-    lastSynced?: DateTimeFilter<"Device"> | Date | string
-    lastActive?: DateTimeFilter<"Device"> | Date | string
+    isDeleted?: BoolFilter<"Tag"> | boolean
   }
 
   export type UserCreateWithoutBookmarksInput = {
@@ -19073,13 +19073,13 @@ export namespace Prisma {
     passwordResetExpires?: Date | string | null
     isVerified?: boolean
     verificationToken?: string | null
-    folders?: FolderCreateNestedManyWithoutUserInput
-    tags?: TagCreateNestedManyWithoutUserInput
-    collections?: CollectionCreateNestedManyWithoutUserInput
     ownedCollections?: CollectionCreateNestedManyWithoutOwnerInput
-    collabFolders?: FolderCollaboratorCreateNestedManyWithoutUserInput
+    collections?: CollectionCreateNestedManyWithoutUserInput
     collabCollections?: CollectionCollaboratorCreateNestedManyWithoutUserInput
     devices?: DeviceCreateNestedManyWithoutUserInput
+    folders?: FolderCreateNestedManyWithoutUserInput
+    collabFolders?: FolderCollaboratorCreateNestedManyWithoutUserInput
+    tags?: TagCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutBookmarksInput = {
@@ -19098,13 +19098,13 @@ export namespace Prisma {
     passwordResetExpires?: Date | string | null
     isVerified?: boolean
     verificationToken?: string | null
-    folders?: FolderUncheckedCreateNestedManyWithoutUserInput
-    tags?: TagUncheckedCreateNestedManyWithoutUserInput
-    collections?: CollectionUncheckedCreateNestedManyWithoutUserInput
     ownedCollections?: CollectionUncheckedCreateNestedManyWithoutOwnerInput
-    collabFolders?: FolderCollaboratorUncheckedCreateNestedManyWithoutUserInput
+    collections?: CollectionUncheckedCreateNestedManyWithoutUserInput
     collabCollections?: CollectionCollaboratorUncheckedCreateNestedManyWithoutUserInput
     devices?: DeviceUncheckedCreateNestedManyWithoutUserInput
+    folders?: FolderUncheckedCreateNestedManyWithoutUserInput
+    collabFolders?: FolderCollaboratorUncheckedCreateNestedManyWithoutUserInput
+    tags?: TagUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutBookmarksInput = {
@@ -19112,23 +19112,25 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutBookmarksInput, UserUncheckedCreateWithoutBookmarksInput>
   }
 
-  export type FolderBookmarkCreateWithoutBookmarkInput = {
+  export type BookmarkCollectionCreateWithoutBookmarkInput = {
     addedAt?: Date | string
-    folder: FolderCreateNestedOneWithoutBookmarksInput
+    order?: number
+    collection: CollectionCreateNestedOneWithoutBookmarksInput
   }
 
-  export type FolderBookmarkUncheckedCreateWithoutBookmarkInput = {
-    folderId: string
+  export type BookmarkCollectionUncheckedCreateWithoutBookmarkInput = {
+    collectionId: string
     addedAt?: Date | string
+    order?: number
   }
 
-  export type FolderBookmarkCreateOrConnectWithoutBookmarkInput = {
-    where: FolderBookmarkWhereUniqueInput
-    create: XOR<FolderBookmarkCreateWithoutBookmarkInput, FolderBookmarkUncheckedCreateWithoutBookmarkInput>
+  export type BookmarkCollectionCreateOrConnectWithoutBookmarkInput = {
+    where: BookmarkCollectionWhereUniqueInput
+    create: XOR<BookmarkCollectionCreateWithoutBookmarkInput, BookmarkCollectionUncheckedCreateWithoutBookmarkInput>
   }
 
-  export type FolderBookmarkCreateManyBookmarkInputEnvelope = {
-    data: FolderBookmarkCreateManyBookmarkInput | FolderBookmarkCreateManyBookmarkInput[]
+  export type BookmarkCollectionCreateManyBookmarkInputEnvelope = {
+    data: BookmarkCollectionCreateManyBookmarkInput | BookmarkCollectionCreateManyBookmarkInput[]
     skipDuplicates?: boolean
   }
 
@@ -19152,25 +19154,23 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type BookmarkCollectionCreateWithoutBookmarkInput = {
+  export type FolderBookmarkCreateWithoutBookmarkInput = {
     addedAt?: Date | string
-    order?: number
-    collection: CollectionCreateNestedOneWithoutBookmarksInput
+    folder: FolderCreateNestedOneWithoutBookmarksInput
   }
 
-  export type BookmarkCollectionUncheckedCreateWithoutBookmarkInput = {
-    collectionId: string
+  export type FolderBookmarkUncheckedCreateWithoutBookmarkInput = {
+    folderId: string
     addedAt?: Date | string
-    order?: number
   }
 
-  export type BookmarkCollectionCreateOrConnectWithoutBookmarkInput = {
-    where: BookmarkCollectionWhereUniqueInput
-    create: XOR<BookmarkCollectionCreateWithoutBookmarkInput, BookmarkCollectionUncheckedCreateWithoutBookmarkInput>
+  export type FolderBookmarkCreateOrConnectWithoutBookmarkInput = {
+    where: FolderBookmarkWhereUniqueInput
+    create: XOR<FolderBookmarkCreateWithoutBookmarkInput, FolderBookmarkUncheckedCreateWithoutBookmarkInput>
   }
 
-  export type BookmarkCollectionCreateManyBookmarkInputEnvelope = {
-    data: BookmarkCollectionCreateManyBookmarkInput | BookmarkCollectionCreateManyBookmarkInput[]
+  export type FolderBookmarkCreateManyBookmarkInputEnvelope = {
+    data: FolderBookmarkCreateManyBookmarkInput | FolderBookmarkCreateManyBookmarkInput[]
     skipDuplicates?: boolean
   }
 
@@ -19201,13 +19201,13 @@ export namespace Prisma {
     passwordResetExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
-    folders?: FolderUpdateManyWithoutUserNestedInput
-    tags?: TagUpdateManyWithoutUserNestedInput
-    collections?: CollectionUpdateManyWithoutUserNestedInput
     ownedCollections?: CollectionUpdateManyWithoutOwnerNestedInput
-    collabFolders?: FolderCollaboratorUpdateManyWithoutUserNestedInput
+    collections?: CollectionUpdateManyWithoutUserNestedInput
     collabCollections?: CollectionCollaboratorUpdateManyWithoutUserNestedInput
     devices?: DeviceUpdateManyWithoutUserNestedInput
+    folders?: FolderUpdateManyWithoutUserNestedInput
+    collabFolders?: FolderCollaboratorUpdateManyWithoutUserNestedInput
+    tags?: TagUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBookmarksInput = {
@@ -19226,63 +19226,13 @@ export namespace Prisma {
     passwordResetExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
-    folders?: FolderUncheckedUpdateManyWithoutUserNestedInput
-    tags?: TagUncheckedUpdateManyWithoutUserNestedInput
-    collections?: CollectionUncheckedUpdateManyWithoutUserNestedInput
     ownedCollections?: CollectionUncheckedUpdateManyWithoutOwnerNestedInput
-    collabFolders?: FolderCollaboratorUncheckedUpdateManyWithoutUserNestedInput
+    collections?: CollectionUncheckedUpdateManyWithoutUserNestedInput
     collabCollections?: CollectionCollaboratorUncheckedUpdateManyWithoutUserNestedInput
     devices?: DeviceUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type FolderBookmarkUpsertWithWhereUniqueWithoutBookmarkInput = {
-    where: FolderBookmarkWhereUniqueInput
-    update: XOR<FolderBookmarkUpdateWithoutBookmarkInput, FolderBookmarkUncheckedUpdateWithoutBookmarkInput>
-    create: XOR<FolderBookmarkCreateWithoutBookmarkInput, FolderBookmarkUncheckedCreateWithoutBookmarkInput>
-  }
-
-  export type FolderBookmarkUpdateWithWhereUniqueWithoutBookmarkInput = {
-    where: FolderBookmarkWhereUniqueInput
-    data: XOR<FolderBookmarkUpdateWithoutBookmarkInput, FolderBookmarkUncheckedUpdateWithoutBookmarkInput>
-  }
-
-  export type FolderBookmarkUpdateManyWithWhereWithoutBookmarkInput = {
-    where: FolderBookmarkScalarWhereInput
-    data: XOR<FolderBookmarkUpdateManyMutationInput, FolderBookmarkUncheckedUpdateManyWithoutBookmarkInput>
-  }
-
-  export type FolderBookmarkScalarWhereInput = {
-    AND?: FolderBookmarkScalarWhereInput | FolderBookmarkScalarWhereInput[]
-    OR?: FolderBookmarkScalarWhereInput[]
-    NOT?: FolderBookmarkScalarWhereInput | FolderBookmarkScalarWhereInput[]
-    folderId?: StringFilter<"FolderBookmark"> | string
-    bookmarkId?: StringFilter<"FolderBookmark"> | string
-    addedAt?: DateTimeFilter<"FolderBookmark"> | Date | string
-  }
-
-  export type BookmarkTagUpsertWithWhereUniqueWithoutBookmarkInput = {
-    where: BookmarkTagWhereUniqueInput
-    update: XOR<BookmarkTagUpdateWithoutBookmarkInput, BookmarkTagUncheckedUpdateWithoutBookmarkInput>
-    create: XOR<BookmarkTagCreateWithoutBookmarkInput, BookmarkTagUncheckedCreateWithoutBookmarkInput>
-  }
-
-  export type BookmarkTagUpdateWithWhereUniqueWithoutBookmarkInput = {
-    where: BookmarkTagWhereUniqueInput
-    data: XOR<BookmarkTagUpdateWithoutBookmarkInput, BookmarkTagUncheckedUpdateWithoutBookmarkInput>
-  }
-
-  export type BookmarkTagUpdateManyWithWhereWithoutBookmarkInput = {
-    where: BookmarkTagScalarWhereInput
-    data: XOR<BookmarkTagUpdateManyMutationInput, BookmarkTagUncheckedUpdateManyWithoutBookmarkInput>
-  }
-
-  export type BookmarkTagScalarWhereInput = {
-    AND?: BookmarkTagScalarWhereInput | BookmarkTagScalarWhereInput[]
-    OR?: BookmarkTagScalarWhereInput[]
-    NOT?: BookmarkTagScalarWhereInput | BookmarkTagScalarWhereInput[]
-    tagId?: StringFilter<"BookmarkTag"> | string
-    bookmarkId?: StringFilter<"BookmarkTag"> | string
-    addedAt?: DateTimeFilter<"BookmarkTag"> | Date | string
+    folders?: FolderUncheckedUpdateManyWithoutUserNestedInput
+    collabFolders?: FolderCollaboratorUncheckedUpdateManyWithoutUserNestedInput
+    tags?: TagUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type BookmarkCollectionUpsertWithWhereUniqueWithoutBookmarkInput = {
@@ -19311,6 +19261,135 @@ export namespace Prisma {
     order?: IntFilter<"BookmarkCollection"> | number
   }
 
+  export type BookmarkTagUpsertWithWhereUniqueWithoutBookmarkInput = {
+    where: BookmarkTagWhereUniqueInput
+    update: XOR<BookmarkTagUpdateWithoutBookmarkInput, BookmarkTagUncheckedUpdateWithoutBookmarkInput>
+    create: XOR<BookmarkTagCreateWithoutBookmarkInput, BookmarkTagUncheckedCreateWithoutBookmarkInput>
+  }
+
+  export type BookmarkTagUpdateWithWhereUniqueWithoutBookmarkInput = {
+    where: BookmarkTagWhereUniqueInput
+    data: XOR<BookmarkTagUpdateWithoutBookmarkInput, BookmarkTagUncheckedUpdateWithoutBookmarkInput>
+  }
+
+  export type BookmarkTagUpdateManyWithWhereWithoutBookmarkInput = {
+    where: BookmarkTagScalarWhereInput
+    data: XOR<BookmarkTagUpdateManyMutationInput, BookmarkTagUncheckedUpdateManyWithoutBookmarkInput>
+  }
+
+  export type BookmarkTagScalarWhereInput = {
+    AND?: BookmarkTagScalarWhereInput | BookmarkTagScalarWhereInput[]
+    OR?: BookmarkTagScalarWhereInput[]
+    NOT?: BookmarkTagScalarWhereInput | BookmarkTagScalarWhereInput[]
+    tagId?: StringFilter<"BookmarkTag"> | string
+    bookmarkId?: StringFilter<"BookmarkTag"> | string
+    addedAt?: DateTimeFilter<"BookmarkTag"> | Date | string
+  }
+
+  export type FolderBookmarkUpsertWithWhereUniqueWithoutBookmarkInput = {
+    where: FolderBookmarkWhereUniqueInput
+    update: XOR<FolderBookmarkUpdateWithoutBookmarkInput, FolderBookmarkUncheckedUpdateWithoutBookmarkInput>
+    create: XOR<FolderBookmarkCreateWithoutBookmarkInput, FolderBookmarkUncheckedCreateWithoutBookmarkInput>
+  }
+
+  export type FolderBookmarkUpdateWithWhereUniqueWithoutBookmarkInput = {
+    where: FolderBookmarkWhereUniqueInput
+    data: XOR<FolderBookmarkUpdateWithoutBookmarkInput, FolderBookmarkUncheckedUpdateWithoutBookmarkInput>
+  }
+
+  export type FolderBookmarkUpdateManyWithWhereWithoutBookmarkInput = {
+    where: FolderBookmarkScalarWhereInput
+    data: XOR<FolderBookmarkUpdateManyMutationInput, FolderBookmarkUncheckedUpdateManyWithoutBookmarkInput>
+  }
+
+  export type FolderBookmarkScalarWhereInput = {
+    AND?: FolderBookmarkScalarWhereInput | FolderBookmarkScalarWhereInput[]
+    OR?: FolderBookmarkScalarWhereInput[]
+    NOT?: FolderBookmarkScalarWhereInput | FolderBookmarkScalarWhereInput[]
+    folderId?: StringFilter<"FolderBookmark"> | string
+    bookmarkId?: StringFilter<"FolderBookmark"> | string
+    addedAt?: DateTimeFilter<"FolderBookmark"> | Date | string
+  }
+
+  export type FolderCreateWithoutChildrenInput = {
+    id?: string
+    name: string
+    description?: string | null
+    icon?: string | null
+    color?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    isDeleted?: boolean
+    parent?: FolderCreateNestedOneWithoutChildrenInput
+    user: UserCreateNestedOneWithoutFoldersInput
+    bookmarks?: FolderBookmarkCreateNestedManyWithoutFolderInput
+    collaborators?: FolderCollaboratorCreateNestedManyWithoutFolderInput
+  }
+
+  export type FolderUncheckedCreateWithoutChildrenInput = {
+    id?: string
+    name: string
+    description?: string | null
+    icon?: string | null
+    color?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: string
+    parentId?: string | null
+    deletedAt?: Date | string | null
+    isDeleted?: boolean
+    bookmarks?: FolderBookmarkUncheckedCreateNestedManyWithoutFolderInput
+    collaborators?: FolderCollaboratorUncheckedCreateNestedManyWithoutFolderInput
+  }
+
+  export type FolderCreateOrConnectWithoutChildrenInput = {
+    where: FolderWhereUniqueInput
+    create: XOR<FolderCreateWithoutChildrenInput, FolderUncheckedCreateWithoutChildrenInput>
+  }
+
+  export type FolderCreateWithoutParentInput = {
+    id?: string
+    name: string
+    description?: string | null
+    icon?: string | null
+    color?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    isDeleted?: boolean
+    children?: FolderCreateNestedManyWithoutParentInput
+    user: UserCreateNestedOneWithoutFoldersInput
+    bookmarks?: FolderBookmarkCreateNestedManyWithoutFolderInput
+    collaborators?: FolderCollaboratorCreateNestedManyWithoutFolderInput
+  }
+
+  export type FolderUncheckedCreateWithoutParentInput = {
+    id?: string
+    name: string
+    description?: string | null
+    icon?: string | null
+    color?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: string
+    deletedAt?: Date | string | null
+    isDeleted?: boolean
+    children?: FolderUncheckedCreateNestedManyWithoutParentInput
+    bookmarks?: FolderBookmarkUncheckedCreateNestedManyWithoutFolderInput
+    collaborators?: FolderCollaboratorUncheckedCreateNestedManyWithoutFolderInput
+  }
+
+  export type FolderCreateOrConnectWithoutParentInput = {
+    where: FolderWhereUniqueInput
+    create: XOR<FolderCreateWithoutParentInput, FolderUncheckedCreateWithoutParentInput>
+  }
+
+  export type FolderCreateManyParentInputEnvelope = {
+    data: FolderCreateManyParentInput | FolderCreateManyParentInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserCreateWithoutFoldersInput = {
     id?: string
     email: string
@@ -19328,12 +19407,12 @@ export namespace Prisma {
     isVerified?: boolean
     verificationToken?: string | null
     bookmarks?: BookmarkCreateNestedManyWithoutUserInput
-    tags?: TagCreateNestedManyWithoutUserInput
-    collections?: CollectionCreateNestedManyWithoutUserInput
     ownedCollections?: CollectionCreateNestedManyWithoutOwnerInput
-    collabFolders?: FolderCollaboratorCreateNestedManyWithoutUserInput
+    collections?: CollectionCreateNestedManyWithoutUserInput
     collabCollections?: CollectionCollaboratorCreateNestedManyWithoutUserInput
     devices?: DeviceCreateNestedManyWithoutUserInput
+    collabFolders?: FolderCollaboratorCreateNestedManyWithoutUserInput
+    tags?: TagCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutFoldersInput = {
@@ -19353,96 +19432,17 @@ export namespace Prisma {
     isVerified?: boolean
     verificationToken?: string | null
     bookmarks?: BookmarkUncheckedCreateNestedManyWithoutUserInput
-    tags?: TagUncheckedCreateNestedManyWithoutUserInput
-    collections?: CollectionUncheckedCreateNestedManyWithoutUserInput
     ownedCollections?: CollectionUncheckedCreateNestedManyWithoutOwnerInput
-    collabFolders?: FolderCollaboratorUncheckedCreateNestedManyWithoutUserInput
+    collections?: CollectionUncheckedCreateNestedManyWithoutUserInput
     collabCollections?: CollectionCollaboratorUncheckedCreateNestedManyWithoutUserInput
     devices?: DeviceUncheckedCreateNestedManyWithoutUserInput
+    collabFolders?: FolderCollaboratorUncheckedCreateNestedManyWithoutUserInput
+    tags?: TagUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutFoldersInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutFoldersInput, UserUncheckedCreateWithoutFoldersInput>
-  }
-
-  export type FolderCreateWithoutChildrenInput = {
-    id?: string
-    name: string
-    description?: string | null
-    icon?: string | null
-    color?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    user: UserCreateNestedOneWithoutFoldersInput
-    parent?: FolderCreateNestedOneWithoutChildrenInput
-    bookmarks?: FolderBookmarkCreateNestedManyWithoutFolderInput
-    collaborators?: FolderCollaboratorCreateNestedManyWithoutFolderInput
-  }
-
-  export type FolderUncheckedCreateWithoutChildrenInput = {
-    id?: string
-    name: string
-    description?: string | null
-    icon?: string | null
-    color?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    userId: string
-    parentId?: string | null
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    bookmarks?: FolderBookmarkUncheckedCreateNestedManyWithoutFolderInput
-    collaborators?: FolderCollaboratorUncheckedCreateNestedManyWithoutFolderInput
-  }
-
-  export type FolderCreateOrConnectWithoutChildrenInput = {
-    where: FolderWhereUniqueInput
-    create: XOR<FolderCreateWithoutChildrenInput, FolderUncheckedCreateWithoutChildrenInput>
-  }
-
-  export type FolderCreateWithoutParentInput = {
-    id?: string
-    name: string
-    description?: string | null
-    icon?: string | null
-    color?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    user: UserCreateNestedOneWithoutFoldersInput
-    children?: FolderCreateNestedManyWithoutParentInput
-    bookmarks?: FolderBookmarkCreateNestedManyWithoutFolderInput
-    collaborators?: FolderCollaboratorCreateNestedManyWithoutFolderInput
-  }
-
-  export type FolderUncheckedCreateWithoutParentInput = {
-    id?: string
-    name: string
-    description?: string | null
-    icon?: string | null
-    color?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    userId: string
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    children?: FolderUncheckedCreateNestedManyWithoutParentInput
-    bookmarks?: FolderBookmarkUncheckedCreateNestedManyWithoutFolderInput
-    collaborators?: FolderCollaboratorUncheckedCreateNestedManyWithoutFolderInput
-  }
-
-  export type FolderCreateOrConnectWithoutParentInput = {
-    where: FolderWhereUniqueInput
-    create: XOR<FolderCreateWithoutParentInput, FolderUncheckedCreateWithoutParentInput>
-  }
-
-  export type FolderCreateManyParentInputEnvelope = {
-    data: FolderCreateManyParentInput | FolderCreateManyParentInput[]
-    skipDuplicates?: boolean
   }
 
   export type FolderBookmarkCreateWithoutFolderInput = {
@@ -19466,15 +19466,15 @@ export namespace Prisma {
   }
 
   export type FolderCollaboratorCreateWithoutFolderInput = {
-    permission?: $Enums.Role
     addedAt?: Date | string
+    permission?: $Enums.Role
     user: UserCreateNestedOneWithoutCollabFoldersInput
   }
 
   export type FolderCollaboratorUncheckedCreateWithoutFolderInput = {
     userId: string
-    permission?: $Enums.Role
     addedAt?: Date | string
+    permission?: $Enums.Role
   }
 
   export type FolderCollaboratorCreateOrConnectWithoutFolderInput = {
@@ -19485,6 +19485,65 @@ export namespace Prisma {
   export type FolderCollaboratorCreateManyFolderInputEnvelope = {
     data: FolderCollaboratorCreateManyFolderInput | FolderCollaboratorCreateManyFolderInput[]
     skipDuplicates?: boolean
+  }
+
+  export type FolderUpsertWithoutChildrenInput = {
+    update: XOR<FolderUpdateWithoutChildrenInput, FolderUncheckedUpdateWithoutChildrenInput>
+    create: XOR<FolderCreateWithoutChildrenInput, FolderUncheckedCreateWithoutChildrenInput>
+    where?: FolderWhereInput
+  }
+
+  export type FolderUpdateToOneWithWhereWithoutChildrenInput = {
+    where?: FolderWhereInput
+    data: XOR<FolderUpdateWithoutChildrenInput, FolderUncheckedUpdateWithoutChildrenInput>
+  }
+
+  export type FolderUpdateWithoutChildrenInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    icon?: NullableStringFieldUpdateOperationsInput | string | null
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    parent?: FolderUpdateOneWithoutChildrenNestedInput
+    user?: UserUpdateOneRequiredWithoutFoldersNestedInput
+    bookmarks?: FolderBookmarkUpdateManyWithoutFolderNestedInput
+    collaborators?: FolderCollaboratorUpdateManyWithoutFolderNestedInput
+  }
+
+  export type FolderUncheckedUpdateWithoutChildrenInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    icon?: NullableStringFieldUpdateOperationsInput | string | null
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+    parentId?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    bookmarks?: FolderBookmarkUncheckedUpdateManyWithoutFolderNestedInput
+    collaborators?: FolderCollaboratorUncheckedUpdateManyWithoutFolderNestedInput
+  }
+
+  export type FolderUpsertWithWhereUniqueWithoutParentInput = {
+    where: FolderWhereUniqueInput
+    update: XOR<FolderUpdateWithoutParentInput, FolderUncheckedUpdateWithoutParentInput>
+    create: XOR<FolderCreateWithoutParentInput, FolderUncheckedCreateWithoutParentInput>
+  }
+
+  export type FolderUpdateWithWhereUniqueWithoutParentInput = {
+    where: FolderWhereUniqueInput
+    data: XOR<FolderUpdateWithoutParentInput, FolderUncheckedUpdateWithoutParentInput>
+  }
+
+  export type FolderUpdateManyWithWhereWithoutParentInput = {
+    where: FolderScalarWhereInput
+    data: XOR<FolderUpdateManyMutationInput, FolderUncheckedUpdateManyWithoutParentInput>
   }
 
   export type UserUpsertWithoutFoldersInput = {
@@ -19515,12 +19574,12 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     bookmarks?: BookmarkUpdateManyWithoutUserNestedInput
-    tags?: TagUpdateManyWithoutUserNestedInput
-    collections?: CollectionUpdateManyWithoutUserNestedInput
     ownedCollections?: CollectionUpdateManyWithoutOwnerNestedInput
-    collabFolders?: FolderCollaboratorUpdateManyWithoutUserNestedInput
+    collections?: CollectionUpdateManyWithoutUserNestedInput
     collabCollections?: CollectionCollaboratorUpdateManyWithoutUserNestedInput
     devices?: DeviceUpdateManyWithoutUserNestedInput
+    collabFolders?: FolderCollaboratorUpdateManyWithoutUserNestedInput
+    tags?: TagUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFoldersInput = {
@@ -19540,71 +19599,12 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     bookmarks?: BookmarkUncheckedUpdateManyWithoutUserNestedInput
-    tags?: TagUncheckedUpdateManyWithoutUserNestedInput
-    collections?: CollectionUncheckedUpdateManyWithoutUserNestedInput
     ownedCollections?: CollectionUncheckedUpdateManyWithoutOwnerNestedInput
-    collabFolders?: FolderCollaboratorUncheckedUpdateManyWithoutUserNestedInput
+    collections?: CollectionUncheckedUpdateManyWithoutUserNestedInput
     collabCollections?: CollectionCollaboratorUncheckedUpdateManyWithoutUserNestedInput
     devices?: DeviceUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type FolderUpsertWithoutChildrenInput = {
-    update: XOR<FolderUpdateWithoutChildrenInput, FolderUncheckedUpdateWithoutChildrenInput>
-    create: XOR<FolderCreateWithoutChildrenInput, FolderUncheckedCreateWithoutChildrenInput>
-    where?: FolderWhereInput
-  }
-
-  export type FolderUpdateToOneWithWhereWithoutChildrenInput = {
-    where?: FolderWhereInput
-    data: XOR<FolderUpdateWithoutChildrenInput, FolderUncheckedUpdateWithoutChildrenInput>
-  }
-
-  export type FolderUpdateWithoutChildrenInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    icon?: NullableStringFieldUpdateOperationsInput | string | null
-    color?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    user?: UserUpdateOneRequiredWithoutFoldersNestedInput
-    parent?: FolderUpdateOneWithoutChildrenNestedInput
-    bookmarks?: FolderBookmarkUpdateManyWithoutFolderNestedInput
-    collaborators?: FolderCollaboratorUpdateManyWithoutFolderNestedInput
-  }
-
-  export type FolderUncheckedUpdateWithoutChildrenInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    icon?: NullableStringFieldUpdateOperationsInput | string | null
-    color?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userId?: StringFieldUpdateOperationsInput | string
-    parentId?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    bookmarks?: FolderBookmarkUncheckedUpdateManyWithoutFolderNestedInput
-    collaborators?: FolderCollaboratorUncheckedUpdateManyWithoutFolderNestedInput
-  }
-
-  export type FolderUpsertWithWhereUniqueWithoutParentInput = {
-    where: FolderWhereUniqueInput
-    update: XOR<FolderUpdateWithoutParentInput, FolderUncheckedUpdateWithoutParentInput>
-    create: XOR<FolderCreateWithoutParentInput, FolderUncheckedCreateWithoutParentInput>
-  }
-
-  export type FolderUpdateWithWhereUniqueWithoutParentInput = {
-    where: FolderWhereUniqueInput
-    data: XOR<FolderUpdateWithoutParentInput, FolderUncheckedUpdateWithoutParentInput>
-  }
-
-  export type FolderUpdateManyWithWhereWithoutParentInput = {
-    where: FolderScalarWhereInput
-    data: XOR<FolderUpdateManyMutationInput, FolderUncheckedUpdateManyWithoutParentInput>
+    collabFolders?: FolderCollaboratorUncheckedUpdateManyWithoutUserNestedInput
+    tags?: TagUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type FolderBookmarkUpsertWithWhereUniqueWithoutFolderInput = {
@@ -19639,43 +19639,6 @@ export namespace Prisma {
     data: XOR<FolderCollaboratorUpdateManyMutationInput, FolderCollaboratorUncheckedUpdateManyWithoutFolderInput>
   }
 
-  export type FolderCreateWithoutBookmarksInput = {
-    id?: string
-    name: string
-    description?: string | null
-    icon?: string | null
-    color?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    user: UserCreateNestedOneWithoutFoldersInput
-    parent?: FolderCreateNestedOneWithoutChildrenInput
-    children?: FolderCreateNestedManyWithoutParentInput
-    collaborators?: FolderCollaboratorCreateNestedManyWithoutFolderInput
-  }
-
-  export type FolderUncheckedCreateWithoutBookmarksInput = {
-    id?: string
-    name: string
-    description?: string | null
-    icon?: string | null
-    color?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    userId: string
-    parentId?: string | null
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    children?: FolderUncheckedCreateNestedManyWithoutParentInput
-    collaborators?: FolderCollaboratorUncheckedCreateNestedManyWithoutFolderInput
-  }
-
-  export type FolderCreateOrConnectWithoutBookmarksInput = {
-    where: FolderWhereUniqueInput
-    create: XOR<FolderCreateWithoutBookmarksInput, FolderUncheckedCreateWithoutBookmarksInput>
-  }
-
   export type BookmarkCreateWithoutFoldersInput = {
     id?: string
     url: string
@@ -19688,11 +19651,11 @@ export namespace Prisma {
     lastVisited?: Date | string | null
     visitCount?: number
     notes?: string | null
-    isDeleted?: boolean
     deletedAt?: Date | string | null
+    isDeleted?: boolean
     user: UserCreateNestedOneWithoutBookmarksInput
-    tags?: BookmarkTagCreateNestedManyWithoutBookmarkInput
     collections?: BookmarkCollectionCreateNestedManyWithoutBookmarkInput
+    tags?: BookmarkTagCreateNestedManyWithoutBookmarkInput
   }
 
   export type BookmarkUncheckedCreateWithoutFoldersInput = {
@@ -19708,10 +19671,10 @@ export namespace Prisma {
     visitCount?: number
     notes?: string | null
     userId: string
-    isDeleted?: boolean
     deletedAt?: Date | string | null
-    tags?: BookmarkTagUncheckedCreateNestedManyWithoutBookmarkInput
+    isDeleted?: boolean
     collections?: BookmarkCollectionUncheckedCreateNestedManyWithoutBookmarkInput
+    tags?: BookmarkTagUncheckedCreateNestedManyWithoutBookmarkInput
   }
 
   export type BookmarkCreateOrConnectWithoutFoldersInput = {
@@ -19719,47 +19682,41 @@ export namespace Prisma {
     create: XOR<BookmarkCreateWithoutFoldersInput, BookmarkUncheckedCreateWithoutFoldersInput>
   }
 
-  export type FolderUpsertWithoutBookmarksInput = {
-    update: XOR<FolderUpdateWithoutBookmarksInput, FolderUncheckedUpdateWithoutBookmarksInput>
+  export type FolderCreateWithoutBookmarksInput = {
+    id?: string
+    name: string
+    description?: string | null
+    icon?: string | null
+    color?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    isDeleted?: boolean
+    parent?: FolderCreateNestedOneWithoutChildrenInput
+    children?: FolderCreateNestedManyWithoutParentInput
+    user: UserCreateNestedOneWithoutFoldersInput
+    collaborators?: FolderCollaboratorCreateNestedManyWithoutFolderInput
+  }
+
+  export type FolderUncheckedCreateWithoutBookmarksInput = {
+    id?: string
+    name: string
+    description?: string | null
+    icon?: string | null
+    color?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: string
+    parentId?: string | null
+    deletedAt?: Date | string | null
+    isDeleted?: boolean
+    children?: FolderUncheckedCreateNestedManyWithoutParentInput
+    collaborators?: FolderCollaboratorUncheckedCreateNestedManyWithoutFolderInput
+  }
+
+  export type FolderCreateOrConnectWithoutBookmarksInput = {
+    where: FolderWhereUniqueInput
     create: XOR<FolderCreateWithoutBookmarksInput, FolderUncheckedCreateWithoutBookmarksInput>
-    where?: FolderWhereInput
-  }
-
-  export type FolderUpdateToOneWithWhereWithoutBookmarksInput = {
-    where?: FolderWhereInput
-    data: XOR<FolderUpdateWithoutBookmarksInput, FolderUncheckedUpdateWithoutBookmarksInput>
-  }
-
-  export type FolderUpdateWithoutBookmarksInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    icon?: NullableStringFieldUpdateOperationsInput | string | null
-    color?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    user?: UserUpdateOneRequiredWithoutFoldersNestedInput
-    parent?: FolderUpdateOneWithoutChildrenNestedInput
-    children?: FolderUpdateManyWithoutParentNestedInput
-    collaborators?: FolderCollaboratorUpdateManyWithoutFolderNestedInput
-  }
-
-  export type FolderUncheckedUpdateWithoutBookmarksInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    icon?: NullableStringFieldUpdateOperationsInput | string | null
-    color?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userId?: StringFieldUpdateOperationsInput | string
-    parentId?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    children?: FolderUncheckedUpdateManyWithoutParentNestedInput
-    collaborators?: FolderCollaboratorUncheckedUpdateManyWithoutFolderNestedInput
   }
 
   export type BookmarkUpsertWithoutFoldersInput = {
@@ -19785,11 +19742,11 @@ export namespace Prisma {
     lastVisited?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     visitCount?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     user?: UserUpdateOneRequiredWithoutBookmarksNestedInput
-    tags?: BookmarkTagUpdateManyWithoutBookmarkNestedInput
     collections?: BookmarkCollectionUpdateManyWithoutBookmarkNestedInput
+    tags?: BookmarkTagUpdateManyWithoutBookmarkNestedInput
   }
 
   export type BookmarkUncheckedUpdateWithoutFoldersInput = {
@@ -19805,10 +19762,53 @@ export namespace Prisma {
     visitCount?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: StringFieldUpdateOperationsInput | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    tags?: BookmarkTagUncheckedUpdateManyWithoutBookmarkNestedInput
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     collections?: BookmarkCollectionUncheckedUpdateManyWithoutBookmarkNestedInput
+    tags?: BookmarkTagUncheckedUpdateManyWithoutBookmarkNestedInput
+  }
+
+  export type FolderUpsertWithoutBookmarksInput = {
+    update: XOR<FolderUpdateWithoutBookmarksInput, FolderUncheckedUpdateWithoutBookmarksInput>
+    create: XOR<FolderCreateWithoutBookmarksInput, FolderUncheckedCreateWithoutBookmarksInput>
+    where?: FolderWhereInput
+  }
+
+  export type FolderUpdateToOneWithWhereWithoutBookmarksInput = {
+    where?: FolderWhereInput
+    data: XOR<FolderUpdateWithoutBookmarksInput, FolderUncheckedUpdateWithoutBookmarksInput>
+  }
+
+  export type FolderUpdateWithoutBookmarksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    icon?: NullableStringFieldUpdateOperationsInput | string | null
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    parent?: FolderUpdateOneWithoutChildrenNestedInput
+    children?: FolderUpdateManyWithoutParentNestedInput
+    user?: UserUpdateOneRequiredWithoutFoldersNestedInput
+    collaborators?: FolderCollaboratorUpdateManyWithoutFolderNestedInput
+  }
+
+  export type FolderUncheckedUpdateWithoutBookmarksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    icon?: NullableStringFieldUpdateOperationsInput | string | null
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+    parentId?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    children?: FolderUncheckedUpdateManyWithoutParentNestedInput
+    collaborators?: FolderCollaboratorUncheckedUpdateManyWithoutFolderNestedInput
   }
 
   export type FolderCreateWithoutCollaboratorsInput = {
@@ -19819,11 +19819,11 @@ export namespace Prisma {
     color?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    isDeleted?: boolean
     deletedAt?: Date | string | null
-    user: UserCreateNestedOneWithoutFoldersInput
+    isDeleted?: boolean
     parent?: FolderCreateNestedOneWithoutChildrenInput
     children?: FolderCreateNestedManyWithoutParentInput
+    user: UserCreateNestedOneWithoutFoldersInput
     bookmarks?: FolderBookmarkCreateNestedManyWithoutFolderInput
   }
 
@@ -19837,8 +19837,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     userId: string
     parentId?: string | null
-    isDeleted?: boolean
     deletedAt?: Date | string | null
+    isDeleted?: boolean
     children?: FolderUncheckedCreateNestedManyWithoutParentInput
     bookmarks?: FolderBookmarkUncheckedCreateNestedManyWithoutFolderInput
   }
@@ -19865,12 +19865,12 @@ export namespace Prisma {
     isVerified?: boolean
     verificationToken?: string | null
     bookmarks?: BookmarkCreateNestedManyWithoutUserInput
-    folders?: FolderCreateNestedManyWithoutUserInput
-    tags?: TagCreateNestedManyWithoutUserInput
-    collections?: CollectionCreateNestedManyWithoutUserInput
     ownedCollections?: CollectionCreateNestedManyWithoutOwnerInput
+    collections?: CollectionCreateNestedManyWithoutUserInput
     collabCollections?: CollectionCollaboratorCreateNestedManyWithoutUserInput
     devices?: DeviceCreateNestedManyWithoutUserInput
+    folders?: FolderCreateNestedManyWithoutUserInput
+    tags?: TagCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCollabFoldersInput = {
@@ -19890,12 +19890,12 @@ export namespace Prisma {
     isVerified?: boolean
     verificationToken?: string | null
     bookmarks?: BookmarkUncheckedCreateNestedManyWithoutUserInput
-    folders?: FolderUncheckedCreateNestedManyWithoutUserInput
-    tags?: TagUncheckedCreateNestedManyWithoutUserInput
-    collections?: CollectionUncheckedCreateNestedManyWithoutUserInput
     ownedCollections?: CollectionUncheckedCreateNestedManyWithoutOwnerInput
+    collections?: CollectionUncheckedCreateNestedManyWithoutUserInput
     collabCollections?: CollectionCollaboratorUncheckedCreateNestedManyWithoutUserInput
     devices?: DeviceUncheckedCreateNestedManyWithoutUserInput
+    folders?: FolderUncheckedCreateNestedManyWithoutUserInput
+    tags?: TagUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCollabFoldersInput = {
@@ -19922,11 +19922,11 @@ export namespace Prisma {
     color?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    user?: UserUpdateOneRequiredWithoutFoldersNestedInput
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     parent?: FolderUpdateOneWithoutChildrenNestedInput
     children?: FolderUpdateManyWithoutParentNestedInput
+    user?: UserUpdateOneRequiredWithoutFoldersNestedInput
     bookmarks?: FolderBookmarkUpdateManyWithoutFolderNestedInput
   }
 
@@ -19940,8 +19940,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
     parentId?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     children?: FolderUncheckedUpdateManyWithoutParentNestedInput
     bookmarks?: FolderBookmarkUncheckedUpdateManyWithoutFolderNestedInput
   }
@@ -19974,12 +19974,12 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     bookmarks?: BookmarkUpdateManyWithoutUserNestedInput
-    folders?: FolderUpdateManyWithoutUserNestedInput
-    tags?: TagUpdateManyWithoutUserNestedInput
-    collections?: CollectionUpdateManyWithoutUserNestedInput
     ownedCollections?: CollectionUpdateManyWithoutOwnerNestedInput
+    collections?: CollectionUpdateManyWithoutUserNestedInput
     collabCollections?: CollectionCollaboratorUpdateManyWithoutUserNestedInput
     devices?: DeviceUpdateManyWithoutUserNestedInput
+    folders?: FolderUpdateManyWithoutUserNestedInput
+    tags?: TagUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCollabFoldersInput = {
@@ -19999,67 +19999,12 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     bookmarks?: BookmarkUncheckedUpdateManyWithoutUserNestedInput
-    folders?: FolderUncheckedUpdateManyWithoutUserNestedInput
-    tags?: TagUncheckedUpdateManyWithoutUserNestedInput
-    collections?: CollectionUncheckedUpdateManyWithoutUserNestedInput
     ownedCollections?: CollectionUncheckedUpdateManyWithoutOwnerNestedInput
+    collections?: CollectionUncheckedUpdateManyWithoutUserNestedInput
     collabCollections?: CollectionCollaboratorUncheckedUpdateManyWithoutUserNestedInput
     devices?: DeviceUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserCreateWithoutTagsInput = {
-    id?: string
-    email: string
-    username: string
-    password: string
-    name?: string | null
-    profileImage?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    isActive?: boolean
-    lastLogin?: Date | string | null
-    refreshToken?: string | null
-    passwordResetToken?: string | null
-    passwordResetExpires?: Date | string | null
-    isVerified?: boolean
-    verificationToken?: string | null
-    bookmarks?: BookmarkCreateNestedManyWithoutUserInput
-    folders?: FolderCreateNestedManyWithoutUserInput
-    collections?: CollectionCreateNestedManyWithoutUserInput
-    ownedCollections?: CollectionCreateNestedManyWithoutOwnerInput
-    collabFolders?: FolderCollaboratorCreateNestedManyWithoutUserInput
-    collabCollections?: CollectionCollaboratorCreateNestedManyWithoutUserInput
-    devices?: DeviceCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutTagsInput = {
-    id?: string
-    email: string
-    username: string
-    password: string
-    name?: string | null
-    profileImage?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    isActive?: boolean
-    lastLogin?: Date | string | null
-    refreshToken?: string | null
-    passwordResetToken?: string | null
-    passwordResetExpires?: Date | string | null
-    isVerified?: boolean
-    verificationToken?: string | null
-    bookmarks?: BookmarkUncheckedCreateNestedManyWithoutUserInput
-    folders?: FolderUncheckedCreateNestedManyWithoutUserInput
-    collections?: CollectionUncheckedCreateNestedManyWithoutUserInput
-    ownedCollections?: CollectionUncheckedCreateNestedManyWithoutOwnerInput
-    collabFolders?: FolderCollaboratorUncheckedCreateNestedManyWithoutUserInput
-    collabCollections?: CollectionCollaboratorUncheckedCreateNestedManyWithoutUserInput
-    devices?: DeviceUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutTagsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutTagsInput, UserUncheckedCreateWithoutTagsInput>
+    folders?: FolderUncheckedUpdateManyWithoutUserNestedInput
+    tags?: TagUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type BookmarkTagCreateWithoutTagInput = {
@@ -20080,6 +20025,77 @@ export namespace Prisma {
   export type BookmarkTagCreateManyTagInputEnvelope = {
     data: BookmarkTagCreateManyTagInput | BookmarkTagCreateManyTagInput[]
     skipDuplicates?: boolean
+  }
+
+  export type UserCreateWithoutTagsInput = {
+    id?: string
+    email: string
+    username: string
+    password: string
+    name?: string | null
+    profileImage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isActive?: boolean
+    lastLogin?: Date | string | null
+    refreshToken?: string | null
+    passwordResetToken?: string | null
+    passwordResetExpires?: Date | string | null
+    isVerified?: boolean
+    verificationToken?: string | null
+    bookmarks?: BookmarkCreateNestedManyWithoutUserInput
+    ownedCollections?: CollectionCreateNestedManyWithoutOwnerInput
+    collections?: CollectionCreateNestedManyWithoutUserInput
+    collabCollections?: CollectionCollaboratorCreateNestedManyWithoutUserInput
+    devices?: DeviceCreateNestedManyWithoutUserInput
+    folders?: FolderCreateNestedManyWithoutUserInput
+    collabFolders?: FolderCollaboratorCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutTagsInput = {
+    id?: string
+    email: string
+    username: string
+    password: string
+    name?: string | null
+    profileImage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isActive?: boolean
+    lastLogin?: Date | string | null
+    refreshToken?: string | null
+    passwordResetToken?: string | null
+    passwordResetExpires?: Date | string | null
+    isVerified?: boolean
+    verificationToken?: string | null
+    bookmarks?: BookmarkUncheckedCreateNestedManyWithoutUserInput
+    ownedCollections?: CollectionUncheckedCreateNestedManyWithoutOwnerInput
+    collections?: CollectionUncheckedCreateNestedManyWithoutUserInput
+    collabCollections?: CollectionCollaboratorUncheckedCreateNestedManyWithoutUserInput
+    devices?: DeviceUncheckedCreateNestedManyWithoutUserInput
+    folders?: FolderUncheckedCreateNestedManyWithoutUserInput
+    collabFolders?: FolderCollaboratorUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutTagsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutTagsInput, UserUncheckedCreateWithoutTagsInput>
+  }
+
+  export type BookmarkTagUpsertWithWhereUniqueWithoutTagInput = {
+    where: BookmarkTagWhereUniqueInput
+    update: XOR<BookmarkTagUpdateWithoutTagInput, BookmarkTagUncheckedUpdateWithoutTagInput>
+    create: XOR<BookmarkTagCreateWithoutTagInput, BookmarkTagUncheckedCreateWithoutTagInput>
+  }
+
+  export type BookmarkTagUpdateWithWhereUniqueWithoutTagInput = {
+    where: BookmarkTagWhereUniqueInput
+    data: XOR<BookmarkTagUpdateWithoutTagInput, BookmarkTagUncheckedUpdateWithoutTagInput>
+  }
+
+  export type BookmarkTagUpdateManyWithWhereWithoutTagInput = {
+    where: BookmarkTagScalarWhereInput
+    data: XOR<BookmarkTagUpdateManyMutationInput, BookmarkTagUncheckedUpdateManyWithoutTagInput>
   }
 
   export type UserUpsertWithoutTagsInput = {
@@ -20110,12 +20126,12 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     bookmarks?: BookmarkUpdateManyWithoutUserNestedInput
-    folders?: FolderUpdateManyWithoutUserNestedInput
-    collections?: CollectionUpdateManyWithoutUserNestedInput
     ownedCollections?: CollectionUpdateManyWithoutOwnerNestedInput
-    collabFolders?: FolderCollaboratorUpdateManyWithoutUserNestedInput
+    collections?: CollectionUpdateManyWithoutUserNestedInput
     collabCollections?: CollectionCollaboratorUpdateManyWithoutUserNestedInput
     devices?: DeviceUpdateManyWithoutUserNestedInput
+    folders?: FolderUpdateManyWithoutUserNestedInput
+    collabFolders?: FolderCollaboratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTagsInput = {
@@ -20135,55 +20151,12 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     bookmarks?: BookmarkUncheckedUpdateManyWithoutUserNestedInput
-    folders?: FolderUncheckedUpdateManyWithoutUserNestedInput
-    collections?: CollectionUncheckedUpdateManyWithoutUserNestedInput
     ownedCollections?: CollectionUncheckedUpdateManyWithoutOwnerNestedInput
-    collabFolders?: FolderCollaboratorUncheckedUpdateManyWithoutUserNestedInput
+    collections?: CollectionUncheckedUpdateManyWithoutUserNestedInput
     collabCollections?: CollectionCollaboratorUncheckedUpdateManyWithoutUserNestedInput
     devices?: DeviceUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type BookmarkTagUpsertWithWhereUniqueWithoutTagInput = {
-    where: BookmarkTagWhereUniqueInput
-    update: XOR<BookmarkTagUpdateWithoutTagInput, BookmarkTagUncheckedUpdateWithoutTagInput>
-    create: XOR<BookmarkTagCreateWithoutTagInput, BookmarkTagUncheckedCreateWithoutTagInput>
-  }
-
-  export type BookmarkTagUpdateWithWhereUniqueWithoutTagInput = {
-    where: BookmarkTagWhereUniqueInput
-    data: XOR<BookmarkTagUpdateWithoutTagInput, BookmarkTagUncheckedUpdateWithoutTagInput>
-  }
-
-  export type BookmarkTagUpdateManyWithWhereWithoutTagInput = {
-    where: BookmarkTagScalarWhereInput
-    data: XOR<BookmarkTagUpdateManyMutationInput, BookmarkTagUncheckedUpdateManyWithoutTagInput>
-  }
-
-  export type TagCreateWithoutBookmarksInput = {
-    id?: string
-    name: string
-    color?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    user: UserCreateNestedOneWithoutTagsInput
-  }
-
-  export type TagUncheckedCreateWithoutBookmarksInput = {
-    id?: string
-    name: string
-    color?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    userId: string
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-  }
-
-  export type TagCreateOrConnectWithoutBookmarksInput = {
-    where: TagWhereUniqueInput
-    create: XOR<TagCreateWithoutBookmarksInput, TagUncheckedCreateWithoutBookmarksInput>
+    folders?: FolderUncheckedUpdateManyWithoutUserNestedInput
+    collabFolders?: FolderCollaboratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type BookmarkCreateWithoutTagsInput = {
@@ -20198,11 +20171,11 @@ export namespace Prisma {
     lastVisited?: Date | string | null
     visitCount?: number
     notes?: string | null
-    isDeleted?: boolean
     deletedAt?: Date | string | null
+    isDeleted?: boolean
     user: UserCreateNestedOneWithoutBookmarksInput
-    folders?: FolderBookmarkCreateNestedManyWithoutBookmarkInput
     collections?: BookmarkCollectionCreateNestedManyWithoutBookmarkInput
+    folders?: FolderBookmarkCreateNestedManyWithoutBookmarkInput
   }
 
   export type BookmarkUncheckedCreateWithoutTagsInput = {
@@ -20218,10 +20191,10 @@ export namespace Prisma {
     visitCount?: number
     notes?: string | null
     userId: string
-    isDeleted?: boolean
     deletedAt?: Date | string | null
-    folders?: FolderBookmarkUncheckedCreateNestedManyWithoutBookmarkInput
+    isDeleted?: boolean
     collections?: BookmarkCollectionUncheckedCreateNestedManyWithoutBookmarkInput
+    folders?: FolderBookmarkUncheckedCreateNestedManyWithoutBookmarkInput
   }
 
   export type BookmarkCreateOrConnectWithoutTagsInput = {
@@ -20229,37 +20202,31 @@ export namespace Prisma {
     create: XOR<BookmarkCreateWithoutTagsInput, BookmarkUncheckedCreateWithoutTagsInput>
   }
 
-  export type TagUpsertWithoutBookmarksInput = {
-    update: XOR<TagUpdateWithoutBookmarksInput, TagUncheckedUpdateWithoutBookmarksInput>
+  export type TagCreateWithoutBookmarksInput = {
+    id?: string
+    name: string
+    color?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    isDeleted?: boolean
+    user: UserCreateNestedOneWithoutTagsInput
+  }
+
+  export type TagUncheckedCreateWithoutBookmarksInput = {
+    id?: string
+    name: string
+    color?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: string
+    deletedAt?: Date | string | null
+    isDeleted?: boolean
+  }
+
+  export type TagCreateOrConnectWithoutBookmarksInput = {
+    where: TagWhereUniqueInput
     create: XOR<TagCreateWithoutBookmarksInput, TagUncheckedCreateWithoutBookmarksInput>
-    where?: TagWhereInput
-  }
-
-  export type TagUpdateToOneWithWhereWithoutBookmarksInput = {
-    where?: TagWhereInput
-    data: XOR<TagUpdateWithoutBookmarksInput, TagUncheckedUpdateWithoutBookmarksInput>
-  }
-
-  export type TagUpdateWithoutBookmarksInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    color?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    user?: UserUpdateOneRequiredWithoutTagsNestedInput
-  }
-
-  export type TagUncheckedUpdateWithoutBookmarksInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    color?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userId?: StringFieldUpdateOperationsInput | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type BookmarkUpsertWithoutTagsInput = {
@@ -20285,11 +20252,11 @@ export namespace Prisma {
     lastVisited?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     visitCount?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     user?: UserUpdateOneRequiredWithoutBookmarksNestedInput
-    folders?: FolderBookmarkUpdateManyWithoutBookmarkNestedInput
     collections?: BookmarkCollectionUpdateManyWithoutBookmarkNestedInput
+    folders?: FolderBookmarkUpdateManyWithoutBookmarkNestedInput
   }
 
   export type BookmarkUncheckedUpdateWithoutTagsInput = {
@@ -20305,120 +20272,43 @@ export namespace Prisma {
     visitCount?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: StringFieldUpdateOperationsInput | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    folders?: FolderBookmarkUncheckedUpdateManyWithoutBookmarkNestedInput
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     collections?: BookmarkCollectionUncheckedUpdateManyWithoutBookmarkNestedInput
+    folders?: FolderBookmarkUncheckedUpdateManyWithoutBookmarkNestedInput
   }
 
-  export type UserCreateWithoutCollectionsInput = {
-    id?: string
-    email: string
-    username: string
-    password: string
-    name?: string | null
-    profileImage?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    isActive?: boolean
-    lastLogin?: Date | string | null
-    refreshToken?: string | null
-    passwordResetToken?: string | null
-    passwordResetExpires?: Date | string | null
-    isVerified?: boolean
-    verificationToken?: string | null
-    bookmarks?: BookmarkCreateNestedManyWithoutUserInput
-    folders?: FolderCreateNestedManyWithoutUserInput
-    tags?: TagCreateNestedManyWithoutUserInput
-    ownedCollections?: CollectionCreateNestedManyWithoutOwnerInput
-    collabFolders?: FolderCollaboratorCreateNestedManyWithoutUserInput
-    collabCollections?: CollectionCollaboratorCreateNestedManyWithoutUserInput
-    devices?: DeviceCreateNestedManyWithoutUserInput
+  export type TagUpsertWithoutBookmarksInput = {
+    update: XOR<TagUpdateWithoutBookmarksInput, TagUncheckedUpdateWithoutBookmarksInput>
+    create: XOR<TagCreateWithoutBookmarksInput, TagUncheckedCreateWithoutBookmarksInput>
+    where?: TagWhereInput
   }
 
-  export type UserUncheckedCreateWithoutCollectionsInput = {
-    id?: string
-    email: string
-    username: string
-    password: string
-    name?: string | null
-    profileImage?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    isActive?: boolean
-    lastLogin?: Date | string | null
-    refreshToken?: string | null
-    passwordResetToken?: string | null
-    passwordResetExpires?: Date | string | null
-    isVerified?: boolean
-    verificationToken?: string | null
-    bookmarks?: BookmarkUncheckedCreateNestedManyWithoutUserInput
-    folders?: FolderUncheckedCreateNestedManyWithoutUserInput
-    tags?: TagUncheckedCreateNestedManyWithoutUserInput
-    ownedCollections?: CollectionUncheckedCreateNestedManyWithoutOwnerInput
-    collabFolders?: FolderCollaboratorUncheckedCreateNestedManyWithoutUserInput
-    collabCollections?: CollectionCollaboratorUncheckedCreateNestedManyWithoutUserInput
-    devices?: DeviceUncheckedCreateNestedManyWithoutUserInput
+  export type TagUpdateToOneWithWhereWithoutBookmarksInput = {
+    where?: TagWhereInput
+    data: XOR<TagUpdateWithoutBookmarksInput, TagUncheckedUpdateWithoutBookmarksInput>
   }
 
-  export type UserCreateOrConnectWithoutCollectionsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutCollectionsInput, UserUncheckedCreateWithoutCollectionsInput>
+  export type TagUpdateWithoutBookmarksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    user?: UserUpdateOneRequiredWithoutTagsNestedInput
   }
 
-  export type UserCreateWithoutOwnedCollectionsInput = {
-    id?: string
-    email: string
-    username: string
-    password: string
-    name?: string | null
-    profileImage?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    isActive?: boolean
-    lastLogin?: Date | string | null
-    refreshToken?: string | null
-    passwordResetToken?: string | null
-    passwordResetExpires?: Date | string | null
-    isVerified?: boolean
-    verificationToken?: string | null
-    bookmarks?: BookmarkCreateNestedManyWithoutUserInput
-    folders?: FolderCreateNestedManyWithoutUserInput
-    tags?: TagCreateNestedManyWithoutUserInput
-    collections?: CollectionCreateNestedManyWithoutUserInput
-    collabFolders?: FolderCollaboratorCreateNestedManyWithoutUserInput
-    collabCollections?: CollectionCollaboratorCreateNestedManyWithoutUserInput
-    devices?: DeviceCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutOwnedCollectionsInput = {
-    id?: string
-    email: string
-    username: string
-    password: string
-    name?: string | null
-    profileImage?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    isActive?: boolean
-    lastLogin?: Date | string | null
-    refreshToken?: string | null
-    passwordResetToken?: string | null
-    passwordResetExpires?: Date | string | null
-    isVerified?: boolean
-    verificationToken?: string | null
-    bookmarks?: BookmarkUncheckedCreateNestedManyWithoutUserInput
-    folders?: FolderUncheckedCreateNestedManyWithoutUserInput
-    tags?: TagUncheckedCreateNestedManyWithoutUserInput
-    collections?: CollectionUncheckedCreateNestedManyWithoutUserInput
-    collabFolders?: FolderCollaboratorUncheckedCreateNestedManyWithoutUserInput
-    collabCollections?: CollectionCollaboratorUncheckedCreateNestedManyWithoutUserInput
-    devices?: DeviceUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutOwnedCollectionsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutOwnedCollectionsInput, UserUncheckedCreateWithoutOwnedCollectionsInput>
+  export type TagUncheckedUpdateWithoutBookmarksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type BookmarkCollectionCreateWithoutCollectionInput = {
@@ -20443,16 +20333,126 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type UserCreateWithoutOwnedCollectionsInput = {
+    id?: string
+    email: string
+    username: string
+    password: string
+    name?: string | null
+    profileImage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isActive?: boolean
+    lastLogin?: Date | string | null
+    refreshToken?: string | null
+    passwordResetToken?: string | null
+    passwordResetExpires?: Date | string | null
+    isVerified?: boolean
+    verificationToken?: string | null
+    bookmarks?: BookmarkCreateNestedManyWithoutUserInput
+    collections?: CollectionCreateNestedManyWithoutUserInput
+    collabCollections?: CollectionCollaboratorCreateNestedManyWithoutUserInput
+    devices?: DeviceCreateNestedManyWithoutUserInput
+    folders?: FolderCreateNestedManyWithoutUserInput
+    collabFolders?: FolderCollaboratorCreateNestedManyWithoutUserInput
+    tags?: TagCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutOwnedCollectionsInput = {
+    id?: string
+    email: string
+    username: string
+    password: string
+    name?: string | null
+    profileImage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isActive?: boolean
+    lastLogin?: Date | string | null
+    refreshToken?: string | null
+    passwordResetToken?: string | null
+    passwordResetExpires?: Date | string | null
+    isVerified?: boolean
+    verificationToken?: string | null
+    bookmarks?: BookmarkUncheckedCreateNestedManyWithoutUserInput
+    collections?: CollectionUncheckedCreateNestedManyWithoutUserInput
+    collabCollections?: CollectionCollaboratorUncheckedCreateNestedManyWithoutUserInput
+    devices?: DeviceUncheckedCreateNestedManyWithoutUserInput
+    folders?: FolderUncheckedCreateNestedManyWithoutUserInput
+    collabFolders?: FolderCollaboratorUncheckedCreateNestedManyWithoutUserInput
+    tags?: TagUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutOwnedCollectionsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutOwnedCollectionsInput, UserUncheckedCreateWithoutOwnedCollectionsInput>
+  }
+
+  export type UserCreateWithoutCollectionsInput = {
+    id?: string
+    email: string
+    username: string
+    password: string
+    name?: string | null
+    profileImage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isActive?: boolean
+    lastLogin?: Date | string | null
+    refreshToken?: string | null
+    passwordResetToken?: string | null
+    passwordResetExpires?: Date | string | null
+    isVerified?: boolean
+    verificationToken?: string | null
+    bookmarks?: BookmarkCreateNestedManyWithoutUserInput
+    ownedCollections?: CollectionCreateNestedManyWithoutOwnerInput
+    collabCollections?: CollectionCollaboratorCreateNestedManyWithoutUserInput
+    devices?: DeviceCreateNestedManyWithoutUserInput
+    folders?: FolderCreateNestedManyWithoutUserInput
+    collabFolders?: FolderCollaboratorCreateNestedManyWithoutUserInput
+    tags?: TagCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutCollectionsInput = {
+    id?: string
+    email: string
+    username: string
+    password: string
+    name?: string | null
+    profileImage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isActive?: boolean
+    lastLogin?: Date | string | null
+    refreshToken?: string | null
+    passwordResetToken?: string | null
+    passwordResetExpires?: Date | string | null
+    isVerified?: boolean
+    verificationToken?: string | null
+    bookmarks?: BookmarkUncheckedCreateNestedManyWithoutUserInput
+    ownedCollections?: CollectionUncheckedCreateNestedManyWithoutOwnerInput
+    collabCollections?: CollectionCollaboratorUncheckedCreateNestedManyWithoutUserInput
+    devices?: DeviceUncheckedCreateNestedManyWithoutUserInput
+    folders?: FolderUncheckedCreateNestedManyWithoutUserInput
+    collabFolders?: FolderCollaboratorUncheckedCreateNestedManyWithoutUserInput
+    tags?: TagUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutCollectionsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCollectionsInput, UserUncheckedCreateWithoutCollectionsInput>
+  }
+
   export type CollectionCollaboratorCreateWithoutCollectionInput = {
-    permission?: $Enums.Role
     addedAt?: Date | string
+    permission?: $Enums.Role
     user: UserCreateNestedOneWithoutCollabCollectionsInput
   }
 
   export type CollectionCollaboratorUncheckedCreateWithoutCollectionInput = {
     userId: string
-    permission?: $Enums.Role
     addedAt?: Date | string
+    permission?: $Enums.Role
   }
 
   export type CollectionCollaboratorCreateOrConnectWithoutCollectionInput = {
@@ -20465,65 +20465,20 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type UserUpsertWithoutCollectionsInput = {
-    update: XOR<UserUpdateWithoutCollectionsInput, UserUncheckedUpdateWithoutCollectionsInput>
-    create: XOR<UserCreateWithoutCollectionsInput, UserUncheckedCreateWithoutCollectionsInput>
-    where?: UserWhereInput
+  export type BookmarkCollectionUpsertWithWhereUniqueWithoutCollectionInput = {
+    where: BookmarkCollectionWhereUniqueInput
+    update: XOR<BookmarkCollectionUpdateWithoutCollectionInput, BookmarkCollectionUncheckedUpdateWithoutCollectionInput>
+    create: XOR<BookmarkCollectionCreateWithoutCollectionInput, BookmarkCollectionUncheckedCreateWithoutCollectionInput>
   }
 
-  export type UserUpdateToOneWithWhereWithoutCollectionsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutCollectionsInput, UserUncheckedUpdateWithoutCollectionsInput>
+  export type BookmarkCollectionUpdateWithWhereUniqueWithoutCollectionInput = {
+    where: BookmarkCollectionWhereUniqueInput
+    data: XOR<BookmarkCollectionUpdateWithoutCollectionInput, BookmarkCollectionUncheckedUpdateWithoutCollectionInput>
   }
 
-  export type UserUpdateWithoutCollectionsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
-    passwordResetToken?: NullableStringFieldUpdateOperationsInput | string | null
-    passwordResetExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isVerified?: BoolFieldUpdateOperationsInput | boolean
-    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
-    bookmarks?: BookmarkUpdateManyWithoutUserNestedInput
-    folders?: FolderUpdateManyWithoutUserNestedInput
-    tags?: TagUpdateManyWithoutUserNestedInput
-    ownedCollections?: CollectionUpdateManyWithoutOwnerNestedInput
-    collabFolders?: FolderCollaboratorUpdateManyWithoutUserNestedInput
-    collabCollections?: CollectionCollaboratorUpdateManyWithoutUserNestedInput
-    devices?: DeviceUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutCollectionsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
-    passwordResetToken?: NullableStringFieldUpdateOperationsInput | string | null
-    passwordResetExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isVerified?: BoolFieldUpdateOperationsInput | boolean
-    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
-    bookmarks?: BookmarkUncheckedUpdateManyWithoutUserNestedInput
-    folders?: FolderUncheckedUpdateManyWithoutUserNestedInput
-    tags?: TagUncheckedUpdateManyWithoutUserNestedInput
-    ownedCollections?: CollectionUncheckedUpdateManyWithoutOwnerNestedInput
-    collabFolders?: FolderCollaboratorUncheckedUpdateManyWithoutUserNestedInput
-    collabCollections?: CollectionCollaboratorUncheckedUpdateManyWithoutUserNestedInput
-    devices?: DeviceUncheckedUpdateManyWithoutUserNestedInput
+  export type BookmarkCollectionUpdateManyWithWhereWithoutCollectionInput = {
+    where: BookmarkCollectionScalarWhereInput
+    data: XOR<BookmarkCollectionUpdateManyMutationInput, BookmarkCollectionUncheckedUpdateManyWithoutCollectionInput>
   }
 
   export type UserUpsertWithoutOwnedCollectionsInput = {
@@ -20554,12 +20509,12 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     bookmarks?: BookmarkUpdateManyWithoutUserNestedInput
-    folders?: FolderUpdateManyWithoutUserNestedInput
-    tags?: TagUpdateManyWithoutUserNestedInput
     collections?: CollectionUpdateManyWithoutUserNestedInput
-    collabFolders?: FolderCollaboratorUpdateManyWithoutUserNestedInput
     collabCollections?: CollectionCollaboratorUpdateManyWithoutUserNestedInput
     devices?: DeviceUpdateManyWithoutUserNestedInput
+    folders?: FolderUpdateManyWithoutUserNestedInput
+    collabFolders?: FolderCollaboratorUpdateManyWithoutUserNestedInput
+    tags?: TagUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOwnedCollectionsInput = {
@@ -20579,28 +20534,73 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     bookmarks?: BookmarkUncheckedUpdateManyWithoutUserNestedInput
-    folders?: FolderUncheckedUpdateManyWithoutUserNestedInput
-    tags?: TagUncheckedUpdateManyWithoutUserNestedInput
     collections?: CollectionUncheckedUpdateManyWithoutUserNestedInput
-    collabFolders?: FolderCollaboratorUncheckedUpdateManyWithoutUserNestedInput
     collabCollections?: CollectionCollaboratorUncheckedUpdateManyWithoutUserNestedInput
     devices?: DeviceUncheckedUpdateManyWithoutUserNestedInput
+    folders?: FolderUncheckedUpdateManyWithoutUserNestedInput
+    collabFolders?: FolderCollaboratorUncheckedUpdateManyWithoutUserNestedInput
+    tags?: TagUncheckedUpdateManyWithoutUserNestedInput
   }
 
-  export type BookmarkCollectionUpsertWithWhereUniqueWithoutCollectionInput = {
-    where: BookmarkCollectionWhereUniqueInput
-    update: XOR<BookmarkCollectionUpdateWithoutCollectionInput, BookmarkCollectionUncheckedUpdateWithoutCollectionInput>
-    create: XOR<BookmarkCollectionCreateWithoutCollectionInput, BookmarkCollectionUncheckedCreateWithoutCollectionInput>
+  export type UserUpsertWithoutCollectionsInput = {
+    update: XOR<UserUpdateWithoutCollectionsInput, UserUncheckedUpdateWithoutCollectionsInput>
+    create: XOR<UserCreateWithoutCollectionsInput, UserUncheckedCreateWithoutCollectionsInput>
+    where?: UserWhereInput
   }
 
-  export type BookmarkCollectionUpdateWithWhereUniqueWithoutCollectionInput = {
-    where: BookmarkCollectionWhereUniqueInput
-    data: XOR<BookmarkCollectionUpdateWithoutCollectionInput, BookmarkCollectionUncheckedUpdateWithoutCollectionInput>
+  export type UserUpdateToOneWithWhereWithoutCollectionsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCollectionsInput, UserUncheckedUpdateWithoutCollectionsInput>
   }
 
-  export type BookmarkCollectionUpdateManyWithWhereWithoutCollectionInput = {
-    where: BookmarkCollectionScalarWhereInput
-    data: XOR<BookmarkCollectionUpdateManyMutationInput, BookmarkCollectionUncheckedUpdateManyWithoutCollectionInput>
+  export type UserUpdateWithoutCollectionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordResetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordResetExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    bookmarks?: BookmarkUpdateManyWithoutUserNestedInput
+    ownedCollections?: CollectionUpdateManyWithoutOwnerNestedInput
+    collabCollections?: CollectionCollaboratorUpdateManyWithoutUserNestedInput
+    devices?: DeviceUpdateManyWithoutUserNestedInput
+    folders?: FolderUpdateManyWithoutUserNestedInput
+    collabFolders?: FolderCollaboratorUpdateManyWithoutUserNestedInput
+    tags?: TagUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCollectionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordResetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordResetExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
+    bookmarks?: BookmarkUncheckedUpdateManyWithoutUserNestedInput
+    ownedCollections?: CollectionUncheckedUpdateManyWithoutOwnerNestedInput
+    collabCollections?: CollectionCollaboratorUncheckedUpdateManyWithoutUserNestedInput
+    devices?: DeviceUncheckedUpdateManyWithoutUserNestedInput
+    folders?: FolderUncheckedUpdateManyWithoutUserNestedInput
+    collabFolders?: FolderCollaboratorUncheckedUpdateManyWithoutUserNestedInput
+    tags?: TagUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type CollectionCollaboratorUpsertWithWhereUniqueWithoutCollectionInput = {
@@ -20619,43 +20619,6 @@ export namespace Prisma {
     data: XOR<CollectionCollaboratorUpdateManyMutationInput, CollectionCollaboratorUncheckedUpdateManyWithoutCollectionInput>
   }
 
-  export type CollectionCreateWithoutBookmarksInput = {
-    id?: string
-    name: string
-    description?: string | null
-    isPublic?: boolean
-    publicLink?: string | null
-    thumbnail?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    user: UserCreateNestedOneWithoutCollectionsInput
-    owner: UserCreateNestedOneWithoutOwnedCollectionsInput
-    collaborators?: CollectionCollaboratorCreateNestedManyWithoutCollectionInput
-  }
-
-  export type CollectionUncheckedCreateWithoutBookmarksInput = {
-    id?: string
-    name: string
-    description?: string | null
-    isPublic?: boolean
-    publicLink?: string | null
-    thumbnail?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    userId: string
-    ownerId: string
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-    collaborators?: CollectionCollaboratorUncheckedCreateNestedManyWithoutCollectionInput
-  }
-
-  export type CollectionCreateOrConnectWithoutBookmarksInput = {
-    where: CollectionWhereUniqueInput
-    create: XOR<CollectionCreateWithoutBookmarksInput, CollectionUncheckedCreateWithoutBookmarksInput>
-  }
-
   export type BookmarkCreateWithoutCollectionsInput = {
     id?: string
     url: string
@@ -20668,11 +20631,11 @@ export namespace Prisma {
     lastVisited?: Date | string | null
     visitCount?: number
     notes?: string | null
-    isDeleted?: boolean
     deletedAt?: Date | string | null
+    isDeleted?: boolean
     user: UserCreateNestedOneWithoutBookmarksInput
-    folders?: FolderBookmarkCreateNestedManyWithoutBookmarkInput
     tags?: BookmarkTagCreateNestedManyWithoutBookmarkInput
+    folders?: FolderBookmarkCreateNestedManyWithoutBookmarkInput
   }
 
   export type BookmarkUncheckedCreateWithoutCollectionsInput = {
@@ -20688,10 +20651,10 @@ export namespace Prisma {
     visitCount?: number
     notes?: string | null
     userId: string
-    isDeleted?: boolean
     deletedAt?: Date | string | null
-    folders?: FolderBookmarkUncheckedCreateNestedManyWithoutBookmarkInput
+    isDeleted?: boolean
     tags?: BookmarkTagUncheckedCreateNestedManyWithoutBookmarkInput
+    folders?: FolderBookmarkUncheckedCreateNestedManyWithoutBookmarkInput
   }
 
   export type BookmarkCreateOrConnectWithoutCollectionsInput = {
@@ -20699,47 +20662,41 @@ export namespace Prisma {
     create: XOR<BookmarkCreateWithoutCollectionsInput, BookmarkUncheckedCreateWithoutCollectionsInput>
   }
 
-  export type CollectionUpsertWithoutBookmarksInput = {
-    update: XOR<CollectionUpdateWithoutBookmarksInput, CollectionUncheckedUpdateWithoutBookmarksInput>
+  export type CollectionCreateWithoutBookmarksInput = {
+    id?: string
+    name: string
+    description?: string | null
+    isPublic?: boolean
+    publicLink?: string | null
+    thumbnail?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    isDeleted?: boolean
+    owner: UserCreateNestedOneWithoutOwnedCollectionsInput
+    user: UserCreateNestedOneWithoutCollectionsInput
+    collaborators?: CollectionCollaboratorCreateNestedManyWithoutCollectionInput
+  }
+
+  export type CollectionUncheckedCreateWithoutBookmarksInput = {
+    id?: string
+    name: string
+    description?: string | null
+    isPublic?: boolean
+    publicLink?: string | null
+    thumbnail?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: string
+    ownerId: string
+    deletedAt?: Date | string | null
+    isDeleted?: boolean
+    collaborators?: CollectionCollaboratorUncheckedCreateNestedManyWithoutCollectionInput
+  }
+
+  export type CollectionCreateOrConnectWithoutBookmarksInput = {
+    where: CollectionWhereUniqueInput
     create: XOR<CollectionCreateWithoutBookmarksInput, CollectionUncheckedCreateWithoutBookmarksInput>
-    where?: CollectionWhereInput
-  }
-
-  export type CollectionUpdateToOneWithWhereWithoutBookmarksInput = {
-    where?: CollectionWhereInput
-    data: XOR<CollectionUpdateWithoutBookmarksInput, CollectionUncheckedUpdateWithoutBookmarksInput>
-  }
-
-  export type CollectionUpdateWithoutBookmarksInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    isPublic?: BoolFieldUpdateOperationsInput | boolean
-    publicLink?: NullableStringFieldUpdateOperationsInput | string | null
-    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    user?: UserUpdateOneRequiredWithoutCollectionsNestedInput
-    owner?: UserUpdateOneRequiredWithoutOwnedCollectionsNestedInput
-    collaborators?: CollectionCollaboratorUpdateManyWithoutCollectionNestedInput
-  }
-
-  export type CollectionUncheckedUpdateWithoutBookmarksInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    isPublic?: BoolFieldUpdateOperationsInput | boolean
-    publicLink?: NullableStringFieldUpdateOperationsInput | string | null
-    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userId?: StringFieldUpdateOperationsInput | string
-    ownerId?: StringFieldUpdateOperationsInput | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    collaborators?: CollectionCollaboratorUncheckedUpdateManyWithoutCollectionNestedInput
   }
 
   export type BookmarkUpsertWithoutCollectionsInput = {
@@ -20765,11 +20722,11 @@ export namespace Prisma {
     lastVisited?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     visitCount?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     user?: UserUpdateOneRequiredWithoutBookmarksNestedInput
-    folders?: FolderBookmarkUpdateManyWithoutBookmarkNestedInput
     tags?: BookmarkTagUpdateManyWithoutBookmarkNestedInput
+    folders?: FolderBookmarkUpdateManyWithoutBookmarkNestedInput
   }
 
   export type BookmarkUncheckedUpdateWithoutCollectionsInput = {
@@ -20785,10 +20742,53 @@ export namespace Prisma {
     visitCount?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: StringFieldUpdateOperationsInput | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    folders?: FolderBookmarkUncheckedUpdateManyWithoutBookmarkNestedInput
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     tags?: BookmarkTagUncheckedUpdateManyWithoutBookmarkNestedInput
+    folders?: FolderBookmarkUncheckedUpdateManyWithoutBookmarkNestedInput
+  }
+
+  export type CollectionUpsertWithoutBookmarksInput = {
+    update: XOR<CollectionUpdateWithoutBookmarksInput, CollectionUncheckedUpdateWithoutBookmarksInput>
+    create: XOR<CollectionCreateWithoutBookmarksInput, CollectionUncheckedCreateWithoutBookmarksInput>
+    where?: CollectionWhereInput
+  }
+
+  export type CollectionUpdateToOneWithWhereWithoutBookmarksInput = {
+    where?: CollectionWhereInput
+    data: XOR<CollectionUpdateWithoutBookmarksInput, CollectionUncheckedUpdateWithoutBookmarksInput>
+  }
+
+  export type CollectionUpdateWithoutBookmarksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isPublic?: BoolFieldUpdateOperationsInput | boolean
+    publicLink?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    owner?: UserUpdateOneRequiredWithoutOwnedCollectionsNestedInput
+    user?: UserUpdateOneRequiredWithoutCollectionsNestedInput
+    collaborators?: CollectionCollaboratorUpdateManyWithoutCollectionNestedInput
+  }
+
+  export type CollectionUncheckedUpdateWithoutBookmarksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isPublic?: BoolFieldUpdateOperationsInput | boolean
+    publicLink?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+    ownerId?: StringFieldUpdateOperationsInput | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    collaborators?: CollectionCollaboratorUncheckedUpdateManyWithoutCollectionNestedInput
   }
 
   export type CollectionCreateWithoutCollaboratorsInput = {
@@ -20800,11 +20800,11 @@ export namespace Prisma {
     thumbnail?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    isDeleted?: boolean
     deletedAt?: Date | string | null
-    user: UserCreateNestedOneWithoutCollectionsInput
-    owner: UserCreateNestedOneWithoutOwnedCollectionsInput
+    isDeleted?: boolean
     bookmarks?: BookmarkCollectionCreateNestedManyWithoutCollectionInput
+    owner: UserCreateNestedOneWithoutOwnedCollectionsInput
+    user: UserCreateNestedOneWithoutCollectionsInput
   }
 
   export type CollectionUncheckedCreateWithoutCollaboratorsInput = {
@@ -20818,8 +20818,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     userId: string
     ownerId: string
-    isDeleted?: boolean
     deletedAt?: Date | string | null
+    isDeleted?: boolean
     bookmarks?: BookmarkCollectionUncheckedCreateNestedManyWithoutCollectionInput
   }
 
@@ -20845,12 +20845,12 @@ export namespace Prisma {
     isVerified?: boolean
     verificationToken?: string | null
     bookmarks?: BookmarkCreateNestedManyWithoutUserInput
-    folders?: FolderCreateNestedManyWithoutUserInput
-    tags?: TagCreateNestedManyWithoutUserInput
-    collections?: CollectionCreateNestedManyWithoutUserInput
     ownedCollections?: CollectionCreateNestedManyWithoutOwnerInput
-    collabFolders?: FolderCollaboratorCreateNestedManyWithoutUserInput
+    collections?: CollectionCreateNestedManyWithoutUserInput
     devices?: DeviceCreateNestedManyWithoutUserInput
+    folders?: FolderCreateNestedManyWithoutUserInput
+    collabFolders?: FolderCollaboratorCreateNestedManyWithoutUserInput
+    tags?: TagCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCollabCollectionsInput = {
@@ -20870,12 +20870,12 @@ export namespace Prisma {
     isVerified?: boolean
     verificationToken?: string | null
     bookmarks?: BookmarkUncheckedCreateNestedManyWithoutUserInput
-    folders?: FolderUncheckedCreateNestedManyWithoutUserInput
-    tags?: TagUncheckedCreateNestedManyWithoutUserInput
-    collections?: CollectionUncheckedCreateNestedManyWithoutUserInput
     ownedCollections?: CollectionUncheckedCreateNestedManyWithoutOwnerInput
-    collabFolders?: FolderCollaboratorUncheckedCreateNestedManyWithoutUserInput
+    collections?: CollectionUncheckedCreateNestedManyWithoutUserInput
     devices?: DeviceUncheckedCreateNestedManyWithoutUserInput
+    folders?: FolderUncheckedCreateNestedManyWithoutUserInput
+    collabFolders?: FolderCollaboratorUncheckedCreateNestedManyWithoutUserInput
+    tags?: TagUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCollabCollectionsInput = {
@@ -20903,11 +20903,11 @@ export namespace Prisma {
     thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    user?: UserUpdateOneRequiredWithoutCollectionsNestedInput
-    owner?: UserUpdateOneRequiredWithoutOwnedCollectionsNestedInput
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     bookmarks?: BookmarkCollectionUpdateManyWithoutCollectionNestedInput
+    owner?: UserUpdateOneRequiredWithoutOwnedCollectionsNestedInput
+    user?: UserUpdateOneRequiredWithoutCollectionsNestedInput
   }
 
   export type CollectionUncheckedUpdateWithoutCollaboratorsInput = {
@@ -20921,8 +20921,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
     ownerId?: StringFieldUpdateOperationsInput | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     bookmarks?: BookmarkCollectionUncheckedUpdateManyWithoutCollectionNestedInput
   }
 
@@ -20954,12 +20954,12 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     bookmarks?: BookmarkUpdateManyWithoutUserNestedInput
-    folders?: FolderUpdateManyWithoutUserNestedInput
-    tags?: TagUpdateManyWithoutUserNestedInput
-    collections?: CollectionUpdateManyWithoutUserNestedInput
     ownedCollections?: CollectionUpdateManyWithoutOwnerNestedInput
-    collabFolders?: FolderCollaboratorUpdateManyWithoutUserNestedInput
+    collections?: CollectionUpdateManyWithoutUserNestedInput
     devices?: DeviceUpdateManyWithoutUserNestedInput
+    folders?: FolderUpdateManyWithoutUserNestedInput
+    collabFolders?: FolderCollaboratorUpdateManyWithoutUserNestedInput
+    tags?: TagUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCollabCollectionsInput = {
@@ -20979,12 +20979,12 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     bookmarks?: BookmarkUncheckedUpdateManyWithoutUserNestedInput
-    folders?: FolderUncheckedUpdateManyWithoutUserNestedInput
-    tags?: TagUncheckedUpdateManyWithoutUserNestedInput
-    collections?: CollectionUncheckedUpdateManyWithoutUserNestedInput
     ownedCollections?: CollectionUncheckedUpdateManyWithoutOwnerNestedInput
-    collabFolders?: FolderCollaboratorUncheckedUpdateManyWithoutUserNestedInput
+    collections?: CollectionUncheckedUpdateManyWithoutUserNestedInput
     devices?: DeviceUncheckedUpdateManyWithoutUserNestedInput
+    folders?: FolderUncheckedUpdateManyWithoutUserNestedInput
+    collabFolders?: FolderCollaboratorUncheckedUpdateManyWithoutUserNestedInput
+    tags?: TagUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutDevicesInput = {
@@ -21004,12 +21004,12 @@ export namespace Prisma {
     isVerified?: boolean
     verificationToken?: string | null
     bookmarks?: BookmarkCreateNestedManyWithoutUserInput
-    folders?: FolderCreateNestedManyWithoutUserInput
-    tags?: TagCreateNestedManyWithoutUserInput
-    collections?: CollectionCreateNestedManyWithoutUserInput
     ownedCollections?: CollectionCreateNestedManyWithoutOwnerInput
-    collabFolders?: FolderCollaboratorCreateNestedManyWithoutUserInput
+    collections?: CollectionCreateNestedManyWithoutUserInput
     collabCollections?: CollectionCollaboratorCreateNestedManyWithoutUserInput
+    folders?: FolderCreateNestedManyWithoutUserInput
+    collabFolders?: FolderCollaboratorCreateNestedManyWithoutUserInput
+    tags?: TagCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDevicesInput = {
@@ -21029,12 +21029,12 @@ export namespace Prisma {
     isVerified?: boolean
     verificationToken?: string | null
     bookmarks?: BookmarkUncheckedCreateNestedManyWithoutUserInput
-    folders?: FolderUncheckedCreateNestedManyWithoutUserInput
-    tags?: TagUncheckedCreateNestedManyWithoutUserInput
-    collections?: CollectionUncheckedCreateNestedManyWithoutUserInput
     ownedCollections?: CollectionUncheckedCreateNestedManyWithoutOwnerInput
-    collabFolders?: FolderCollaboratorUncheckedCreateNestedManyWithoutUserInput
+    collections?: CollectionUncheckedCreateNestedManyWithoutUserInput
     collabCollections?: CollectionCollaboratorUncheckedCreateNestedManyWithoutUserInput
+    folders?: FolderUncheckedCreateNestedManyWithoutUserInput
+    collabFolders?: FolderCollaboratorUncheckedCreateNestedManyWithoutUserInput
+    tags?: TagUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDevicesInput = {
@@ -21070,12 +21070,12 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     bookmarks?: BookmarkUpdateManyWithoutUserNestedInput
-    folders?: FolderUpdateManyWithoutUserNestedInput
-    tags?: TagUpdateManyWithoutUserNestedInput
-    collections?: CollectionUpdateManyWithoutUserNestedInput
     ownedCollections?: CollectionUpdateManyWithoutOwnerNestedInput
-    collabFolders?: FolderCollaboratorUpdateManyWithoutUserNestedInput
+    collections?: CollectionUpdateManyWithoutUserNestedInput
     collabCollections?: CollectionCollaboratorUpdateManyWithoutUserNestedInput
+    folders?: FolderUpdateManyWithoutUserNestedInput
+    collabFolders?: FolderCollaboratorUpdateManyWithoutUserNestedInput
+    tags?: TagUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDevicesInput = {
@@ -21095,12 +21095,12 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     bookmarks?: BookmarkUncheckedUpdateManyWithoutUserNestedInput
-    folders?: FolderUncheckedUpdateManyWithoutUserNestedInput
-    tags?: TagUncheckedUpdateManyWithoutUserNestedInput
-    collections?: CollectionUncheckedUpdateManyWithoutUserNestedInput
     ownedCollections?: CollectionUncheckedUpdateManyWithoutOwnerNestedInput
-    collabFolders?: FolderCollaboratorUncheckedUpdateManyWithoutUserNestedInput
+    collections?: CollectionUncheckedUpdateManyWithoutUserNestedInput
     collabCollections?: CollectionCollaboratorUncheckedUpdateManyWithoutUserNestedInput
+    folders?: FolderUncheckedUpdateManyWithoutUserNestedInput
+    collabFolders?: FolderCollaboratorUncheckedUpdateManyWithoutUserNestedInput
+    tags?: TagUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type BookmarkCreateManyUserInput = {
@@ -21115,45 +21115,8 @@ export namespace Prisma {
     lastVisited?: Date | string | null
     visitCount?: number
     notes?: string | null
-    isDeleted?: boolean
     deletedAt?: Date | string | null
-  }
-
-  export type FolderCreateManyUserInput = {
-    id?: string
-    name: string
-    description?: string | null
-    icon?: string | null
-    color?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    parentId?: string | null
     isDeleted?: boolean
-    deletedAt?: Date | string | null
-  }
-
-  export type TagCreateManyUserInput = {
-    id?: string
-    name: string
-    color?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
-  }
-
-  export type CollectionCreateManyUserInput = {
-    id?: string
-    name: string
-    description?: string | null
-    isPublic?: boolean
-    publicLink?: string | null
-    thumbnail?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    ownerId: string
-    isDeleted?: boolean
-    deletedAt?: Date | string | null
   }
 
   export type CollectionCreateManyOwnerInput = {
@@ -21166,20 +21129,28 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
-    isDeleted?: boolean
     deletedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
-  export type FolderCollaboratorCreateManyUserInput = {
-    folderId: string
-    permission?: $Enums.Role
-    addedAt?: Date | string
+  export type CollectionCreateManyUserInput = {
+    id?: string
+    name: string
+    description?: string | null
+    isPublic?: boolean
+    publicLink?: string | null
+    thumbnail?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    ownerId: string
+    deletedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
   export type CollectionCollaboratorCreateManyUserInput = {
     collectionId: string
-    permission?: $Enums.Role
     addedAt?: Date | string
+    permission?: $Enums.Role
   }
 
   export type DeviceCreateManyUserInput = {
@@ -21188,6 +21159,35 @@ export namespace Prisma {
     deviceType: string
     lastSynced?: Date | string
     lastActive?: Date | string
+  }
+
+  export type FolderCreateManyUserInput = {
+    id?: string
+    name: string
+    description?: string | null
+    icon?: string | null
+    color?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    parentId?: string | null
+    deletedAt?: Date | string | null
+    isDeleted?: boolean
+  }
+
+  export type FolderCollaboratorCreateManyUserInput = {
+    folderId: string
+    addedAt?: Date | string
+    permission?: $Enums.Role
+  }
+
+  export type TagCreateManyUserInput = {
+    id?: string
+    name: string
+    color?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
   export type BookmarkUpdateWithoutUserInput = {
@@ -21202,11 +21202,11 @@ export namespace Prisma {
     lastVisited?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     visitCount?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    folders?: FolderBookmarkUpdateManyWithoutBookmarkNestedInput
-    tags?: BookmarkTagUpdateManyWithoutBookmarkNestedInput
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     collections?: BookmarkCollectionUpdateManyWithoutBookmarkNestedInput
+    tags?: BookmarkTagUpdateManyWithoutBookmarkNestedInput
+    folders?: FolderBookmarkUpdateManyWithoutBookmarkNestedInput
   }
 
   export type BookmarkUncheckedUpdateWithoutUserInput = {
@@ -21221,11 +21221,11 @@ export namespace Prisma {
     lastVisited?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     visitCount?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    folders?: FolderBookmarkUncheckedUpdateManyWithoutBookmarkNestedInput
-    tags?: BookmarkTagUncheckedUpdateManyWithoutBookmarkNestedInput
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     collections?: BookmarkCollectionUncheckedUpdateManyWithoutBookmarkNestedInput
+    tags?: BookmarkTagUncheckedUpdateManyWithoutBookmarkNestedInput
+    folders?: FolderBookmarkUncheckedUpdateManyWithoutBookmarkNestedInput
   }
 
   export type BookmarkUncheckedUpdateManyWithoutUserInput = {
@@ -21240,131 +21240,8 @@ export namespace Prisma {
     lastVisited?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     visitCount?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type FolderUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    icon?: NullableStringFieldUpdateOperationsInput | string | null
-    color?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    parent?: FolderUpdateOneWithoutChildrenNestedInput
-    children?: FolderUpdateManyWithoutParentNestedInput
-    bookmarks?: FolderBookmarkUpdateManyWithoutFolderNestedInput
-    collaborators?: FolderCollaboratorUpdateManyWithoutFolderNestedInput
-  }
-
-  export type FolderUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    icon?: NullableStringFieldUpdateOperationsInput | string | null
-    color?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    parentId?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    children?: FolderUncheckedUpdateManyWithoutParentNestedInput
-    bookmarks?: FolderBookmarkUncheckedUpdateManyWithoutFolderNestedInput
-    collaborators?: FolderCollaboratorUncheckedUpdateManyWithoutFolderNestedInput
-  }
-
-  export type FolderUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    icon?: NullableStringFieldUpdateOperationsInput | string | null
-    color?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    parentId?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type TagUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    color?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    bookmarks?: BookmarkTagUpdateManyWithoutTagNestedInput
-  }
-
-  export type TagUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    color?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    bookmarks?: BookmarkTagUncheckedUpdateManyWithoutTagNestedInput
-  }
-
-  export type TagUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    color?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type CollectionUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    isPublic?: BoolFieldUpdateOperationsInput | boolean
-    publicLink?: NullableStringFieldUpdateOperationsInput | string | null
-    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    owner?: UserUpdateOneRequiredWithoutOwnedCollectionsNestedInput
-    bookmarks?: BookmarkCollectionUpdateManyWithoutCollectionNestedInput
-    collaborators?: CollectionCollaboratorUpdateManyWithoutCollectionNestedInput
-  }
-
-  export type CollectionUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    isPublic?: BoolFieldUpdateOperationsInput | boolean
-    publicLink?: NullableStringFieldUpdateOperationsInput | string | null
-    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    ownerId?: StringFieldUpdateOperationsInput | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    bookmarks?: BookmarkCollectionUncheckedUpdateManyWithoutCollectionNestedInput
-    collaborators?: CollectionCollaboratorUncheckedUpdateManyWithoutCollectionNestedInput
-  }
-
-  export type CollectionUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    isPublic?: BoolFieldUpdateOperationsInput | boolean
-    publicLink?: NullableStringFieldUpdateOperationsInput | string | null
-    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    ownerId?: StringFieldUpdateOperationsInput | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type CollectionUpdateWithoutOwnerInput = {
@@ -21376,10 +21253,10 @@ export namespace Prisma {
     thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    user?: UserUpdateOneRequiredWithoutCollectionsNestedInput
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     bookmarks?: BookmarkCollectionUpdateManyWithoutCollectionNestedInput
+    user?: UserUpdateOneRequiredWithoutCollectionsNestedInput
     collaborators?: CollectionCollaboratorUpdateManyWithoutCollectionNestedInput
   }
 
@@ -21393,8 +21270,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     bookmarks?: BookmarkCollectionUncheckedUpdateManyWithoutCollectionNestedInput
     collaborators?: CollectionCollaboratorUncheckedUpdateManyWithoutCollectionNestedInput
   }
@@ -21409,44 +21286,72 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
-  export type FolderCollaboratorUpdateWithoutUserInput = {
-    permission?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    folder?: FolderUpdateOneRequiredWithoutCollaboratorsNestedInput
+  export type CollectionUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isPublic?: BoolFieldUpdateOperationsInput | boolean
+    publicLink?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    bookmarks?: BookmarkCollectionUpdateManyWithoutCollectionNestedInput
+    owner?: UserUpdateOneRequiredWithoutOwnedCollectionsNestedInput
+    collaborators?: CollectionCollaboratorUpdateManyWithoutCollectionNestedInput
   }
 
-  export type FolderCollaboratorUncheckedUpdateWithoutUserInput = {
-    folderId?: StringFieldUpdateOperationsInput | string
-    permission?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  export type CollectionUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isPublic?: BoolFieldUpdateOperationsInput | boolean
+    publicLink?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ownerId?: StringFieldUpdateOperationsInput | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    bookmarks?: BookmarkCollectionUncheckedUpdateManyWithoutCollectionNestedInput
+    collaborators?: CollectionCollaboratorUncheckedUpdateManyWithoutCollectionNestedInput
   }
 
-  export type FolderCollaboratorUncheckedUpdateManyWithoutUserInput = {
-    folderId?: StringFieldUpdateOperationsInput | string
-    permission?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  export type CollectionUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isPublic?: BoolFieldUpdateOperationsInput | boolean
+    publicLink?: NullableStringFieldUpdateOperationsInput | string | null
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ownerId?: StringFieldUpdateOperationsInput | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type CollectionCollaboratorUpdateWithoutUserInput = {
-    permission?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    permission?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     collection?: CollectionUpdateOneRequiredWithoutCollaboratorsNestedInput
   }
 
   export type CollectionCollaboratorUncheckedUpdateWithoutUserInput = {
     collectionId?: StringFieldUpdateOperationsInput | string
-    permission?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    permission?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
   }
 
   export type CollectionCollaboratorUncheckedUpdateManyWithoutUserInput = {
     collectionId?: StringFieldUpdateOperationsInput | string
-    permission?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    permission?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
   }
 
   export type DeviceUpdateWithoutUserInput = {
@@ -21473,14 +21378,99 @@ export namespace Prisma {
     lastActive?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type FolderBookmarkCreateManyBookmarkInput = {
-    folderId: string
-    addedAt?: Date | string
+  export type FolderUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    icon?: NullableStringFieldUpdateOperationsInput | string | null
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    parent?: FolderUpdateOneWithoutChildrenNestedInput
+    children?: FolderUpdateManyWithoutParentNestedInput
+    bookmarks?: FolderBookmarkUpdateManyWithoutFolderNestedInput
+    collaborators?: FolderCollaboratorUpdateManyWithoutFolderNestedInput
   }
 
-  export type BookmarkTagCreateManyBookmarkInput = {
-    tagId: string
-    addedAt?: Date | string
+  export type FolderUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    icon?: NullableStringFieldUpdateOperationsInput | string | null
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parentId?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    children?: FolderUncheckedUpdateManyWithoutParentNestedInput
+    bookmarks?: FolderBookmarkUncheckedUpdateManyWithoutFolderNestedInput
+    collaborators?: FolderCollaboratorUncheckedUpdateManyWithoutFolderNestedInput
+  }
+
+  export type FolderUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    icon?: NullableStringFieldUpdateOperationsInput | string | null
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parentId?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type FolderCollaboratorUpdateWithoutUserInput = {
+    addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    permission?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    folder?: FolderUpdateOneRequiredWithoutCollaboratorsNestedInput
+  }
+
+  export type FolderCollaboratorUncheckedUpdateWithoutUserInput = {
+    folderId?: StringFieldUpdateOperationsInput | string
+    addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    permission?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  }
+
+  export type FolderCollaboratorUncheckedUpdateManyWithoutUserInput = {
+    folderId?: StringFieldUpdateOperationsInput | string
+    addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    permission?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  }
+
+  export type TagUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    bookmarks?: BookmarkTagUpdateManyWithoutTagNestedInput
+  }
+
+  export type TagUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    bookmarks?: BookmarkTagUncheckedUpdateManyWithoutTagNestedInput
+  }
+
+  export type TagUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type BookmarkCollectionCreateManyBookmarkInput = {
@@ -21489,34 +21479,14 @@ export namespace Prisma {
     order?: number
   }
 
-  export type FolderBookmarkUpdateWithoutBookmarkInput = {
-    addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    folder?: FolderUpdateOneRequiredWithoutBookmarksNestedInput
+  export type BookmarkTagCreateManyBookmarkInput = {
+    tagId: string
+    addedAt?: Date | string
   }
 
-  export type FolderBookmarkUncheckedUpdateWithoutBookmarkInput = {
-    folderId?: StringFieldUpdateOperationsInput | string
-    addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type FolderBookmarkUncheckedUpdateManyWithoutBookmarkInput = {
-    folderId?: StringFieldUpdateOperationsInput | string
-    addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type BookmarkTagUpdateWithoutBookmarkInput = {
-    addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    tag?: TagUpdateOneRequiredWithoutBookmarksNestedInput
-  }
-
-  export type BookmarkTagUncheckedUpdateWithoutBookmarkInput = {
-    tagId?: StringFieldUpdateOperationsInput | string
-    addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type BookmarkTagUncheckedUpdateManyWithoutBookmarkInput = {
-    tagId?: StringFieldUpdateOperationsInput | string
-    addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  export type FolderBookmarkCreateManyBookmarkInput = {
+    folderId: string
+    addedAt?: Date | string
   }
 
   export type BookmarkCollectionUpdateWithoutBookmarkInput = {
@@ -21537,6 +21507,36 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
   }
 
+  export type BookmarkTagUpdateWithoutBookmarkInput = {
+    addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tag?: TagUpdateOneRequiredWithoutBookmarksNestedInput
+  }
+
+  export type BookmarkTagUncheckedUpdateWithoutBookmarkInput = {
+    tagId?: StringFieldUpdateOperationsInput | string
+    addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BookmarkTagUncheckedUpdateManyWithoutBookmarkInput = {
+    tagId?: StringFieldUpdateOperationsInput | string
+    addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FolderBookmarkUpdateWithoutBookmarkInput = {
+    addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    folder?: FolderUpdateOneRequiredWithoutBookmarksNestedInput
+  }
+
+  export type FolderBookmarkUncheckedUpdateWithoutBookmarkInput = {
+    folderId?: StringFieldUpdateOperationsInput | string
+    addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FolderBookmarkUncheckedUpdateManyWithoutBookmarkInput = {
+    folderId?: StringFieldUpdateOperationsInput | string
+    addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type FolderCreateManyParentInput = {
     id?: string
     name: string
@@ -21546,8 +21546,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
-    isDeleted?: boolean
     deletedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
   export type FolderBookmarkCreateManyFolderInput = {
@@ -21557,8 +21557,8 @@ export namespace Prisma {
 
   export type FolderCollaboratorCreateManyFolderInput = {
     userId: string
-    permission?: $Enums.Role
     addedAt?: Date | string
+    permission?: $Enums.Role
   }
 
   export type FolderUpdateWithoutParentInput = {
@@ -21569,10 +21569,10 @@ export namespace Prisma {
     color?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    user?: UserUpdateOneRequiredWithoutFoldersNestedInput
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     children?: FolderUpdateManyWithoutParentNestedInput
+    user?: UserUpdateOneRequiredWithoutFoldersNestedInput
     bookmarks?: FolderBookmarkUpdateManyWithoutFolderNestedInput
     collaborators?: FolderCollaboratorUpdateManyWithoutFolderNestedInput
   }
@@ -21586,8 +21586,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     children?: FolderUncheckedUpdateManyWithoutParentNestedInput
     bookmarks?: FolderBookmarkUncheckedUpdateManyWithoutFolderNestedInput
     collaborators?: FolderCollaboratorUncheckedUpdateManyWithoutFolderNestedInput
@@ -21602,8 +21602,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type FolderBookmarkUpdateWithoutFolderInput = {
@@ -21622,21 +21622,21 @@ export namespace Prisma {
   }
 
   export type FolderCollaboratorUpdateWithoutFolderInput = {
-    permission?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    permission?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     user?: UserUpdateOneRequiredWithoutCollabFoldersNestedInput
   }
 
   export type FolderCollaboratorUncheckedUpdateWithoutFolderInput = {
     userId?: StringFieldUpdateOperationsInput | string
-    permission?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    permission?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
   }
 
   export type FolderCollaboratorUncheckedUpdateManyWithoutFolderInput = {
     userId?: StringFieldUpdateOperationsInput | string
-    permission?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    permission?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
   }
 
   export type BookmarkTagCreateManyTagInput = {
@@ -21667,8 +21667,8 @@ export namespace Prisma {
 
   export type CollectionCollaboratorCreateManyCollectionInput = {
     userId: string
-    permission?: $Enums.Role
     addedAt?: Date | string
+    permission?: $Enums.Role
   }
 
   export type BookmarkCollectionUpdateWithoutCollectionInput = {
@@ -21690,21 +21690,21 @@ export namespace Prisma {
   }
 
   export type CollectionCollaboratorUpdateWithoutCollectionInput = {
-    permission?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    permission?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     user?: UserUpdateOneRequiredWithoutCollabCollectionsNestedInput
   }
 
   export type CollectionCollaboratorUncheckedUpdateWithoutCollectionInput = {
     userId?: StringFieldUpdateOperationsInput | string
-    permission?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    permission?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
   }
 
   export type CollectionCollaboratorUncheckedUpdateManyWithoutCollectionInput = {
     userId?: StringFieldUpdateOperationsInput | string
-    permission?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     addedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    permission?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
   }
 
 

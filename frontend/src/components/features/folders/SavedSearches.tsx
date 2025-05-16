@@ -1,22 +1,22 @@
-import React from 'react';
-import { Button } from '@/components/ui/button';
+import React from "react";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
   DropdownMenuSeparator,
-} from '@/components/ui/dropdown-menu';
-import { Save, History, Trash2 } from 'lucide-react';
-import { useLocalStorage } from '@/hooks/useLocalStorage';
+} from "@/components/ui/dropdown-menu";
+import { Save, History, Trash2 } from "lucide-react";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 interface SearchConfig {
   id: string;
   name: string;
   searchQuery: string;
   selectedColor: string | null;
-  sortBy: 'name' | 'date' | 'bookmarkCount';
-  sortOrder: 'asc' | 'desc';
+  sortBy: "name" | "date" | "bookmarkCount";
+  sortOrder: "asc" | "desc";
   timestamp: number;
 }
 
@@ -24,20 +24,25 @@ interface SavedSearchesProps {
   currentSearch: {
     searchQuery: string;
     selectedColor: string | null;
-    sortBy: 'name' | 'date' | 'bookmarkCount';
-    sortOrder: 'asc' | 'desc';
+    sortBy: "name" | "date" | "bookmarkCount";
+    sortOrder: "asc" | "desc";
   };
-  onApplySearch: (search: Omit<SearchConfig, 'id' | 'name' | 'timestamp'>) => void;
+  onApplySearch: (
+    search: Omit<SearchConfig, "id" | "name" | "timestamp">,
+  ) => void;
 }
 
 export const SavedSearches: React.FC<SavedSearchesProps> = ({
   currentSearch,
   onApplySearch,
 }) => {
-  const [savedSearches, setSavedSearches] = useLocalStorage<SearchConfig[]>('savedFolderSearches', []);
+  const [savedSearches, setSavedSearches] = useLocalStorage<SearchConfig[]>(
+    "savedFolderSearches",
+    [],
+  );
 
   const handleSaveSearch = () => {
-    const name = window.prompt('Enter a name for this search:');
+    const name = window.prompt("Enter a name for this search:");
     if (!name) return;
 
     const newSearch: SearchConfig = {
@@ -47,11 +52,11 @@ export const SavedSearches: React.FC<SavedSearchesProps> = ({
       timestamp: Date.now(),
     };
 
-    setSavedSearches(prev => [...prev, newSearch]);
+    setSavedSearches((prev) => [...prev, newSearch]);
   };
 
   const handleDeleteSearch = (id: string) => {
-    setSavedSearches(prev => prev.filter(search => search.id !== id));
+    setSavedSearches((prev) => prev.filter((search) => search.id !== id));
   };
 
   const handleApplySearch = (search: SearchConfig) => {
@@ -104,4 +109,4 @@ export const SavedSearches: React.FC<SavedSearchesProps> = ({
       </DropdownMenuContent>
     </DropdownMenu>
   );
-}; 
+};

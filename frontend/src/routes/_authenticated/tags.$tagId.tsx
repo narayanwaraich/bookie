@@ -1,5 +1,5 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { z } from 'zod';
+import { createFileRoute } from "@tanstack/react-router";
+import { z } from "zod";
 
 interface Tag {
   id: string;
@@ -16,21 +16,19 @@ const tagParamsSchema = z.object({
   tagId: z.string().uuid(),
 });
 
-export const Route = createFileRoute('/_authenticated/tags/$tagId')({
+export const Route = createFileRoute("/_authenticated/tags/$tagId")({
   loader: async ({ params }) => {
     const validatedParams = tagParamsSchema.parse(params);
   },
   component: TagDetailComponent,
   pendingComponent: () => <div>Loading tag details...</div>,
-  errorComponent: ({ error }) => <div>Error loading tag details: {error.message}</div>,
+  errorComponent: ({ error }) => (
+    <div>Error loading tag details: {error.message}</div>
+  ),
 });
 
-
 function TagDetailComponent() {
-  const { tag } = Route.useLoaderData()
-  
-  return (
-    <>
-    </>
-  );
+  const { tag } = Route.useLoaderData();
+
+  return <></>;
 }

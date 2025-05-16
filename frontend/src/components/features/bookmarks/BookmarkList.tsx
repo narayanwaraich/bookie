@@ -1,47 +1,75 @@
-import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useQuery } from '@tanstack/react-query';
-import { Loading } from '@/components/common/Loading'; 
-import { ErrorDisplay } from '@/components/common/ErrorDisplay'; 
-import { trpc } from '@/lib/api'; 
-import type { inferOutput } from '@trpc/tanstack-react-query';
-import { Button } from '@/components/ui/button'; 
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'; 
-import { AddBookmarkForm } from './AddBookmarkForm'; 
-import { EditBookmarkForm } from './EditBookmarkForm';
-import { PlusCircle, Grid, List, Search } from 'lucide-react';
-import { useMutation } from '@tanstack/react-query'; 
-import { queryClient } from '@/lib/queryClient';
-import { toast } from 'sonner';
-import { Input } from '@/components/ui/input';
-import { useDebounce } from '@/hooks/useDebounce';
-import { BookmarkCard } from './BookmarkCard';
+import React, { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useQuery } from "@tanstack/react-query";
+import { Loading } from "@/components/common/Loading";
+import { ErrorDisplay } from "@/components/common/ErrorDisplay";
+import { trpc } from "@/lib/api";
+import type { inferOutput } from "@trpc/tanstack-react-query";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { AddBookmarkForm } from "./AddBookmarkForm";
+import { EditBookmarkForm } from "./EditBookmarkForm";
+import { PlusCircle, Grid, List, Search } from "lucide-react";
+import { useMutation } from "@tanstack/react-query";
+import { queryClient } from "@/lib/queryClient";
+import { toast } from "sonner";
+import { Input } from "@/components/ui/input";
+import { useDebounce } from "@/hooks/useDebounce";
+import { BookmarkCard } from "./BookmarkCard";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Trash2, Tag, Folder as FolderIcon } from 'lucide-react';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'; // Import Dropdown components
-import type { EditBookmarkFormInput as EditBookmark } from './EditBookmarkForm';
+} from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Trash2, Tag, Folder as FolderIcon } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"; // Import Dropdown components
+import type { EditBookmarkFormInput as EditBookmark } from "./EditBookmarkForm";
 
 type BookmarkSearchResult = inferOutput<typeof trpc.bookmarks.search>;
-type Bookmark = BookmarkSearchResult['bookmarks'][number];
+type Bookmark = BookmarkSearchResult["bookmarks"][number];
 
 type TagListResult = inferOutput<typeof trpc.tags.list>;
-type Tag = TagListResult['data'][number];
+type Tag = TagListResult["data"][number];
 
 type FolderListResult = inferOutput<typeof trpc.folders.list>;
-type Folder = FolderListResult['data'][number];
+type Folder = FolderListResult["data"][number];
 
-type ViewMode = 'grid' | 'list';
-type SortOption = 'createdAt' | 'updatedAt' | 'lastVisited' | 'visitCount' | 'title';
-type SortOrder = 'asc' | 'desc';
+type ViewMode = "grid" | "list";
+type SortOption =
+  | "createdAt"
+  | "updatedAt"
+  | "lastVisited"
+  | "visitCount"
+  | "title";
+type SortOrder = "asc" | "desc";
 
 const ITEMS_PER_PAGE = 12;
 
@@ -50,19 +78,28 @@ interface BookmarkListProps {
   showFolderFilter?: boolean; // New prop to control visibility of folder filter
 }
 
-export const BookmarkList: React.FC<BookmarkListProps> = ({ initialFolderId, showFolderFilter = true }) => {
+export const BookmarkList: React.FC<BookmarkListProps> = ({
+  initialFolderId,
+  showFolderFilter = true,
+}) => {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-  const [editingBookmark, setEditingBookmark] = useState<EditBookmark | null>(null);
-  const [viewMode, setViewMode] = useState<ViewMode>('grid');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [editingBookmark, setEditingBookmark] = useState<EditBookmark | null>(
+    null,
+  );
+  const [viewMode, setViewMode] = useState<ViewMode>("grid");
+  const [searchQuery, setSearchQuery] = useState("");
   const debouncedSearchQuery = useDebounce(searchQuery, 300);
-  const [sortBy, setSortBy] = useState<SortOption>('createdAt');
-  const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
+  const [sortBy, setSortBy] = useState<SortOption>("createdAt");
+  const [sortOrder, setSortOrder] = useState<SortOrder>("desc");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   // Initialize selectedFolderId with initialFolderId if provided
-  const [selectedFolderId, setSelectedFolderId] = useState<string | undefined>(initialFolderId);
+  const [selectedFolderId, setSelectedFolderId] = useState<string | undefined>(
+    initialFolderId,
+  );
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedBookmarkIds, setSelectedBookmarkIds] = useState<Set<string>>(new Set());
+  const [selectedBookmarkIds, setSelectedBookmarkIds] = useState<Set<string>>(
+    new Set(),
+  );
 
   // Effect to update selectedFolderId if initialFolderId prop changes
   React.useEffect(() => {
@@ -81,24 +118,35 @@ export const BookmarkList: React.FC<BookmarkListProps> = ({ initialFolderId, sho
   });
 
   // Fetch bookmarks
-  const { data: searchResult, isLoading, error, isFetching } = useQuery(queryOptions);
+  const {
+    data: searchResult,
+    isLoading,
+    error,
+    isFetching,
+  } = useQuery(queryOptions);
 
   // Fetch tags and folders for filtering/bulk actions
-  const { data: tagsResult } = useQuery(trpc.tags.list.queryOptions({ limit: 100 }));
-  const { data: foldersResult } = useQuery(trpc.folders.list.queryOptions({ limit: 100 }));
+  const { data: tagsResult } = useQuery(
+    trpc.tags.list.queryOptions({ limit: 100 }),
+  );
+  const { data: foldersResult } = useQuery(
+    trpc.folders.list.queryOptions({ limit: 100 }),
+  );
 
   // --- Bulk Action Mutation ---
-  const bulkActionMutation = useMutation(trpc.bookmarks.bulkAction.mutationOptions({
-    onSuccess: (data) => {
-      toast.success(data.message || 'Bulk action successful!');
-      setSelectedBookmarkIds(new Set()); // Clear selection
-      queryClient.invalidateQueries({ queryKey: queryOptions.queryKey }); // Refresh current view
-      // Potentially invalidate other related queries (e.g., folder lists if moved)
-    },
-    onError: (error) => {
-      toast.error(`Bulk action failed: ${error.message}`);
-    },
-  }));
+  const bulkActionMutation = useMutation(
+    trpc.bookmarks.bulkAction.mutationOptions({
+      onSuccess: (data) => {
+        toast.success(data.message || "Bulk action successful!");
+        setSelectedBookmarkIds(new Set()); // Clear selection
+        queryClient.invalidateQueries({ queryKey: queryOptions.queryKey }); // Refresh current view
+        // Potentially invalidate other related queries (e.g., folder lists if moved)
+      },
+      onError: (error) => {
+        toast.error(`Bulk action failed: ${error.message}`);
+      },
+    }),
+  );
 
   // --- Selection Logic ---
   const handleSelectChange = (bookmarkId: string, isSelected: boolean) => {
@@ -113,14 +161,17 @@ export const BookmarkList: React.FC<BookmarkListProps> = ({ initialFolderId, sho
     });
   };
 
-  const currentBookmarkIdsOnPage = searchResult?.bookmarks.map(b => b.id) ?? [];
-  const areAllOnPageSelected = currentBookmarkIdsOnPage.length > 0 && currentBookmarkIdsOnPage.every(id => selectedBookmarkIds.has(id));
+  const currentBookmarkIdsOnPage =
+    searchResult?.bookmarks.map((b) => b.id) ?? [];
+  const areAllOnPageSelected =
+    currentBookmarkIdsOnPage.length > 0 &&
+    currentBookmarkIdsOnPage.every((id) => selectedBookmarkIds.has(id));
 
-  const handleSelectAllOnPage = (checked: boolean | 'indeterminate') => {
-    if (typeof checked !== 'boolean') return;
+  const handleSelectAllOnPage = (checked: boolean | "indeterminate") => {
+    if (typeof checked !== "boolean") return;
     setSelectedBookmarkIds((prev) => {
       const newSet = new Set(prev);
-      currentBookmarkIdsOnPage.forEach(id => {
+      currentBookmarkIdsOnPage.forEach((id) => {
         if (checked) {
           newSet.add(id);
         } else {
@@ -137,7 +188,7 @@ export const BookmarkList: React.FC<BookmarkListProps> = ({ initialFolderId, sho
     // Confirmation is handled by the AlertDialog trigger
     if (selectedBookmarkIds.size === 0) return;
     bulkActionMutation.mutate({
-      action: 'delete',
+      action: "delete",
       bookmarkIds: Array.from(selectedBookmarkIds),
     });
   };
@@ -145,7 +196,7 @@ export const BookmarkList: React.FC<BookmarkListProps> = ({ initialFolderId, sho
   const handleBulkAddTag = (tagId: string) => {
     if (selectedBookmarkIds.size === 0 || !tagId) return;
     bulkActionMutation.mutate({
-      action: 'addTag',
+      action: "addTag",
       bookmarkIds: Array.from(selectedBookmarkIds),
       tagId: tagId,
     });
@@ -154,7 +205,7 @@ export const BookmarkList: React.FC<BookmarkListProps> = ({ initialFolderId, sho
   const handleBulkMoveToFolder = (folderId: string) => {
     if (selectedBookmarkIds.size === 0 || !folderId) return;
     bulkActionMutation.mutate({
-      action: 'addToFolder',
+      action: "addToFolder",
       bookmarkIds: Array.from(selectedBookmarkIds),
       targetFolderId: folderId,
     });
@@ -162,7 +213,6 @@ export const BookmarkList: React.FC<BookmarkListProps> = ({ initialFolderId, sho
   // TODO: Implement removeTag, removeFromFolder, addToCollection, removeFromCollection if needed
 
   // --- End Bulk Action Handlers ---
-
 
   // Adapter to map full bookmark to form input
   const handleEditBookmark = (bookmark: Bookmark) => {
@@ -192,21 +242,35 @@ export const BookmarkList: React.FC<BookmarkListProps> = ({ initialFolderId, sho
     if (!initialFolderId) {
       setSelectedBookmarkIds(new Set());
     }
-  }, [currentPage, debouncedSearchQuery, selectedTags, sortBy, sortOrder, initialFolderId]);
-
+  }, [
+    currentPage,
+    debouncedSearchQuery,
+    selectedTags,
+    sortBy,
+    sortOrder,
+    initialFolderId,
+  ]);
 
   if (isLoading && !searchResult) {
     return <Loading />;
   }
 
   if (error) {
-    return <ErrorDisplay message={error.message ?? 'Failed to load bookmarks'} />;
+    return (
+      <ErrorDisplay message={error.message ?? "Failed to load bookmarks"} />
+    );
   }
 
   const bookmarks = searchResult?.bookmarks ?? [];
 
   // Show empty state only if no filters are active and no bookmarks exist
-  if (bookmarks.length === 0 && totalBookmarks === 0 && !debouncedSearchQuery && selectedTags.length === 0 && !selectedFolderId) {
+  if (
+    bookmarks.length === 0 &&
+    totalBookmarks === 0 &&
+    !debouncedSearchQuery &&
+    selectedTags.length === 0 &&
+    !selectedFolderId
+  ) {
     return (
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
@@ -227,16 +291,19 @@ export const BookmarkList: React.FC<BookmarkListProps> = ({ initialFolderId, sho
           </Dialog>
         </CardHeader>
         <CardContent>
-          <p className="text-center text-gray-500 py-4">No bookmarks yet. Add your first one!</p>
+          <p className="text-center text-gray-500 py-4">
+            No bookmarks yet. Add your first one!
+          </p>
         </CardContent>
       </Card>
     );
   }
 
-
   return (
     <Card>
-      <CardHeader className="space-y-4 relative pb-2"> {/* Added relative and pb-2 */}
+      <CardHeader className="space-y-4 relative pb-2">
+        {" "}
+        {/* Added relative and pb-2 */}
         {/* Bulk Action Bar - Conditionally Rendered */}
         {selectedBookmarkIds.size > 0 && (
           <div className="absolute top-0 left-0 right-0 bg-primary/10 p-2 flex items-center justify-between z-20 rounded-t-lg">
@@ -247,7 +314,11 @@ export const BookmarkList: React.FC<BookmarkListProps> = ({ initialFolderId, sho
               {/* Move to Folder Dropdown */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" disabled={bulkActionMutation.isPending}>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled={bulkActionMutation.isPending}
+                  >
                     <FolderIcon className="mr-1 h-4 w-4" /> Move to Folder
                   </Button>
                 </DropdownMenuTrigger>
@@ -256,12 +327,17 @@ export const BookmarkList: React.FC<BookmarkListProps> = ({ initialFolderId, sho
                   <DropdownMenuSeparator />
                   {foldersResult?.data && foldersResult.data.length > 0 ? (
                     foldersResult.data.map((folder) => (
-                      <DropdownMenuItem key={folder.id} onSelect={() => handleBulkMoveToFolder(folder.id)}>
+                      <DropdownMenuItem
+                        key={folder.id}
+                        onSelect={() => handleBulkMoveToFolder(folder.id)}
+                      >
                         {folder.name}
                       </DropdownMenuItem>
                     ))
                   ) : (
-                    <DropdownMenuItem disabled>No folders found</DropdownMenuItem>
+                    <DropdownMenuItem disabled>
+                      No folders found
+                    </DropdownMenuItem>
                   )}
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -269,7 +345,11 @@ export const BookmarkList: React.FC<BookmarkListProps> = ({ initialFolderId, sho
               {/* Add Tag Dropdown */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" disabled={bulkActionMutation.isPending}>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled={bulkActionMutation.isPending}
+                  >
                     <Tag className="mr-1 h-4 w-4" /> Add Tag
                   </Button>
                 </DropdownMenuTrigger>
@@ -278,7 +358,10 @@ export const BookmarkList: React.FC<BookmarkListProps> = ({ initialFolderId, sho
                   <DropdownMenuSeparator />
                   {tagsResult?.data && tagsResult.data.length > 0 ? (
                     tagsResult.data.map((tag) => (
-                      <DropdownMenuItem key={tag.id} onSelect={() => handleBulkAddTag(tag.id)}>
+                      <DropdownMenuItem
+                        key={tag.id}
+                        onSelect={() => handleBulkAddTag(tag.id)}
+                      >
                         {tag.name}
                       </DropdownMenuItem>
                     ))
@@ -294,7 +377,10 @@ export const BookmarkList: React.FC<BookmarkListProps> = ({ initialFolderId, sho
                   <Button
                     variant="destructive"
                     size="sm"
-                    disabled={bulkActionMutation.isPending || selectedBookmarkIds.size === 0}
+                    disabled={
+                      bulkActionMutation.isPending ||
+                      selectedBookmarkIds.size === 0
+                    }
                   >
                     <Trash2 className="mr-1 h-4 w-4" />
                     Delete ({selectedBookmarkIds.size})
@@ -302,9 +388,13 @@ export const BookmarkList: React.FC<BookmarkListProps> = ({ initialFolderId, sho
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
-                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                    <AlertDialogTitle>
+                      Are you absolutely sure?
+                    </AlertDialogTitle>
                     <AlertDialogDescription>
-                      This action will permanently delete {selectedBookmarkIds.size} selected bookmark(s). This cannot be undone.
+                      This action will permanently delete{" "}
+                      {selectedBookmarkIds.size} selected bookmark(s). This
+                      cannot be undone.
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
@@ -314,7 +404,7 @@ export const BookmarkList: React.FC<BookmarkListProps> = ({ initialFolderId, sho
                       className="bg-red-600 hover:bg-red-700"
                       disabled={bulkActionMutation.isPending}
                     >
-                      {bulkActionMutation.isPending ? 'Deleting...' : 'Delete'}
+                      {bulkActionMutation.isPending ? "Deleting..." : "Delete"}
                     </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
@@ -322,23 +412,24 @@ export const BookmarkList: React.FC<BookmarkListProps> = ({ initialFolderId, sho
             </div>
           </div>
         )}
-
         {/* Existing Header Content - Add pt-12 if bulk bar is shown */}
-        <div className={`flex items-center justify-between ${selectedBookmarkIds.size > 0 ? 'pt-12' : ''}`}>
+        <div
+          className={`flex items-center justify-between ${selectedBookmarkIds.size > 0 ? "pt-12" : ""}`}
+        >
           <CardTitle>My Bookmarks ({totalBookmarks})</CardTitle>
           <div className="flex items-center space-x-2">
             <Button
-              variant={viewMode === 'grid' ? 'default' : 'outline'}
+              variant={viewMode === "grid" ? "default" : "outline"}
               size="icon"
-              onClick={() => setViewMode('grid')}
+              onClick={() => setViewMode("grid")}
               title="Grid View"
             >
               <Grid className="h-4 w-4" />
             </Button>
             <Button
-              variant={viewMode === 'list' ? 'default' : 'outline'}
+              variant={viewMode === "list" ? "default" : "outline"}
               size="icon"
-              onClick={() => setViewMode('list')}
+              onClick={() => setViewMode("list")}
               title="List View"
             >
               <List className="h-4 w-4" />
@@ -359,7 +450,6 @@ export const BookmarkList: React.FC<BookmarkListProps> = ({ initialFolderId, sho
             </Dialog>
           </div>
         </div>
-
         {/* Filter/Sort Controls */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {/* Search Input */}
@@ -368,14 +458,23 @@ export const BookmarkList: React.FC<BookmarkListProps> = ({ initialFolderId, sho
             <Input
               placeholder="Search bookmarks..."
               value={searchQuery}
-              onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                setCurrentPage(1);
+              }}
               className="pl-8 w-full"
             />
           </div>
 
           {/* Sort Controls */}
           <div className="flex space-x-2">
-            <Select value={sortBy} onValueChange={(value) => { setSortBy(value as SortOption); setCurrentPage(1); }}>
+            <Select
+              value={sortBy}
+              onValueChange={(value) => {
+                setSortBy(value as SortOption);
+                setCurrentPage(1);
+              }}
+            >
               <SelectTrigger className="w-full sm:w-[150px]">
                 <SelectValue placeholder="Sort by" />
               </SelectTrigger>
@@ -387,7 +486,13 @@ export const BookmarkList: React.FC<BookmarkListProps> = ({ initialFolderId, sho
                 <SelectItem value="title">Title</SelectItem>
               </SelectContent>
             </Select>
-            <Select value={sortOrder} onValueChange={(value) => { setSortOrder(value as SortOrder); setCurrentPage(1); }}>
+            <Select
+              value={sortOrder}
+              onValueChange={(value) => {
+                setSortOrder(value as SortOrder);
+                setCurrentPage(1);
+              }}
+            >
               <SelectTrigger className="w-full sm:w-[120px]">
                 <SelectValue placeholder="Order" />
               </SelectTrigger>
@@ -400,12 +505,13 @@ export const BookmarkList: React.FC<BookmarkListProps> = ({ initialFolderId, sho
 
           {/* Folder Filter - Conditionally render based on showFolderFilter prop */}
           {showFolderFilter && (
-            <Select 
-              value={selectedFolderId ?? 'all'} 
-              onValueChange={(value) => { 
-                if (!initialFolderId) { // Allow change only if not contextually set
-                  setSelectedFolderId(value === 'all' ? undefined : value); 
-                  setCurrentPage(1); 
+            <Select
+              value={selectedFolderId ?? "all"}
+              onValueChange={(value) => {
+                if (!initialFolderId) {
+                  // Allow change only if not contextually set
+                  setSelectedFolderId(value === "all" ? undefined : value);
+                  setCurrentPage(1);
                 }
               }}
               disabled={!!initialFolderId} // Disable if folderId is passed as prop
@@ -424,19 +530,18 @@ export const BookmarkList: React.FC<BookmarkListProps> = ({ initialFolderId, sho
             </Select>
           )}
         </div>
-
         {/* Tag Filter Badges */}
         <div className="flex flex-wrap gap-2 pt-2">
           {tagsResult?.data.map((tag: Tag) => (
             <Badge
               key={tag.id}
-              variant={selectedTags.includes(tag.id) ? 'default' : 'outline'}
+              variant={selectedTags.includes(tag.id) ? "default" : "outline"}
               className="cursor-pointer"
               onClick={() => {
                 setSelectedTags((prev) =>
                   prev.includes(tag.id)
                     ? prev.filter((id) => id !== tag.id)
-                    : [...prev, tag.id]
+                    : [...prev, tag.id],
                 );
                 setCurrentPage(1);
               }}
@@ -446,7 +551,9 @@ export const BookmarkList: React.FC<BookmarkListProps> = ({ initialFolderId, sho
           ))}
         </div>
         {/* Loading Indicator */}
-        {isFetching && <div className="absolute bottom-0 left-0 right-0 h-1 bg-primary/50 animate-pulse rounded-b-lg" />}
+        {isFetching && (
+          <div className="absolute bottom-0 left-0 right-0 h-1 bg-primary/50 animate-pulse rounded-b-lg" />
+        )}
       </CardHeader>
 
       <CardContent>
@@ -469,9 +576,9 @@ export const BookmarkList: React.FC<BookmarkListProps> = ({ initialFolderId, sho
         {bookmarks.length > 0 ? (
           <div
             className={`${
-              viewMode === 'grid'
-                ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'
-                : 'space-y-4'
+              viewMode === "grid"
+                ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
+                : "space-y-4"
             }`}
           >
             {bookmarks.map((bookmark) => (
@@ -496,7 +603,9 @@ export const BookmarkList: React.FC<BookmarkListProps> = ({ initialFolderId, sho
           <div className="flex items-center justify-center space-x-2 pt-6">
             <Button
               onClick={handlePreviousPage}
-              disabled={currentPage === 1 || isFetching || bulkActionMutation.isPending}
+              disabled={
+                currentPage === 1 || isFetching || bulkActionMutation.isPending
+              }
               variant="outline"
             >
               Previous
@@ -506,7 +615,12 @@ export const BookmarkList: React.FC<BookmarkListProps> = ({ initialFolderId, sho
             </span>
             <Button
               onClick={handleNextPage}
-              disabled={currentPage === totalPages || !searchResult?.hasMore || isFetching || bulkActionMutation.isPending}
+              disabled={
+                currentPage === totalPages ||
+                !searchResult?.hasMore ||
+                isFetching ||
+                bulkActionMutation.isPending
+              }
               variant="outline"
             >
               Next

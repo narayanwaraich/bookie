@@ -1,28 +1,36 @@
-import React from 'react';
-import { Input } from '@/components/ui/input';
+import React from "react";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Button } from '@/components/ui/button';
-import { Search, Filter, X } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { SavedSearches } from './SavedSearches';
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { Search, Filter, X } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { SavedSearches } from "./SavedSearches";
 
-type Color = 'red' | 'orange' | 'yellow' | 'green' | 'blue' | 'purple' | 'pink' | 'gray';
+type Color =
+  | "red"
+  | "orange"
+  | "yellow"
+  | "green"
+  | "blue"
+  | "purple"
+  | "pink"
+  | "gray";
 
 interface FolderFiltersProps {
   searchQuery: string;
   onSearchChange: (value: string) => void;
   selectedColor?: Color | null;
   onColorChange: (color: Color | null) => void;
-  sortBy: 'name' | 'date' | 'bookmarkCount';
-  onSortChange: (sort: 'name' | 'date' | 'bookmarkCount') => void;
-  sortOrder: 'asc' | 'desc';
-  onSortOrderChange: (order: 'asc' | 'desc') => void;
+  sortBy: "name" | "date" | "bookmarkCount";
+  onSortChange: (sort: "name" | "date" | "bookmarkCount") => void;
+  sortOrder: "asc" | "desc";
+  onSortOrderChange: (order: "asc" | "desc") => void;
   onClearFilters: () => void;
 }
 
@@ -37,13 +45,14 @@ export const FolderFilters: React.FC<FolderFiltersProps> = ({
   onSortOrderChange,
   onClearFilters,
 }) => {
-  const hasActiveFilters = searchQuery || selectedColor || sortBy !== 'name' || sortOrder !== 'asc';
+  const hasActiveFilters =
+    searchQuery || selectedColor || sortBy !== "name" || sortOrder !== "asc";
 
   const handleApplySearch = (search: {
     searchQuery: string;
     selectedColor: string | null;
-    sortBy: 'name' | 'date' | 'bookmarkCount';
-    sortOrder: 'asc' | 'desc';
+    sortBy: "name" | "date" | "bookmarkCount";
+    sortOrder: "asc" | "desc";
   }) => {
     onSearchChange(search.searchQuery);
     onColorChange(search.selectedColor as Color | null);
@@ -86,7 +95,7 @@ export const FolderFilters: React.FC<FolderFiltersProps> = ({
         <div className="flex items-center gap-2">
           <Filter className="h-4 w-4 text-muted-foreground" />
           <Select
-            value={selectedColor || ''}
+            value={selectedColor || ""}
             onValueChange={(value) => onColorChange(value as Color | null)}
           >
             <SelectTrigger className="w-[180px]">
@@ -109,7 +118,9 @@ export const FolderFilters: React.FC<FolderFiltersProps> = ({
         <div className="flex items-center gap-2">
           <Select
             value={sortBy}
-            onValueChange={(value) => onSortChange(value as 'name' | 'date' | 'bookmarkCount')}
+            onValueChange={(value) =>
+              onSortChange(value as "name" | "date" | "bookmarkCount")
+            }
           >
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Sort by" />
@@ -124,12 +135,14 @@ export const FolderFilters: React.FC<FolderFiltersProps> = ({
           <Button
             variant="outline"
             size="icon"
-            onClick={() => onSortOrderChange(sortOrder === 'asc' ? 'desc' : 'asc')}
+            onClick={() =>
+              onSortOrderChange(sortOrder === "asc" ? "desc" : "asc")
+            }
           >
-            {sortOrder === 'asc' ? '↑' : '↓'}
+            {sortOrder === "asc" ? "↑" : "↓"}
           </Button>
         </div>
       </div>
     </div>
   );
-}; 
+};

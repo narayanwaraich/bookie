@@ -1,4 +1,4 @@
-import Fuse from 'fuse.js';
+import Fuse from "fuse.js";
 
 interface SearchableItem {
   id: string;
@@ -8,7 +8,7 @@ interface SearchableItem {
 
 export const createFuzzySearcher = <T extends SearchableItem>(items: T[]) => {
   const options = {
-    keys: ['name'],
+    keys: ["name"],
     threshold: 0.3, // Lower threshold means more strict matching
     distance: 100, // Maximum edit distance
     includeScore: true,
@@ -21,9 +21,9 @@ export const createFuzzySearcher = <T extends SearchableItem>(items: T[]) => {
   return {
     search: (query: string): T[] => {
       if (!query.trim()) return items;
-      
+
       const results = fuse.search(query);
-      return results.map(result => result.item);
+      return results.map((result) => result.item);
     },
   };
-}; 
+};

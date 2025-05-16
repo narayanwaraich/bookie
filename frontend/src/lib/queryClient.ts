@@ -1,10 +1,7 @@
-import {
-    QueryClient,
-    QueryCache,
-  } from '@tanstack/react-query';
-import type { QueryClientConfig } from '@tanstack/react-query';
-import { persistQueryClient } from '@tanstack/react-query-persist-client';
-import {createDexiePersister} from './dexiePersister';
+import { QueryClient, QueryCache } from "@tanstack/react-query";
+import type { QueryClientConfig } from "@tanstack/react-query";
+import { persistQueryClient } from "@tanstack/react-query-persist-client";
+import { createDexiePersister } from "./dexiePersister";
 
 const queryClientConfig: QueryClientConfig = {
   defaultOptions: {
@@ -17,14 +14,14 @@ const queryClientConfig: QueryClientConfig = {
   },
   queryCache: new QueryCache({
     onError: (error) => {
-      console.error('Error happened: ', error);
+      console.error("Error happened: ", error);
     },
   }),
 };
 
 export const queryClient = new QueryClient(queryClientConfig);
 
-const dexiePersister = createDexiePersister('reactQuery');
+const dexiePersister = createDexiePersister("reactQuery");
 
 // Set up persistence
 persistQueryClient({

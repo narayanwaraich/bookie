@@ -114,30 +114,43 @@ async function main() {
     }
   }
 
-  // --- Create Collections (at least 10 per user) ---
+  // --- Create Collections (at least 10 per user, ensuring unique names) ---
   const collections: Collection[] = [];
+
   for (const user of users) {
-    for (let i = 1; i <= 10; i++) {
+    const usedCollectionNames = new Set<string>();
+
+    let createdCount = 0;
+    while (createdCount < 10) {
       const collectionName = faker.helpers.arrayElement([
         `${faker.word.adjective()} ${faker.word.noun()}`,
         `${faker.commerce.productAdjective()} ${faker.commerce.product()}`,
         faker.commerce.department(),
         `${faker.person.jobArea()} Resources`
       ]);
-      
+
+      if (usedCollectionNames.has(collectionName)) {
+        continue; // skip duplicates
+      }
+
+      usedCollectionNames.add(collectionName);
+
       const collection = await prisma.collection.create({
         data: {
           name: collectionName,
           description: faker.lorem.sentence(),
           userId: user.id,
           ownerId: user.id,
-          isPublic: faker.datatype.boolean(0.4), // 40% are public
+          isPublic: faker.datatype.boolean(0.4),
         },
       });
+
       collections.push(collection);
       console.log(`Created collection: ${collection.name} for user ${user.username}`);
+      createdCount++;
     }
   }
+
 
   // --- Create Bookmarks (at least 10 per user, linked to folders, tags, collections) ---
   const bookmarks: Bookmark[] = [];
