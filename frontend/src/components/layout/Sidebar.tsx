@@ -1,7 +1,7 @@
 import React, { useState } from "react"; // Import useState
 import { File } from "lucide-react";
 
-import { SidebarFolderTree } from "./SidebarFolderTree"; // Import the new component
+import { FolderTree } from "@/components/features/folders/FolderTree"; // Import the new component
 import {
   Sidebar,
   SidebarContent,
@@ -15,7 +15,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import { SearchForm } from "./SidebarSearchForm";
+import { SearchForm } from "@/components/features/folders/SidebarSearchForm";
 
 // TODO: Replace with actual data fetching or state management
 const changesData = [
@@ -40,7 +40,7 @@ export default function AppSidebar({
     undefined,
   );
 
-  const handleSelectFolder = (folderId: string) => {
+  const handleFolderSelection = (folderId: string) => {
     setSelectedFolderId(folderId);
     // You might want to trigger other actions here, like fetching bookmarks for the selected folder
     console.log("Selected folder:", folderId);
@@ -72,9 +72,9 @@ export default function AppSidebar({
           <SidebarGroupLabel>Folders</SidebarGroupLabel>
           <SidebarGroupContent>
             {/* Use the new SidebarFolderTree component */}
-            <SidebarFolderTree
+            <FolderTree
               selectedFolderId={selectedFolderId}
-              onSelectFolder={handleSelectFolder}
+              onFolderSelect={handleFolderSelection}
             />
           </SidebarGroupContent>
         </SidebarGroup>

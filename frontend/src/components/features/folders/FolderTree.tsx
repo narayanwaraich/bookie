@@ -1,122 +1,115 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { trpc } from "@/lib/api";
-import { Loading } from "@/components/common/Loading";
-import { ErrorDisplay } from "@/components/common/ErrorDisplay";
-import { Folder as FolderIcon, ChevronRight, ChevronDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Link } from "@tanstack/react-router";
-import { cn } from "@/lib/utils";
+import { Folder, ChevronRight } from "lucide-react"; // Assuming File icon is needed for non-folders if applicable
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import {
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+  SidebarMenuSub,
+} from "@/components/ui/sidebar"; // Assuming these are exported from the sidebar index
+// import { cn } from "@/lib/utils";
+import type { inferOutput } from "@trpc/tanstack-react-query";
 
-// Explicitly define the Folder Tree Node type based on backend service structure
-interface FolderTreeNode {
-  id: string;
-  name: string;
-  parentId: string | null;
-  children: FolderTreeNode[];
-  bookmarkCount: number;
-  // Add other fields like icon, color if they are returned by getTree
-}
-
-interface FolderTreeProps {
-  selectedFolderId?: string;
-  onFolderSelect?: (folderId: string) => void;
-}
+// Reuse the FolderNode type definition (or import if shared)
+type FolderTreeData = inferOutput<typeof trpc.folders.getTree>;
+type FolderTreeNode = FolderTreeData[number];
 
 interface FolderNodeProps {
   node: FolderTreeNode;
-  level: number;
+  level?: number;
   selectedFolderId?: string;
   onFolderSelect?: (folderId: string) => void;
 }
 
-const FolderNode: React.FC<FolderNodeProps> = ({
+// Recursive component to render each node
+const TreeNode: React.FC<FolderNodeProps> = ({
   node,
-  level,
-  selectedFolderId,
   onFolderSelect,
+  selectedFolderId,
+  level = 0,
 }) => {
-  const [isOpen, setIsOpen] = React.useState(true); // Default to open
-
-  // Use the explicitly defined type
   const hasChildren = node.children && node.children.length > 0;
+  const isSelected = selectedFolderId === node.id;
 
-  const handleToggle = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsOpen(!isOpen);
-  };
-
-  const handleSelect = () => {
-    if (onFolderSelect) {
-      onFolderSelect(node.id);
-    }
-  };
-
-  return (
-    <div style={{ paddingLeft: `${level * 1.5}rem` }}>
-      <div
-        className={cn(
-          "flex items-center space-x-2 p-1 rounded-md hover:bg-accent cursor-pointer",
-          selectedFolderId === node.id && "bg-accent font-semibold",
-        )}
-        onClick={handleSelect}
+  // If it's a leaf node (no children) - Render as a simple button
+  // Adapt this if you have actual files vs folders distinction
+  if (!hasChildren) {
+    return (
+      <SidebarMenuButton
+        isActive={isSelected}
+        className="data-[active=true]:bg-accent" // Example active style
+        onClick={() => onFolderSelect?.(node.id)}
+        style={{ paddingLeft: `${1 + level * 1.5}rem` }} // Indentation
       >
-        {hasChildren ? (
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-6 w-6"
-            onClick={handleToggle}
+        {/* Use File icon if it's not a folder, otherwise Folder */}
+        <Folder
+          className="h-4 w-4 mr-1 shrink-0"
+          style={{ color: node.color as string | undefined }}
+        />
+        <span className="truncate">{node.name}</span>
+      </SidebarMenuButton>
+    );
+  }
+
+  // If it has children - Render as a collapsible item
+  return (
+    <SidebarMenuItem className="p-0">
+      {" "}
+      {/* Remove padding from item */}
+      <Collapsible
+        className="group/collapsible w-full [&[data-state=open]>button>svg:first-child]:rotate-90"
+        // defaultOpen={node.name === "components" || node.name === "ui"} // Example default open
+      >
+        <CollapsibleTrigger asChild>
+          {/* Button covers the full width */}
+          <SidebarMenuButton
+            isActive={isSelected}
+            className="w-full justify-start data-[active=true]:bg-accent"
+            onClick={() => onFolderSelect?.(node.id)}
+            style={{ paddingLeft: `${1 + level * 1.5}rem` }} // Indentation
           >
-            {isOpen ? (
-              <ChevronDown className="h-4 w-4" />
-            ) : (
-              <ChevronRight className="h-4 w-4" />
-            )}
-          </Button>
-        ) : (
-          <span className="w-6"></span> // Placeholder for alignment
-        )}
-        <FolderIcon className="h-4 w-4 text-muted-foreground" />
-        <Link
-          to="/folders/$folderId"
-          params={{ folderId: node.id }}
-          className="flex-grow truncate"
-          activeProps={{ className: "font-bold" }}
-          onClick={(e) => e.stopPropagation()}
-        >
-          {node.name}
-        </Link>
-        {node.bookmarkCount !== undefined && (
-          <span className="text-xs text-muted-foreground ml-auto pr-2">
-            ({node.bookmarkCount})
-          </span>
-        )}
-      </div>
-      {hasChildren && isOpen && (
-        <div className="mt-1">
-          {/* Add explicit type for child */}
-          {node.children.map((child: FolderTreeNode) => (
-            <FolderNode
-              key={child.id}
-              node={child}
-              level={level + 1}
-              selectedFolderId={selectedFolderId}
-              onFolderSelect={onFolderSelect}
+            <ChevronRight className="h-4 w-4 transition-transform shrink-0" />
+            <Folder
+              className="h-4 w-4 ml-1 shrink-0"
+              style={{ color: node.color as string | undefined }}
             />
-          ))}
-        </div>
-      )}
-    </div>
+            <span className="ml-1 truncate">{node.name}</span>
+          </SidebarMenuButton>
+        </CollapsibleTrigger>
+        <CollapsibleContent>
+          {/* Submenu container */}
+          <SidebarMenuSub className="py-1">
+            {node.children.map((childNode: FolderTreeNode) => (
+              <TreeNode
+                key={childNode.id}
+                node={childNode}
+                onFolderSelect={onFolderSelect}
+                selectedFolderId={selectedFolderId}
+                level={level + 1}
+              />
+            ))}
+          </SidebarMenuSub>
+        </CollapsibleContent>
+      </Collapsible>
+    </SidebarMenuItem>
   );
 };
 
+interface FolderTreeProps {
+  onFolderSelect?: (folderId: string) => void;
+  selectedFolderId?: string;
+}
+
 export const FolderTree: React.FC<FolderTreeProps> = ({
-  selectedFolderId,
   onFolderSelect,
+  selectedFolderId,
 }) => {
-  // The useQuery call pattern is correct for v5. The error might be misleading.
-  // We assume the explicit FolderTreeNode type helps resolve potential inference issues.
   const {
     data: folderTree,
     isLoading,
@@ -124,30 +117,33 @@ export const FolderTree: React.FC<FolderTreeProps> = ({
   } = useQuery(trpc.folders.getTree.queryOptions());
 
   if (isLoading) {
-    return <Loading />;
+    return <div className="p-4 text-sm">Loading folders...</div>;
   }
 
   if (error) {
     return (
-      <ErrorDisplay message={error.message ?? "Failed to load folder tree"} />
+      <div className="p-4 text-sm text-destructive">Error: {error.message}</div>
     );
   }
 
   if (!folderTree || folderTree.length === 0) {
-    return <p className="text-muted-foreground p-2">No folders created yet.</p>;
+    return (
+      <div className="p-4 text-sm text-muted-foreground">
+        No folders created yet.
+      </div>
+    );
   }
 
   return (
-    <div className="space-y-1">
+    <SidebarMenu>
       {folderTree.map((rootNode) => (
-        <FolderNode
+        <TreeNode
           key={rootNode.id}
           node={rootNode}
-          level={0}
-          selectedFolderId={selectedFolderId}
           onFolderSelect={onFolderSelect}
+          selectedFolderId={selectedFolderId}
         />
       ))}
-    </div>
+    </SidebarMenu>
   );
 };
