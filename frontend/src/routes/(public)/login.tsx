@@ -1,6 +1,6 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import * as z from "zod";
-import LoginComponent from "@/components/features/auth/Login";
+import LoginFormComponent from "@/components/features/auth/LoginFormComponent";
 
 // Define expected search params for the login route
 const loginSearchSchema = z.object({
@@ -17,5 +17,5 @@ export const Route = createFileRoute("/(public)/login")({
       throw redirect({ to: search.redirect || fallback });
     }
   },
-  component: LoginComponent,
+  component: LoginFormComponent,
 });
