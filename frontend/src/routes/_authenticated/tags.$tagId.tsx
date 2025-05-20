@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
+import TagDetailComponent from "@/components/features/tags/TagDetailView";
 
 interface Tag {
   id: string;
@@ -26,9 +27,3 @@ export const Route = createFileRoute("/_authenticated/tags/$tagId")({
     <div>Error loading tag details: {error.message}</div>
   ),
 });
-
-function TagDetailComponent() {
-  const { tag } = Route.useLoaderData();
-
-  return <></>;
-}

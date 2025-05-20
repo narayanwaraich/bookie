@@ -1,6 +1,6 @@
 import { createFileRoute, ErrorComponent } from "@tanstack/react-router";
-import { BookmarkList } from "@/components/features/bookmarks/BookmarkList";
-import { Loading } from "@/components/common/Loading";
+import { BookmarkList } from "@/components/features/bookmarks/ui/BookmarkList";
+import { Loading } from "@/components/ui/Loading";
 
 export const Route = createFileRoute("/_authenticated/bookmarks")({
   loader: async ({ context: { trpc, queryClient } }) => {

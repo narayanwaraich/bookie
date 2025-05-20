@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
-import { Loading } from "@/components/common/Loading";
-import { ErrorDisplay } from "@/components/common/ErrorDisplay";
+import { Loading } from "@/components/ui/Loading";
+import { ErrorDisplay } from "@/components/ui/ErrorDisplay";
 import { trpc } from "@/lib/api";
 import type { inferOutput } from "@trpc/tanstack-react-query";
 import { Button } from "@/components/ui/button";
@@ -13,8 +13,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { AddBookmarkForm } from "./AddBookmarkForm";
-import { EditBookmarkForm } from "./EditBookmarkForm";
+import { AddBookmarkForm } from "../forms/AddBookmarkForm";
+import { EditBookmarkForm } from "../forms/EditBookmarkForm";
 import { PlusCircle, Grid, List, Search } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/lib/queryClient";

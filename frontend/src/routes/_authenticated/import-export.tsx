@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import ImportExportComponent from "@/components/features/import-export/ImportExportView";
 
 interface ImportExportStatus {
   lastImportTime?: string;
@@ -14,9 +15,3 @@ interface ImportExportStatus {
 export const Route = createFileRoute("/_authenticated/import-export")({
   component: ImportExportComponent,
 });
-
-function ImportExportComponent() {
-  // const { status } = Route.useLoaderData()
-
-  return <></>;
-}

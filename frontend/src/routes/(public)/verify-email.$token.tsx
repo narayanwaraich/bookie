@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { VerifyEmailComponent } from "@/components/features/auth/VerifyEmailTokenStatus";
 
 export const Route = createFileRoute("/(public)/verify-email/$token")({
   component: VerifyEmailComponent,
@@ -12,15 +13,3 @@ export const Route = createFileRoute("/(public)/verify-email/$token")({
     <div>Verification failed: {error.message}</div>
   ),
 });
-
-function VerifyEmailComponent() {
-  const { token } = Route.useParams();
-  // Placeholder for the component displaying verification status
-  return (
-    <div>
-      <h1>Verify Email</h1>
-      <p>Verifying with token: {token}</p>
-      {/* Display success/failure message based on loader/API call */}
-    </div>
-  );
-}

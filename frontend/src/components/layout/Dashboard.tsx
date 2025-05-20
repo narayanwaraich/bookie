@@ -1,6 +1,6 @@
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import DashboardHeader from "../Header";
-import DashboardSidebar from "../Sidebar";
+import DashboardHeader from "./Header";
+import DashboardSidebar from "./Sidebar";
 
 export default function Dashboard() {
   return (
