@@ -5,15 +5,15 @@ import morgan from 'morgan';
 import helmet from 'helmet';
 import http from 'http'; // Import http
 import { Server as SocketIOServer } from 'socket.io'; // Import Socket.IO Server
-import { config } from './config';
-import logger from './config/logger';
-import rateLimiter from './config/rateLimiter';
+import { config } from './api/config';
+import logger from './api/config/logger';
+import rateLimiter from './api/config/rateLimiter';
 import apiRouter from './routes'; // Your existing REST API router
-import errorHandler from './middleware/errorHandler'; // Import the error handler
+import errorHandler from './api/middleware/errorHandler'; // Import the error handler
 import * as trpcExpress from '@trpc/server/adapters/express'; // Import tRPC adapter
 import { appRouter } from './trpc/router'; // Import your main tRPC router
 import { createContext } from './trpc/context'; // Import your context creation function
-import { initSocketIO } from './config/socket'; // Import the Socket.IO initializer
+import { initSocketIO } from './api/config/socket'; // Import the Socket.IO initializer
 
 const app: Express = express();
 const port = config.port;
@@ -24,17 +24,19 @@ const port = config.port;
 app.use(helmet());
 
 // Enable CORS
-app.use(cors({
-  origin: function (origin, callback) {
-    const allowedOrigins = config.cors.origin;
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true // Allow cookies
-}));
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      const allowedOrigins = config.cors.origin;
+      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true, // Allow cookies
+  })
+);
 
 // JSON body parsing
 app.use(express.json());
@@ -46,11 +48,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Request logging (using Winston logger stream)
-app.use(morgan('combined', { 
-  stream: { 
-    write: (message) => logger.info(message.trim()) 
-  } 
-}));
+app.use(
+  morgan('combined', {
+    stream: {
+      write: (message) => logger.info(message.trim()),
+    },
+  })
+);
 
 // Apply rate limiting to all requests
 app.use(rateLimiter as express.RequestHandler); // Explicitly cast type
@@ -64,7 +68,7 @@ app.get('/', (req: Request, res: Response) => {
 
 // API routes
 // Mount REST API Router (already versioned inside index.ts)
-app.use('/api', apiRouter); 
+app.use('/api', apiRouter);
 
 // Mount tRPC Router
 app.use(
@@ -72,10 +76,14 @@ app.use(
   trpcExpress.createExpressMiddleware({
     router: appRouter,
     createContext,
-    onError: ({ path, error }) => { // Optional: Add logging for tRPC errors
-      logger.error(`[tRPC Error] Path: ${path}, Error: ${error.message}`, { code: error.code, stack: error.stack });
+    onError: ({ path, error }) => {
+      // Optional: Add logging for tRPC errors
+      logger.error(
+        `[tRPC Error] Path: ${path}, Error: ${error.message}`,
+        { code: error.code, stack: error.stack }
+      );
     },
-  }),
+  })
 );
 
 // --- Error Handling ---
@@ -112,13 +120,13 @@ io.on('connection', (socket: AuthenticatedSocket) => { // Use AuthenticatedSocke
     socket.disconnect(true);
     return;
   }
-  
+
   logger.info(`[Socket.IO]: Authenticated client connected: ${socket.id}, User: ${socket.user.id}`);
 
   // Join a room specific to the user
   socket.join(socket.user.id);
   logger.info(`[Socket.IO]: Socket ${socket.id} joined room ${socket.user.id}`);
-  
+
   socket.on('disconnect', () => {
     logger.info(`[Socket.IO]: Client disconnected: ${socket.id}`);
   });
@@ -132,18 +140,30 @@ io.on('connection', (socket: AuthenticatedSocket) => { // Use AuthenticatedSocke
 
 // Only listen if not in test environment
 if (process.env.NODE_ENV !== 'test') {
-  httpServer.listen(port, () => { // Listen on the HTTP server
-    logger.info(`[Server]: Server is running at http://localhost:${port}`);
+  httpServer.listen(port, () => {
+    // Listen on the HTTP server
+    logger.info(
+      `[Server]: Server is running at http://localhost:${port}`
+    );
   });
 } else {
-  logger.info('[Server]: Skipping httpServer.listen() in test environment.');
+  logger.info(
+    '[Server]: Skipping httpServer.listen() in test environment.'
+  );
 }
 
 // Optional: Handle unhandled promise rejections and uncaught exceptions
-process.on('unhandledRejection', (reason: Error | any, promise: Promise<any>) => {
-  logger.error(`Unhandled Rejection at: ${promise}, reason: ${reason.stack || reason}`);
-  // Consider exiting process: process.exit(1); 
-});
+process.on(
+  'unhandledRejection',
+  (reason: Error | any, promise: Promise<any>) => {
+    logger.error(
+      `Unhandled Rejection at: ${promise}, reason: ${
+        reason.stack || reason
+      }`
+    );
+    // Consider exiting process: process.exit(1);
+  }
+);
 
 process.on('uncaughtException', (error: Error) => {
   logger.error(`Uncaught Exception: ${error.stack}`);
@@ -151,7 +171,7 @@ process.on('uncaughtException', (error: Error) => {
 });
 
 // Remove direct export of io instance
-// export { io }; 
+// export { io };
 
 // Export app for potential testing (optional, httpServer might be more relevant now)
 export default app;

@@ -1,7 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ResetPasswordComponent } from "@/components/features/auth/ResetPasswordForm";
+import { ResetPasswordComponent } from "@/components/features/auth/forms/ResetPasswordForm";
+import { AuthPageLayout } from "@/components/features/auth/ui/AuthPageLayout";
 
 export const Route = createFileRoute("/(public)/reset-password/$token")({
-  component: ResetPasswordComponent,
-  // loader: ({ params }) => { /* Validate params.token */ },
+  component: () => (
+    <AuthPageLayout title="Reset Password">
+      <ResetPasswordComponent />
+    </AuthPageLayout>
+  ), // loader: ({ params }) => { /* Validate params.token */ },
 });

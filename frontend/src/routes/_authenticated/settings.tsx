@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SettingsLayout } from "@/components/layout/SettingsLayout";
 
 interface UserSettings {
   id: string;
@@ -9,13 +10,7 @@ interface UserSettings {
     notifications: boolean;
   };
 }
-
+//  Acts as a layout for settings children
 export const Route = createFileRoute("/_authenticated/settings")({
-  component: SettingsComponent,
+  component: SettingsLayout,
 });
-
-function SettingsComponent() {
-  // const { settings } = Route.useLoaderData()
-
-  return <></>;
-}
