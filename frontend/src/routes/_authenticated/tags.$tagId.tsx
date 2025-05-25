@@ -1,29 +1,26 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
-import TagDetailComponent from "@/components/features/tags/TagDetailView";
-
-interface Tag {
-  id: string;
-  name: string;
-  color?: string;
-  bookmarks: Array<{
-    id: string;
-    title: string;
-    url: string;
-  }>;
-}
+import { TagDetailView } from "@/components/features/tags/ui/TagDetailView";
+import { ErrorDisplay } from "@/components/ui/ErrorDisplay";
 
 const tagParamsSchema = z.object({
   tagId: z.string().uuid(),
 });
 
 export const Route = createFileRoute("/_authenticated/tags/$tagId")({
-  loader: async ({ params }) => {
-    const validatedParams = tagParamsSchema.parse(params);
-  },
-  component: TagDetailComponent,
+  parseParams: (params) => tagParamsSchema.parse(params),
+  component: TagDetailPage,
   pendingComponent: () => <div>Loading tag details...</div>,
   errorComponent: ({ error }) => (
-    <div>Error loading tag details: {error.message}</div>
+    <ErrorDisplay
+      title="Error"
+      message={`Error loading bookmark: ${error.message}`}
+    />
   ),
 });
+
+function TagDetailPage() {
+  // useParams from TanStack Router is better here as it's type-safe with parseParams
+  const { tagId } = Route.useParams();
+  return <TagDetailView tagId={tagId} />;
+}

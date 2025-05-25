@@ -8,11 +8,11 @@ import { Server as SocketIOServer } from 'socket.io'; // Import Socket.IO Server
 import { config } from './api/config';
 import logger from './api/config/logger';
 import rateLimiter from './api/config/rateLimiter';
-import apiRouter from './routes'; // Your existing REST API router
+import apiRouter from './api/routes'; // Your existing REST API router
 import errorHandler from './api/middleware/errorHandler'; // Import the error handler
 import * as trpcExpress from '@trpc/server/adapters/express'; // Import tRPC adapter
-import { appRouter } from './trpc/router'; // Import your main tRPC router
-import { createContext } from './trpc/context'; // Import your context creation function
+import { appRouter } from './api/trpc/router'; // Import your main tRPC router
+import { createContext } from './api/trpc/context'; // Import your context creation function
 import { initSocketIO } from './api/config/socket'; // Import the Socket.IO initializer
 
 const app: Express = express();

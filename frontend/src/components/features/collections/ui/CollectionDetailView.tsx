@@ -1,32 +1,38 @@
-export default function CollectionDetailComponent() {
-  // const { collection } = Route.useLoaderData()
+import React from "react";
+import { useParams } from "@tanstack/react-router";
+import { PageHeader } from "@/components/layout/PageHeader";
+// import { useQuery } from '@tanstack/react-query'; // Future
+// import { trpc } from '@/lib/api'; // Future
+// import { Loading } from '@/components/ui/Loading'; // Future
+// import { ErrorDisplay } from '@/components/ui/ErrorDisplay'; // Future
+// import { BookmarkList } from '@/components/features/bookmarks/ui/BookmarkList'; // Future
+
+interface CollectionDetailViewProps {
+  collectionId: string;
+}
+
+export function CollectionDetailView({
+  collectionId,
+}: CollectionDetailViewProps) {
+  // const { data: collection, isLoading, error } = useQuery(trpc.collections.getById.queryOptions({ id: collectionId }));
+
+  // if (isLoading) return <Loading />;
+  // if (error) return <ErrorDisplay title="Error Loading Collection" message={error.message} />;
+  // if (!collection) return <ErrorDisplay title="Collection Not Found" message="The requested collection could not be found." />;
 
   return (
-    <>
-      {/* <h1>{collection.name}</h1>
-      {collection.description && <p>{collection.description}</p>}
-
-      <div className="metadata">
-        <p>Created: {new Date(collection.createdAt).toLocaleString()}</p>
-        <p>Last Updated: {new Date(collection.updatedAt).toLocaleString()}</p>
+    <div>
+      <PageHeader
+        title={`Collection: ${collectionId}`} // Replace with collection.name
+        description={"Details of this collection."} // Replace with collection.description
+      />
+      <div className="text-center py-10 text-muted-foreground">
+        <p>
+          Viewing details for collection ID: {collectionId}. Bookmarks in this
+          collection will be listed here.
+        </p>
+        {/* <BookmarkList initialCollectionId={collectionId} /> */}
       </div>
-
-      <div className="bookmarks">
-        <h2>Bookmarks</h2>
-        {collection.bookmarks.length === 0 ? (
-          <p>No bookmarks in this collection</p>
-        ) : (
-          <ul>
-            {collection.bookmarks.map((bookmark) => (
-              <li key={bookmark.id}>
-                <a href={bookmark.url} target="_blank" rel="noopener noreferrer">
-                  {bookmark.title}
-                </a>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div> */}
-    </>
+    </div>
   );
 }

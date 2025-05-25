@@ -1,17 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
-import ImportExportComponent from "@/components/features/import-export/ImportExportView";
-
-interface ImportExportStatus {
-  lastImportTime?: string;
-  lastExportTime?: string;
-  currentJob?: {
-    type: "import" | "export";
-    status: "pending" | "processing" | "completed" | "failed";
-    progress: number;
-    error?: string;
-  };
-}
+import { ImportExportView } from "@/components/features/import-export/ui/ImportExportView";
+import { ErrorDisplay } from "@/components/ui/ErrorDisplay";
 
 export const Route = createFileRoute("/_authenticated/import-export")({
-  component: ImportExportComponent,
+  component: ImportExportView,
+  errorComponent: ({ error }) => (
+    <ErrorDisplay
+      title="Error"
+      message={`Error loading import/export options: ${error.message}`}
+    />
+  ),
 });
