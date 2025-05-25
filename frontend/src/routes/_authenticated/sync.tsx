@@ -4,6 +4,10 @@ import { ErrorDisplay } from "@/components/ui/ErrorDisplay";
 
 export const Route = createFileRoute("/_authenticated/sync")({
   component: SyncStatusView,
+  // loader: async ({ context }) => {
+  //   // await context.queryClient.ensureQueryData(context.trpc.sync.getStatus.queryOptions());
+  //   // return {};
+  // }
   errorComponent: ({ error }) => (
     <ErrorDisplay
       title="Error"

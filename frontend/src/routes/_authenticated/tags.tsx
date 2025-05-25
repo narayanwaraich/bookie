@@ -4,6 +4,10 @@ import { ErrorDisplay } from "@/components/ui/ErrorDisplay";
 
 export const Route = createFileRoute("/_authenticated/tags")({
   component: TagListView,
+  // loader: async ({ context }) => {
+  //   // await context.queryClient.ensureQueryData(context.trpc.tags.list.queryOptions({}));
+  //   // return {};
+  // }
   errorComponent: ({ error }) => (
     <ErrorDisplay
       title="Error"
