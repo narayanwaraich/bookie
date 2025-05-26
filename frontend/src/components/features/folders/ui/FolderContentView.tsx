@@ -40,6 +40,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import type { inferOutput } from "@trpc/tanstack-react-query";
+import { FolderPathBreadcrumb } from "./FolderPathBreadcrumb";
 
 // Assuming FolderTreeNode is similar to what you used or will define
 type FolderData = inferOutput<typeof trpc.folders.getById>; // If you have this query
@@ -168,7 +169,9 @@ export function FolderContentView({
           </div>
         }
       />
-
+      <div className="mb-4">
+        <FolderPathBreadcrumb currentFolderId={folder.id} />
+      </div>
       {subfolders.length > 0 && (
         <Card>
           <CardHeader>

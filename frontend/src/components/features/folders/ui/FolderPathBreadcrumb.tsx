@@ -8,9 +8,9 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { ChevronRight } from "lucide-react";
 import { trpc } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type FolderPathNode = {
   id: string;
@@ -25,20 +25,33 @@ export function FolderPathBreadcrumb({
   currentFolderId,
 }: FolderPathBreadcrumbProps) {
   // This query assumes your backend can provide the path/ancestors for a folder
-  const { data: folderPath, isLoading } = useQuery(
+  const {
+    data: folderPath,
+    isLoading,
+    isError,
+  } = useQuery(
     trpc.folders.getFolderPath.queryOptions({ folderId: currentFolderId }),
-    // Ensure your trpc.folders.getFolderPath exists and returns an array of {id, name} for the path
   );
 
   if (isLoading) {
-    return <div className="h-5 w-48 bg-muted rounded animate-pulse"></div>;
+    return (
+      <div className="flex items-center space-x-2 h-5">
+        <Skeleton className="h-4 w-20" />
+        <Skeleton className="h-4 w-4" /> {/* Separator placeholder */}
+        <Skeleton className="h-4 w-24" />
+        <Skeleton className="h-4 w-4" /> {/* Separator placeholder */}
+        <Skeleton className="h-4 w-20" />
+      </div>
+    );
   }
 
-  if (!folderPath || folderPath.length === 0) {
-    // This might happen if currentFolderId is root or an error occurred.
-    // Your PageHeader might already show the current folder's name.
+  if (isError || !folderPath || folderPath.length === 0) {
     return null;
   }
+
+  // Determine if the full path is just the current folder (i.e., it's a root folder)
+  const isRootFolderOrSingle =
+    folderPath.length === 1 && folderPath[0].id === currentFolderId;
 
   return (
     <Breadcrumb>

@@ -104,6 +104,34 @@ export const folderTrpcRouter = router({
       }
     }),
 
+  getFolderPath: protectedProcedure
+    .input(z.object({ folderId: z.string().uuid() }))
+    .query(async ({ ctx, input }) => {
+      try {
+        return await folderService.getFolderPath(
+          ctx.user.id,
+          input.folderId
+        );
+      } catch (error: any) {
+        // FolderError might not be appropriate here if it's just "path not fully resolved"
+        // but it's okay for now.
+        if (
+          error instanceof FolderError &&
+          error.statusCode === 404
+        ) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message:
+              'Folder path could not be determined or access denied.',
+          });
+        }
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to fetch folder path',
+        });
+      }
+    }),
+
   /** Update Folder */
   update: protectedProcedure
     .input(

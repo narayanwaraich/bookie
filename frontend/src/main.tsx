@@ -6,12 +6,12 @@ import {
   ErrorComponent,
 } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen.ts";
-import "./index.css";
-import "./App.css";
+import "./styles/index.css";
+import "./styles/App.css";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
 import { AuthProvider, useAuth } from "./lib/auth";
-import { trpc } from "./lib/api.ts";
+import { trpc } from "./lib/api";
 
 const router = createRouter({
   routeTree,

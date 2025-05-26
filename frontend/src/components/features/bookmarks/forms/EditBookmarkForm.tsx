@@ -17,7 +17,7 @@ import {
 import { trpc } from "@/lib/api";
 import { queryClient } from "@/lib/queryClient";
 import { toast } from "sonner";
-import { updateBookmarkSchema } from "@server/models/schemas";
+import { updateBookmarkSchema } from "@server/api/models/schemas";
 
 const editBookmarkSchema = updateBookmarkSchema.omit({ fullTextSearch: true });
 type EditBookmarkFormValues = z.infer<typeof editBookmarkSchema>;

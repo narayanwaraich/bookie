@@ -377,6 +377,111 @@ export const getFolderTree = async (
   return cachedResult;
 };
 
+type FolderPathNode = {
+  id: string;
+  name: string;
+};
+
+/**
+ * Takes a folderId and returns an array of ancestor folders using recursion.
+ */
+const getFolderPathRecursive = async (
+  userId: string,
+  folderId: string | null, // Allow null for the initial call or when parentId is null
+  path: FolderPathNode[] = [] // Accumulator for the path
+): Promise<FolderPathNode[]> => {
+  // Base case: if folderId is null, we've reached the top or started with null
+  if (!folderId) {
+    logger.debug(
+      `[getFolderPathRecursive] Reached end of path or initial folderId is null for user ${userId}. Path: ${JSON.stringify(
+        path
+      )}`
+    );
+    return path;
+  }
+
+  const folder = await prisma.folder.findFirst({
+    where: {
+      id: folderId,
+      isDeleted: false,
+      // Ensure user has access (owner or collaborator)
+      OR: [{ userId }, { collaborators: { some: { userId } } }],
+    },
+    select: { id: true, name: true, parentId: true },
+  });
+
+  if (!folder) {
+    // If a folder in the path is not found or accessible, stop building the path
+    logger.warn(
+      `[getFolderPathRecursive] Folder ${folderId} not found or access denied for user ${userId}. Current path: ${JSON.stringify(
+        path
+      )}`
+    );
+    // Return the path accumulated so far, or an empty array if this was the first problematic folder
+    return path;
+  }
+
+  // Add current folder to the beginning of the path
+  const newPath = [{ id: folder.id, name: folder.name }, ...path];
+
+  // Recursive call for the parent folder
+  return getFolderPathRecursive(userId, folder.parentId, newPath);
+};
+
+/**
+ * Main function to initiate the recursive path fetching.
+ * This wrapper keeps the initial signature the same as the original function.
+ */
+export const getFolderPath = async (
+  userId: string,
+  folderId: string
+): Promise<FolderPathNode[]> => {
+  // The recursive function builds the path in reverse, so we call it and then reverse the result.
+  // Or, more efficiently, the recursive function can prepend elements.
+
+  // Helper function to do the actual recursion and build the path in the correct order.
+  const buildPath = async (
+    currentId: string | null
+  ): Promise<FolderPathNode[]> => {
+    if (!currentId) {
+      return []; // Base case: no more parent folders
+    }
+
+    const folderData = await prisma.folder.findFirst({
+      where: {
+        id: currentId,
+        isDeleted: false,
+        OR: [{ userId }, { collaborators: { some: { userId } } }],
+      },
+      select: { id: true, name: true, parentId: true },
+    });
+
+    if (!folderData) {
+      logger.warn(
+        `[getFolderPath] Folder ${currentId} not found or access denied for user ${userId}`
+      );
+      return []; // Stop if folder not found or accessible
+    }
+
+    // Recursively get the path of the parent
+    const parentPath = await buildPath(folderData.parentId);
+
+    // Append the current folder to the path obtained from the parent
+    return [
+      ...parentPath,
+      { id: folderData.id, name: folderData.name },
+    ];
+  };
+
+  const path = await buildPath(folderId);
+  logger.debug(
+    `[getFolderPath] Path for folder ${folderId}, user ${userId}: ${JSON.stringify(
+      path
+    )}`
+  );
+  return path;
+};
+
 /**
  * Updates an existing folder. Invalidates relevant caches.
  */
