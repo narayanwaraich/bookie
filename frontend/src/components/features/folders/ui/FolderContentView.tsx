@@ -1,66 +1,67 @@
-import {
-  AlertDialog,
-  AlertDialogTrigger,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogCancel,
-  AlertDialogAction,
-} from "@/components/ui/alert-dialog";
+import React, { useState } from "react";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { trpc } from "@/lib/api";
+import { queryClient } from "@/lib/queryClient"; // For direct invalidation
 import { Button } from "@/components/ui/button";
 import {
   Card,
+  CardContent,
   CardHeader,
   CardTitle,
   CardDescription,
-  CardContent,
 } from "@/components/ui/card";
 import {
   Dialog,
-  DialogTrigger,
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
-import { ErrorDisplay } from "@/components/ui/ErrorDisplay";
-import { trpc } from "@/lib/api";
-import { queryClient } from "@/lib/queryClient";
-import { useQuery, useMutation } from "@tanstack/react-query";
-import { useNavigate, Link } from "@tanstack/react-router";
-import { PlusCircle, Pencil, Trash2, Folder as FolderIcon } from "lucide-react";
-import React, { useState } from "react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { FolderForm } from "@/components/features/folders/forms/FolderForm";
+import { BookmarkList } from "@/components/features/bookmarks/ui/BookmarkList";
+import { PageHeader } from "@/components/layout/PageHeader";
+import {
+  Pencil,
+  Trash2,
+  PlusCircle,
+  Folder as FolderIconLucide,
+} from "lucide-react";
 import { toast } from "sonner";
-import { BookmarkList } from "../../bookmarks/ui/BookmarkList";
-import { FolderForm } from "../forms/FolderForm";
-import { Route as FolderRoute } from "@/routes/_authenticated/folders.$folderId";
+import type { inferOutput } from "@trpc/tanstack-react-query";
+import { FolderPathBreadcrumb } from "./FolderPathBreadcrumb";
 
-// Define a type for the folder tree node structure if not imported
-interface FolderTreeNode {
-  id: string;
-  name: string;
-  parentId: string | null;
-  children: FolderTreeNode[];
-  bookmarkCount?: number; // Make optional as it might not always be present or needed here
-  // Add other fields if necessary, e.g., icon, color
+// Assuming FolderTreeNode is similar to what you used or will define
+type FolderData = inferOutput<typeof trpc.folders.getById>; // If you have this query
+type FolderTreeNode = inferOutput<typeof trpc.folders.getTree>[number];
+
+interface FolderContentViewProps {
+  folder: FolderData; // The specific folder being viewed
+  // subfolders: FolderTreeNode[]; // Direct children
+  allFoldersTree?: FolderTreeNode[]; // For finding subfolders if not passed directly
 }
 
-export default function FolderDetailComponent() {
-  // Get the folder data from the route loader
-  const { folder, folderId } = FolderRoute.useLoaderData();
+export function FolderContentView({
+  folder,
+  allFoldersTree,
+}: FolderContentViewProps) {
   const navigate = useNavigate();
-
   const [isEditFolderOpen, setIsEditFolderOpen] = useState(false);
   const [isCreateSubfolderOpen, setIsCreateSubfolderOpen] = useState(false);
 
-  const { data: allFoldersTree } = useQuery(
-    trpc.folders.getTree.queryOptions(),
-  );
-
   const subfolders = React.useMemo(() => {
     if (!allFoldersTree) return [];
-    // Cast allFoldersTree to the defined FolderTreeNode[] type for findNode
     const findNode = (
       id: string,
       tree: FolderTreeNode[],
@@ -74,12 +75,9 @@ export default function FolderDetailComponent() {
       }
       return undefined;
     };
-    const currentFolderNode = findNode(
-      folderId,
-      allFoldersTree as FolderTreeNode[],
-    );
+    const currentFolderNode = findNode(folder.id, allFoldersTree);
     return currentFolderNode?.children || [];
-  }, [allFoldersTree, folderId]);
+  }, [allFoldersTree, folder.id]);
 
   const deleteFolderMutation = useMutation(
     trpc.folders.delete.mutationOptions({
@@ -88,9 +86,7 @@ export default function FolderDetailComponent() {
         queryClient.invalidateQueries({
           queryKey: trpc.folders.getTree.queryKey(),
         });
-        queryClient.invalidateQueries({
-          queryKey: trpc.folders.list.queryKey({}),
-        });
+        // Potentially navigate up or to a default folder view
         navigate({ to: "/folders", replace: true });
       },
       onError: (error) => {
@@ -100,119 +96,107 @@ export default function FolderDetailComponent() {
   );
 
   const handleDeleteFolder = () => {
-    deleteFolderMutation.mutate({ id: folderId });
+    deleteFolderMutation.mutate({ id: folder.id });
   };
-
-  if (!folder) {
-    return <ErrorDisplay message="Folder not found." />;
-  }
 
   return (
     <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-2xl">{folder.name}</CardTitle>
-            <div className="flex items-center space-x-2">
-              <Dialog
-                open={isCreateSubfolderOpen}
-                onOpenChange={setIsCreateSubfolderOpen}
-              >
-                <DialogTrigger asChild>
-                  <Button variant="outline" size="sm">
-                    <PlusCircle className="mr-2 h-4 w-4" /> New Subfolder
-                  </Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>
-                      Create Subfolder in "{folder.name}"
-                    </DialogTitle>
-                  </DialogHeader>
-                  <FolderForm
-                    parentId={folderId}
-                    onSuccess={() => setIsCreateSubfolderOpen(false)}
-                  />
-                </DialogContent>
-              </Dialog>
-              <Dialog
-                open={isEditFolderOpen}
-                onOpenChange={setIsEditFolderOpen}
-              >
-                <DialogTrigger asChild>
-                  <Button variant="outline" size="sm">
-                    <Pencil className="mr-2 h-4 w-4" /> Edit
-                  </Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Edit Folder</DialogTitle>
-                  </DialogHeader>
-                  <FolderForm
-                    folder={folder}
-                    onSuccess={() => setIsEditFolderOpen(false)}
-                  />
-                </DialogContent>
-              </Dialog>
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button variant="destructive" size="sm">
-                    <Trash2 className="mr-2 h-4 w-4" /> Delete
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Delete "{folder.name}"?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      This will delete the folder and all its contents
-                      (subfolders and bookmarks). This action cannot be undone.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction
-                      onClick={handleDeleteFolder}
-                      className="bg-red-500 hover:bg-red-600"
-                    >
-                      Delete Folder
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            </div>
+      <PageHeader
+        title={folder.name}
+        description={folder.description || "Contents of this folder."}
+        actions={
+          <div className="flex items-center space-x-2">
+            <Dialog
+              open={isCreateSubfolderOpen}
+              onOpenChange={setIsCreateSubfolderOpen}
+            >
+              <DialogTrigger asChild>
+                <Button variant="outline" size="sm">
+                  <PlusCircle className="mr-2 h-4 w-4" /> New Subfolder
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Create Subfolder in "{folder.name}"</DialogTitle>
+                </DialogHeader>
+                <FolderForm
+                  parentId={folder.id}
+                  onSuccess={() => setIsCreateSubfolderOpen(false)}
+                />
+              </DialogContent>
+            </Dialog>
+            <Dialog open={isEditFolderOpen} onOpenChange={setIsEditFolderOpen}>
+              <DialogTrigger asChild>
+                <Button variant="outline" size="sm">
+                  <Pencil className="mr-2 h-4 w-4" /> Edit
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Edit Folder</DialogTitle>
+                </DialogHeader>
+                <FolderForm
+                  folder={folder}
+                  onSuccess={() => setIsEditFolderOpen(false)}
+                />
+              </DialogContent>
+            </Dialog>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="destructive" size="sm">
+                  <Trash2 className="mr-2 h-4 w-4" /> Delete
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Delete "{folder.name}"?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This will delete the folder and all its contents (subfolders
+                    and bookmarks). This action cannot be undone.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={handleDeleteFolder}
+                    className="bg-destructive hover:bg-destructive/90"
+                  >
+                    Delete Folder
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
-          {folder.description && (
-            <CardDescription className="pt-2">
-              {folder.description}
-            </CardDescription>
-          )}
-        </CardHeader>
-      </Card>
-
+        }
+      />
+      <div className="mb-4">
+        <FolderPathBreadcrumb currentFolderId={folder.id} />
+      </div>
       {subfolders.length > 0 && (
         <Card>
           <CardHeader>
             <CardTitle>Subfolders</CardTitle>
           </CardHeader>
           <CardContent className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {/* Add explicit type for subfolder */}
-            {subfolders.map((subfolder: FolderTreeNode) => (
+            {subfolders.map((subfolder) => (
               <Link
                 key={subfolder.id}
                 to="/folders/$folderId"
                 params={{ folderId: subfolder.id }}
+                className="block"
               >
-                <Card className="hover:shadow-md transition-shadow h-full">
+                <Card className="hover:shadow-lg transition-shadow h-full">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium truncate">
                       {subfolder.name}
                     </CardTitle>
-                    <FolderIcon className="h-4 w-4 text-muted-foreground" />
+                    <FolderIconLucide className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
                     <div className="text-xs text-muted-foreground">
                       {subfolder.bookmarkCount ?? 0} bookmarks
                     </div>
+                    {/* Add other subfolder info if needed */}
                   </CardContent>
                 </Card>
               </Link>
@@ -223,8 +207,7 @@ export default function FolderDetailComponent() {
 
       <div>
         <h2 className="text-xl font-semibold mb-4">Bookmarks in this Folder</h2>
-        {/* Pass folderId to BookmarkList so it filters bookmarks for the current folder */}
-        <BookmarkList folderId={folderId} />
+        <BookmarkList initialFolderId={folder.id} showFolderFilter={false} />
       </div>
     </div>
   );

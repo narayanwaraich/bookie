@@ -27,7 +27,7 @@ import {
 import { ColorPicker } from "@/components/ui/color-picker";
 import { Icons } from "@/components/ui/icons";
 import type { inferOutput } from "@trpc/tanstack-react-query";
-import { createFolderSchema as folderSchema } from "@server/models/schemas";
+import { createFolderSchema as folderSchema } from "@server/api/models/schemas";
 
 // Use the FolderTreeNode type from FolderTree if it's exported and suitable,
 // or define a similar one here for the tree structure.

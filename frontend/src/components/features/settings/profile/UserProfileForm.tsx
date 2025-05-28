@@ -1,19 +1,8 @@
-import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { format } from "date-fns";
-import { Loader2 } from "lucide-react";
-import { toast } from "sonner";
-
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import * as z from "zod";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { trpc } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -24,40 +13,86 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
 import {
-  profileFormSchema,
-  type ProfileFormValues,
-  type UserProfile,
-} from "../schemas";
-import { useProfileMutations } from "../hooks";
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import type { inferOutput } from "@trpc/tanstack-react-query";
 
-interface ProfileInfoCardProps {
-  userProfile: UserProfile;
+type UserProfileData = inferOutput<typeof trpc.user.getProfile>;
+
+const profileFormSchema = z.object({
+  name: z.string().optional(),
+  username: z
+    .string()
+    .min(3, "Username must be at least 3 characters")
+    .max(30, "Username must be 30 characters or less")
+    .optional(),
+  profileImage: z
+    .string()
+    .url("Must be a valid URL")
+    .optional()
+    .or(z.literal("")),
+});
+type ProfileFormValues = z.infer<typeof profileFormSchema>;
+
+interface UserProfileFormProps {
+  userProfile: UserProfileData;
 }
 
-export function ProfileInfoCard({ userProfile }: ProfileInfoCardProps) {
+export default function UserProfileForm({ userProfile }: UserProfileFormProps) {
+  const queryClient = useQueryClient();
   const [isEditing, setIsEditing] = useState(false);
-  const { updateProfile, isUpdatingProfile } = useProfileMutations();
 
-  const profileForm = useForm<ProfileFormValues>({
+  const updateProfileMutation = useMutation(
+    trpc.user.updateProfile.mutationOptions({
+      onSuccess: async () => {
+        toast.success("Profile Updated", {
+          description: "Your profile has been successfully updated.",
+        });
+        await queryClient.invalidateQueries({
+          queryKey: trpc.user.getProfile.queryKey(),
+        });
+        setIsEditing(false);
+      },
+      onError: (err: any) => {
+        let description = "An unexpected error occurred. Please try again.";
+        if (err.data?.httpStatus === 429 || err.code === "TOO_MANY_REQUESTS") {
+          description = "Too many attempts. Please try again in a few minutes.";
+        } else if (err.message) {
+          description = err.message;
+        }
+        toast.error("Update Failed", { description });
+      },
+    }),
+  );
+
+  const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
     defaultValues: {
-      name: userProfile.name || "",
-      username: userProfile.username || "",
-      profileImage: userProfile.profileImage || "",
+      name: userProfile?.name || "",
+      username: userProfile?.username || "",
+      profileImage: userProfile?.profileImage || "",
     },
   });
 
   useEffect(() => {
     if (userProfile) {
-      profileForm.reset({
+      form.reset({
         name: userProfile.name || "",
         username: userProfile.username || "",
         profileImage: userProfile.profileImage || "",
       });
     }
-  }, [userProfile, profileForm]);
+  }, [userProfile, form]);
 
   const onProfileSubmit = (values: ProfileFormValues) => {
     const changedPayload: Partial<ProfileFormValues> = {};
@@ -69,8 +104,7 @@ export function ProfileInfoCard({ userProfile }: ProfileInfoCardProps) {
       changedPayload.profileImage = values.profileImage;
 
     if (Object.keys(changedPayload).length > 0) {
-      updateProfile(changedPayload);
-      setIsEditing(false);
+      updateProfileMutation.mutate(changedPayload);
     } else {
       toast.info("No Changes", {
         description: "No changes were made to your profile.",
@@ -79,15 +113,16 @@ export function ProfileInfoCard({ userProfile }: ProfileInfoCardProps) {
     }
   };
 
-  const displayValue = (
-    value: string | null | undefined,
-    placeholder = "N/A",
-  ) => value || placeholder;
+  const getInitials = (name?: string | null, username?: string | null) => {
+    if (name) return name.substring(0, 2).toUpperCase();
+    if (username) return username.substring(0, 2).toUpperCase();
+    return "U";
+  };
 
   return (
     <Card>
-      <Form {...profileForm}>
-        <form onSubmit={profileForm.handleSubmit(onProfileSubmit)}>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onProfileSubmit)}>
           <CardHeader>
             <div className="flex items-center justify-between">
               <CardTitle className="text-xl">Profile Information</CardTitle>
@@ -108,31 +143,24 @@ export function ProfileInfoCard({ userProfile }: ProfileInfoCardProps) {
               <Avatar className="h-24 w-24">
                 <AvatarImage
                   src={
-                    profileForm.watch("profileImage") ||
+                    form.watch("profileImage") ||
                     userProfile.profileImage ||
                     undefined
                   }
                   alt={
-                    profileForm.watch("name") ||
+                    form.watch("name") ||
                     userProfile.name ||
                     userProfile.username
                   }
                 />
                 <AvatarFallback>
-                  {(
-                    profileForm.watch("name") ||
-                    userProfile.name ||
-                    userProfile.username ||
-                    "U"
-                  )
-                    .substring(0, 2)
-                    .toUpperCase()}
+                  {getInitials(form.watch("name"), userProfile.username)}
                 </AvatarFallback>
               </Avatar>
               <div className="w-full space-y-2">
                 {isEditing ? (
                   <FormField
-                    control={profileForm.control}
+                    control={form.control}
                     name="name"
                     render={({ field }) => (
                       <FormItem>
@@ -148,13 +176,13 @@ export function ProfileInfoCard({ userProfile }: ProfileInfoCardProps) {
                   <div>
                     <FormLabel>Display Name</FormLabel>
                     <p className="text-lg font-semibold">
-                      {displayValue(userProfile.name, userProfile.username)}
+                      {userProfile.name || userProfile.username}
                     </p>
                   </div>
                 )}
                 {isEditing ? (
                   <FormField
-                    control={profileForm.control}
+                    control={form.control}
                     name="username"
                     render={({ field }) => (
                       <FormItem>
@@ -176,7 +204,7 @@ export function ProfileInfoCard({ userProfile }: ProfileInfoCardProps) {
             </div>
             {isEditing && (
               <FormField
-                control={profileForm.control}
+                control={form.control}
                 name="profileImage"
                 render={({ field }) => (
                   <FormItem>
@@ -192,29 +220,15 @@ export function ProfileInfoCard({ userProfile }: ProfileInfoCardProps) {
                 )}
               />
             )}
-            <div>
-              <FormLabel>Email</FormLabel>
-              <p>
-                {userProfile.email}{" "}
-                <span className="text-xs text-muted-foreground">
-                  (cannot be changed)
-                </span>
-              </p>
-            </div>
-            {userProfile.createdAt && (
-              <div>
-                <FormLabel>Joined</FormLabel>
-                <p>{format(new Date(userProfile.createdAt), "MMMM d, yyyy")}</p>
-              </div>
-            )}
           </CardContent>
           {isEditing && (
             <CardFooter className="flex justify-end space-x-2">
               <Button
                 variant="ghost"
+                type="button"
                 onClick={() => {
                   setIsEditing(false);
-                  profileForm.reset({
+                  form.reset({
                     name: userProfile.name || "",
                     username: userProfile.username || "",
                     profileImage: userProfile.profileImage || "",
@@ -223,10 +237,10 @@ export function ProfileInfoCard({ userProfile }: ProfileInfoCardProps) {
               >
                 Cancel
               </Button>
-              <Button type="submit" disabled={isUpdatingProfile}>
-                {isUpdatingProfile ? (
+              <Button type="submit" disabled={updateProfileMutation.isPending}>
+                {updateProfileMutation.isPending && (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                ) : null}
+                )}
                 Save Changes
               </Button>
             </CardFooter>

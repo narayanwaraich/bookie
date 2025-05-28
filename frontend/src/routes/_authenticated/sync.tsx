@@ -1,12 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
-import SyncComponent from "@/components/features/sync/SyncStatusView";
-interface SyncStatus {
-  lastSyncTime: string;
-  status: "synced" | "syncing" | "error";
-  error?: string;
-  pendingChanges: number;
-}
+import { SyncStatusView } from "@/components/features/sync/ui/SyncStatusView";
+import { ErrorDisplay } from "@/components/ui/ErrorDisplay";
 
 export const Route = createFileRoute("/_authenticated/sync")({
-  component: SyncComponent,
+  component: SyncStatusView,
+  // loader: async ({ context }) => {
+  //   // await context.queryClient.ensureQueryData(context.trpc.sync.getStatus.queryOptions());
+  //   // return {};
+  // }
+  errorComponent: ({ error }) => (
+    <ErrorDisplay
+      title="Error"
+      message={`Error loading syncing status: ${error.message}`}
+    />
+  ),
 });

@@ -1,4 +1,4 @@
-import type { AppRouter } from "@server/trpc/router";
+import type { AppRouter } from "@server/api/trpc/router";
 
 // Queue item for failed requests during token refresh
 export type QueueItem = {

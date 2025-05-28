@@ -23,7 +23,7 @@ export type ForgotPasswordFormValues = z.infer<typeof forgotPasswordFormSchema>;
 interface ForgotPasswordFormComponentProps {
   onSubmitSuccess: (email: string) => void; // Callback to handle UI change
   requestResetMutation: ReturnType<
-    typeof useMutation<any, any, ForgotPasswordFormValues, unknown>
+    typeof useMutation<any, any, ForgotPasswordFormValues>
   >; // Pass mutation
 }
 

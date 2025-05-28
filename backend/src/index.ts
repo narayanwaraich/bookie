@@ -8,11 +8,11 @@ import { Server as SocketIOServer } from 'socket.io'; // Import Socket.IO Server
 import { config } from './api/config';
 import logger from './api/config/logger';
 import rateLimiter from './api/config/rateLimiter';
-import apiRouter from './routes'; // Your existing REST API router
+import apiRouter from './api/routes'; // Your existing REST API router
 import errorHandler from './api/middleware/errorHandler'; // Import the error handler
 import * as trpcExpress from '@trpc/server/adapters/express'; // Import tRPC adapter
-import { appRouter } from './trpc/router'; // Import your main tRPC router
-import { createContext } from './trpc/context'; // Import your context creation function
+import { appRouter } from './api/trpc/router'; // Import your main tRPC router
+import { createContext } from './api/trpc/context'; // Import your context creation function
 import { initSocketIO } from './api/config/socket'; // Import the Socket.IO initializer
 
 const app: Express = express();
@@ -68,7 +68,7 @@ app.get('/', (req: Request, res: Response) => {
 
 // API routes
 // Mount REST API Router (already versioned inside index.ts)
-app.use('/api', apiRouter);
+app.use('/api/routes/', apiRouter);
 
 // Mount tRPC Router
 app.use(
@@ -102,39 +102,6 @@ const httpServer = http.createServer(app); // Create HTTP server from Express ap
 
 // Initialize Socket.IO Server using the new function
 const io = initSocketIO(httpServer);
-
-// Socket.IO connection logic is now handled within initSocketIO in socket.ts
-// Remove the io.use and io.on('connection', ...) block from here
-
-/* Remove this block:
-// Import and apply socket authentication middleware
-import { socketAuthMiddleware, AuthenticatedSocket } from './middleware/socketAuth.middleware';
-io.use(socketAuthMiddleware); // Apply middleware to all incoming connections
-
-// Handle authenticated connections
-io.on('connection', (socket: AuthenticatedSocket) => { // Use AuthenticatedSocket type
-  // At this point, socket.user should be populated if authentication succeeded
-  if (!socket.user) {
-    // This shouldn't happen if middleware is working correctly, but handle defensively
-    logger.error(`[Socket.IO]: Connection event for unauthenticated socket ${socket.id}. Disconnecting.`);
-    socket.disconnect(true);
-    return;
-  }
-
-  logger.info(`[Socket.IO]: Authenticated client connected: ${socket.id}, User: ${socket.user.id}`);
-
-  // Join a room specific to the user
-  socket.join(socket.user.id);
-  logger.info(`[Socket.IO]: Socket ${socket.id} joined room ${socket.user.id}`);
-
-  socket.on('disconnect', () => {
-    logger.info(`[Socket.IO]: Client disconnected: ${socket.id}`);
-  });
-
-  // TODO: Add authentication middleware for sockets
-  // TODO: Add event listeners and emitters
-});
-*/
 
 // --- Server Startup ---
 

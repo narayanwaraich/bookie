@@ -1,16 +1,8 @@
-import { useState } from "react";
-import { useNavigate } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff, Loader2, ShieldAlert } from "lucide-react";
-
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import * as z from "zod";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { trpc } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -22,8 +14,16 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { toast } from "sonner";
+import { Eye, EyeOff, Loader2, ShieldAlert } from "lucide-react";
+import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -32,39 +32,54 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-
-import {
-  deleteAccountFormSchema,
-  type DeleteAccountFormValues,
-} from "../schemas";
-import { useProfileMutations } from "../hooks";
 import { useAuth } from "@/lib/auth";
+import { useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
 
-export function DeleteAccountCard() {
+const deleteAccountFormSchema = z.object({
+  password: z
+    .string()
+    .min(1, { message: "Password is required to confirm deletion" }),
+});
+type DeleteAccountFormValues = z.infer<typeof deleteAccountFormSchema>;
+
+export default function DeleteAccountForm() {
   const navigate = useNavigate();
   const auth = useAuth();
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [showDeleteConfirmPassword, setShowDeleteConfirmPassword] =
     useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
-  const { deleteAccount, isDeletingAccount } = useProfileMutations();
-
-  const deleteAccountForm = useForm<DeleteAccountFormValues>({
+  const form = useForm<DeleteAccountFormValues>({
     resolver: zodResolver(deleteAccountFormSchema),
     defaultValues: { password: "" },
   });
 
-  const onDeleteAccountSubmit = async (values: DeleteAccountFormValues) => {
-    deleteAccount(values);
+  const deleteAccountMutation = useMutation(
+    trpc.user.deleteAccount.mutationOptions({
+      onSuccess: async () => {
+        toast.success("Account Deleted", {
+          description: "Your account has been permanently deleted.",
+        });
+        setIsDeleteDialogOpen(false);
+        await auth.logout();
+        navigate({ to: "/", replace: true });
+      },
+      onError: (err: any) => {
+        let description = "An unexpected error occurred. Please try again.";
+        if (err.data?.httpStatus === 429 || err.code === "TOO_MANY_REQUESTS") {
+          description = "Too many attempts. Please try again in a few minutes.";
+        } else if (err.message) {
+          description = err.message;
+        }
+        toast.error("Account Deletion Failed", { description });
+        form.setError("password", { type: "manual", message: description });
+      },
+    }),
+  );
 
-    // If deletion is successful, we need to handle logout and redirect
-    // Note: This logic should actually be in the onSuccess callback of the mutation
-    // but we're keeping UI handling here for component encapsulation
-    if (!isDeletingAccount) {
-      setIsDeleteDialogOpen(false);
-      await auth.logout();
-      navigate({ to: "/", replace: true });
-    }
+  const onDeleteAccountSubmit = (values: DeleteAccountFormValues) => {
+    deleteAccountMutation.mutate({ password: values.password });
   };
 
   return (
@@ -97,13 +112,13 @@ export function DeleteAccountCard() {
                 please type your current password.
               </AlertDialogDescription>
             </AlertDialogHeader>
-            <Form {...deleteAccountForm}>
+            <Form {...form}>
               <form
-                onSubmit={deleteAccountForm.handleSubmit(onDeleteAccountSubmit)}
+                onSubmit={form.handleSubmit(onDeleteAccountSubmit)}
                 id="deleteAccountConfirmForm"
               >
                 <FormField
-                  control={deleteAccountForm.control}
+                  control={form.control}
                   name="password"
                   render={({ field }) => (
                     <FormItem>
@@ -141,18 +156,18 @@ export function DeleteAccountCard() {
               </form>
             </Form>
             <AlertDialogFooter>
-              <AlertDialogCancel onClick={() => deleteAccountForm.reset()}>
+              <AlertDialogCancel onClick={() => form.reset()}>
                 Cancel
               </AlertDialogCancel>
               <Button
                 variant="destructive"
                 type="submit"
                 form="deleteAccountConfirmForm"
-                disabled={isDeletingAccount}
+                disabled={deleteAccountMutation.isPending}
               >
-                {isDeletingAccount ? (
+                {deleteAccountMutation.isPending && (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                ) : null}
+                )}
                 Yes, Delete My Account
               </Button>
             </AlertDialogFooter>

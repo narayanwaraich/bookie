@@ -2,7 +2,9 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
-import ForgotPasswordFormComponent from "@/components/features/auth/forms/ForgotPasswordForm";
+import ForgotPasswordFormComponent, {
+  ForgotPasswordFormValues,
+} from "@/components/features/auth/forms/ForgotPasswordForm";
 import { AuthPageLayout } from "@/components/features/auth/ui/AuthPageLayout";
 import { trpc } from "@/lib/api";
 import { useState } from "react";
@@ -15,9 +17,18 @@ function ForgotPasswordPage() {
   const navigate = useNavigate();
   const [submittedEmail, setSubmittedEmail] = useState<string | null>(null);
 
-  const requestResetMutation = useMutation(
-    trpc.auth.requestPasswordReset.mutationOptions(), // Error/Success handled in component
-  );
+  // const mutationOptions = trpc.auth.requestPasswordReset.mutationOptions();
+  // const requestResetMutation = useMutation(mutationOptions);
+
+  // Explicitly define the types for useMutation
+  const requestResetMutation = useMutation<
+    { message: string }, // Expected data type on success
+    Error, // Expected error type
+    ForgotPasswordFormValues, // Expected variables type (input to mutate)
+    unknown // Context type (can be left as unknown if not used)
+  >({
+    mutationFn: trpc.auth.requestPasswordReset.mutation, // Use mutation directly
+  });
 
   const handleFormSuccess = (email: string) => {
     setSubmittedEmail(email);
@@ -29,7 +40,7 @@ function ForgotPasswordPage() {
       // For simplicity, keeping it here.
       <AuthPageLayout
         title="Check Your Email"
-        description='A password reset link has been sent to ${submittedEmail} if an account with that email exists. Please check your inbox (and spam folder).';
+        description="A password reset link has been sent to ${submittedEmail} if an account with that email exists. Please check your inbox (and spam folder)."
       >
         <Button onClick={() => navigate({ to: "/login" })} className="w-full">
           Back to Login
