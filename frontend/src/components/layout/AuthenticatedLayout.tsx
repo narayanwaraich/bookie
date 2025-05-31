@@ -1,6 +1,6 @@
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import AppHeader from "./Header";
-import AppSidebar from "./Sidebar";
+import AppSidebar from "./sidebar/AppSidebar";
 
 export default function AuthenticatedLayout({
   children,

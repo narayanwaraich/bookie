@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { useNavigate } from "@tanstack/react-router";
 // import { useDebounce } from '@/hooks/useDebounce'; // If you want to debounce
 
-export function AppSidebarSearchForm({
+export default function AppSidebarSearchForm({
   ...props
 }: React.ComponentProps<"form">) {
   const [query, setQuery] = useState("");
