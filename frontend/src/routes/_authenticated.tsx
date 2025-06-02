@@ -1,6 +1,4 @@
-import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
-import AuthenticatedLayout from "@/components/layout/AuthenticatedLayout";
-import { useSocketEvents } from "@/hooks/useSocketEvents";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_authenticated")({
   beforeLoad: ({ context, location }) => {
@@ -14,15 +12,4 @@ export const Route = createFileRoute("/_authenticated")({
       });
     }
   },
-  component: AuthenticatedRouteComponent,
 });
-
-function AuthenticatedRouteComponent() {
-  useSocketEvents();
-
-  return (
-    <AuthenticatedLayout>
-      <Outlet />
-    </AuthenticatedLayout>
-  );
-}
