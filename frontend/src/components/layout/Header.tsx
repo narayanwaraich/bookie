@@ -64,80 +64,87 @@ export default function AppHeader() {
   };
 
   return (
-    <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
-      {isMobile && <SidebarTrigger className="-ml-1" />}
-      {!isMobile && <Separator orientation="vertical" className="h-6" />}
-
-      <Breadcrumb className="hidden md:flex">
-        <BreadcrumbList>
-          {breadcrumbItems.map((item, index) => (
-            <React.Fragment key={item.href + index}>
-              <BreadcrumbItem>
-                {item.isCurrent ? (
-                  <BreadcrumbPage>{item.title}</BreadcrumbPage>
-                ) : (
-                  <BreadcrumbLink asChild>
-                    <Link to={item.href}>{item.title}</Link>
-                  </BreadcrumbLink>
-                )}
-              </BreadcrumbItem>
-              {index < breadcrumbItems.length - 1 && <BreadcrumbSeparator />}
-            </React.Fragment>
-          ))}
-        </BreadcrumbList>
-      </Breadcrumb>
-
-      <div className="relative ml-auto flex-1 md:grow-0">
-        {/* Future: <GlobalSearchInput /> */}
-        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-        <input
-          type="search"
-          placeholder="Search..."
-          className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px] h-9 border border-input"
+    <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+      <div className="flex items-center gap-2 px-4">
+        <SidebarTrigger className="-ml-1" />
+        <Separator
+          orientation="vertical"
+          className="mr-2 data-[orientation=vertical]:h-4"
         />
+        {/* {isMobile && <SidebarTrigger className="-ml-1" />}
+      {!isMobile && <Separator orientation="vertical" className="h-6" />} */}
+
+        <Breadcrumb className="hidden md:flex">
+          <BreadcrumbList>
+            {breadcrumbItems.map((item, index) => (
+              <React.Fragment key={item.href + index}>
+                <BreadcrumbItem>
+                  {item.isCurrent ? (
+                    <BreadcrumbPage>{item.title}</BreadcrumbPage>
+                  ) : (
+                    <BreadcrumbLink asChild>
+                      <Link to={item.href}>{item.title}</Link>
+                    </BreadcrumbLink>
+                  )}
+                </BreadcrumbItem>
+                {index < breadcrumbItems.length - 1 && <BreadcrumbSeparator />}
+              </React.Fragment>
+            ))}
+          </BreadcrumbList>
+        </Breadcrumb>
+
+        <div className="relative ml-auto flex-1 md:grow-0">
+          {/* Future: <GlobalSearchInput /> */}
+          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+          <input
+            type="search"
+            placeholder="Search..."
+            className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px] h-9 border border-input"
+          />
+        </div>
+
+        {/* Future: <NotificationsIndicator /> */}
+        <Button variant="outline" size="icon" className="h-9 w-9">
+          <Bell className="h-4 w-4" />
+          <span className="sr-only">Toggle notifications</span>
+        </Button>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="outline"
+              size="icon"
+              className="overflow-hidden rounded-full h-9 w-9"
+            >
+              <Avatar className="h-8 w-8">
+                <AvatarImage
+                  src={auth.user?.profileImage || undefined}
+                  alt={auth.user?.name || auth.user?.username || "User Avatar"}
+                />
+                <AvatarFallback>
+                  {getInitials(auth.user?.name, auth.user?.username)}
+                </AvatarFallback>
+              </Avatar>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem asChild>
+              <Link to="/settings/profile">
+                <Settings className="mr-2 h-4 w-4" />
+                Settings
+              </Link>
+            </DropdownMenuItem>
+            {/* <DropdownMenuItem>Support</DropdownMenuItem> */}
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={() => auth.logout()}>
+              <LogOut className="mr-2 h-4 w-4" />
+              Logout
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
-
-      {/* Future: <NotificationsIndicator /> */}
-      <Button variant="outline" size="icon" className="h-9 w-9">
-        <Bell className="h-4 w-4" />
-        <span className="sr-only">Toggle notifications</span>
-      </Button>
-
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="outline"
-            size="icon"
-            className="overflow-hidden rounded-full h-9 w-9"
-          >
-            <Avatar className="h-8 w-8">
-              <AvatarImage
-                src={auth.user?.profileImage || undefined}
-                alt={auth.user?.name || auth.user?.username || "User Avatar"}
-              />
-              <AvatarFallback>
-                {getInitials(auth.user?.name, auth.user?.username)}
-              </AvatarFallback>
-            </Avatar>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem asChild>
-            <Link to="/settings/profile">
-              <Settings className="mr-2 h-4 w-4" />
-              Settings
-            </Link>
-          </DropdownMenuItem>
-          {/* <DropdownMenuItem>Support</DropdownMenuItem> */}
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => auth.logout()}>
-            <LogOut className="mr-2 h-4 w-4" />
-            Logout
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
     </header>
   );
 }
