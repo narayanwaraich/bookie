@@ -93,7 +93,9 @@ export default function AppHeader() {
           </BreadcrumbList>
         </Breadcrumb>
 
-        <div className="relative ml-auto flex-1 md:grow-0">
+        <div className="ml-auto flex items-center gap-2">
+
+        <div className="relative flex-1 md:grow-0">
           {/* Future: <GlobalSearchInput /> */}
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <input
@@ -144,6 +146,7 @@ export default function AppHeader() {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+        </div>
       </div>
     </header>
   );

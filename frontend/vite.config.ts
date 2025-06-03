@@ -16,7 +16,7 @@ export default defineConfig({
   ],
   server: {
     host: true, // <== IMPORTANT: makes it accessible over network
-    port: 3000, // <== optional: choose your port
+    port: Number(process.env.PORT) || 3001, // <== optional: choose your port
     strictPort: true, // optional: prevent auto port changes
   },
   resolve: {

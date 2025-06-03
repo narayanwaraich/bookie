@@ -4,7 +4,6 @@ import { Sidebar, SidebarContent, SidebarRail } from "@/components/ui/sidebar";
 import { AppSidebarHeader } from "./AppSidebarHeader";
 import { SidebarNavigation } from "./SidebarNavigation";
 import { SidebarQuickActions } from "./SidebarQuickActions";
-import { SidebarContextContent } from "./SidebarContextContent";
 import { SidebarUtilityMenu } from "./SidebarUtilityMenu";
 import { SidebarUserMenu } from "./SidebarUserMenu";
 
@@ -30,7 +29,7 @@ export default function AppSidebar({
       <SidebarContent>
         <SidebarNavigation isActive={isActive} />
         {/* <SidebarQuickActions /> */}
-        <SidebarContextContent>{children}</SidebarContextContent>
+        {children}
         {/* <SidebarUtilityMenu isActive={isActive} /> */}
       </SidebarContent>
 

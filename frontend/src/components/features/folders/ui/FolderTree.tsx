@@ -12,6 +12,9 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
   SidebarMenuSub,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarGroupContent,
 } from "@/components/ui/sidebar";
 import type { inferOutput } from "@trpc/tanstack-react-query";
 
@@ -111,15 +114,20 @@ export const FolderTree: React.FC<FolderTreeProps> = ({
   }
 
   return (
-    <SidebarMenu>
-      {folderTree.map((rootNode) => (
-        <TreeNode
-          key={rootNode.id}
-          node={rootNode}
-          onFolderSelect={onFolderSelect}
-          selectedFolderId={selectedFolderId}
-        />
-      ))}
-    </SidebarMenu>
+    <SidebarGroup>
+      <SidebarGroupLabel>Folders</SidebarGroupLabel>
+      <SidebarGroupContent>
+      <SidebarMenu>
+        {folderTree.map((rootNode) => (
+          <TreeNode
+            key={rootNode.id}
+            node={rootNode}
+            onFolderSelect={onFolderSelect}
+            selectedFolderId={selectedFolderId}
+          />
+        ))}
+      </SidebarMenu>
+      </SidebarGroupContent>
+    </SidebarGroup>
   );
 };
