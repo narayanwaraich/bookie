@@ -1,5 +1,4 @@
 // src/components/features/dashboard/DashboardView.tsx
-import React from "react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { RecentBookmarksWidget } from "./RecentBookmarksWidget";
 import { StatisticsWidget } from "./StatisticsWidget";

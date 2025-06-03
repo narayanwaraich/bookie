@@ -1,15 +1,21 @@
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import AppHeader from "./Header";
-import AppSidebar from "./Sidebar";
+import AppSidebar from "./sidebar/AppSidebar";
+import { useSocketEvents } from "@/hooks/useSocketEvents";
 
-export default function AuthenticatedLayout({
-  children,
-}: {
+interface AuthenticatedLayoutProps {
   children: React.ReactNode;
-}) {
+  sidebarContent?: React.ReactNode;
+}
+
+export function AuthenticatedLayout({
+  children,
+  sidebarContent,
+}: AuthenticatedLayoutProps) {
+  useSocketEvents();
   return (
     <SidebarProvider>
-      <AppSidebar />
+      <AppSidebar>{sidebarContent}</AppSidebar>
       <SidebarInset>
         <AppHeader />
         <main className="flex-1 overflow-y-auto p-4 md:p-6 bg-muted/20">

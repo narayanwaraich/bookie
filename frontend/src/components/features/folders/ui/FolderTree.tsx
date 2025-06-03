@@ -1,7 +1,7 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { trpc } from "@/lib/api";
-import { Folder, ChevronRight } from "lucide-react"; // Assuming File icon is needed for non-folders if applicable
+import { ChevronRight } from "lucide-react";
 import {
   Collapsible,
   CollapsibleContent,
@@ -12,11 +12,9 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
   SidebarMenuSub,
-} from "@/components/ui/sidebar"; // Assuming these are exported from the sidebar index
-// import { cn } from "@/lib/utils";
+} from "@/components/ui/sidebar";
 import type { inferOutput } from "@trpc/tanstack-react-query";
 
-// Reuse the FolderNode type definition (or import if shared)
 type FolderTreeData = inferOutput<typeof trpc.folders.getTree>;
 type FolderTreeNode = FolderTreeData[number];
 
@@ -27,7 +25,6 @@ interface FolderNodeProps {
   onFolderSelect?: (folderId: string) => void;
 }
 
-// Recursive component to render each node
 const TreeNode: React.FC<FolderNodeProps> = ({
   node,
   onFolderSelect,
@@ -37,54 +34,33 @@ const TreeNode: React.FC<FolderNodeProps> = ({
   const hasChildren = node.children && node.children.length > 0;
   const isSelected = selectedFolderId === node.id;
 
-  // If it's a leaf node (no children) - Render as a simple button
-  // Adapt this if you have actual files vs folders distinction
   if (!hasChildren) {
     return (
       <SidebarMenuButton
         isActive={isSelected}
         className="data-[active=true]:bg-accent" // Example active style
         onClick={() => onFolderSelect?.(node.id)}
-        style={{ paddingLeft: `${1 + level * 1.5}rem` }} // Indentation
       >
-        {/* Use File icon if it's not a folder, otherwise Folder */}
-        <Folder
-          className="h-4 w-4 mr-1 shrink-0"
-          style={{ color: node.color as string | undefined }}
-        />
         <span className="truncate">{node.name}</span>
       </SidebarMenuButton>
     );
   }
 
-  // If it has children - Render as a collapsible item
   return (
-    <SidebarMenuItem className="p-0">
-      {" "}
-      {/* Remove padding from item */}
-      <Collapsible
-        className="group/collapsible w-full [&[data-state=open]>button>svg:first-child]:rotate-90"
-        // defaultOpen={node.name === "components" || node.name === "ui"} // Example default open
-      >
+    <SidebarMenuItem>
+      <Collapsible className="group/collapsible [&[data-state=open]>button>svg:first-child]:rotate-90">
         <CollapsibleTrigger asChild>
-          {/* Button covers the full width */}
           <SidebarMenuButton
             isActive={isSelected}
-            className="w-full justify-start data-[active=true]:bg-accent"
+            className="data-[active=true]:bg-accent"
             onClick={() => onFolderSelect?.(node.id)}
-            style={{ paddingLeft: `${1 + level * 1.5}rem` }} // Indentation
           >
-            <ChevronRight className="h-4 w-4 transition-transform shrink-0" />
-            <Folder
-              className="h-4 w-4 ml-1 shrink-0"
-              style={{ color: node.color as string | undefined }}
-            />
-            <span className="ml-1 truncate">{node.name}</span>
+            <ChevronRight className="transition-transform" />
+            <span className="truncate">{node.name}</span>
           </SidebarMenuButton>
         </CollapsibleTrigger>
         <CollapsibleContent>
-          {/* Submenu container */}
-          <SidebarMenuSub className="py-1">
+          <SidebarMenuSub>
             {node.children.map((childNode: FolderTreeNode) => (
               <TreeNode
                 key={childNode.id}
