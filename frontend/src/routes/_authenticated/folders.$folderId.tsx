@@ -14,7 +14,7 @@ const folderParamsSchema = z.object({
 
 export const Route = createFileRoute("/_authenticated/folders/$folderId")({
   parseParams: (params) => folderParamsSchema.parse(params),
-  loaderDeps: ({ params: { folderId } }) => ({ folderId }),
+  // loaderDeps: ({ params: { folderId } }) => ({ folderId }),
   loader: async ({ deps: { folderId }, context }) => {
     const folderQueryOptions = trpc.folders.getById.queryOptions({
       id: folderId,

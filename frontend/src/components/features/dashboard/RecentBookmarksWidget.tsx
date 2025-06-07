@@ -24,7 +24,7 @@ export function RecentBookmarksWidget() {
   );
 
   return (
-    <Card>
+    <Card className="@container/card">
       <CardHeader>
         <CardTitle>Recent Bookmarks</CardTitle>
         <CardDescription>Your latest additions.</CardDescription>

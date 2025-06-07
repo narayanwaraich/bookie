@@ -26,9 +26,11 @@ export function StatisticsWidget() {
   };
 
   return (
-    <Card>
+    <Card className="@container/card">
       <CardHeader>
-        <CardTitle>Statistics</CardTitle>
+        <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
+          Stats
+        </CardTitle>
         <CardDescription>Your collection at a glance.</CardDescription>
       </CardHeader>
       <CardContent>

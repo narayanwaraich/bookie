@@ -15,9 +15,11 @@ import { Link } from "@tanstack/react-router";
 export function QuickActionsWidget() {
   // const [isAddBookmarkOpen, setIsAddBookmarkOpen] = React.useState(false);
   return (
-    <Card>
+    <Card className="@container/card">
       <CardHeader>
-        <CardTitle>Quick Actions</CardTitle>
+        <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
+          Quick Actions
+        </CardTitle>
         <CardDescription>Common tasks at your fingertips.</CardDescription>
       </CardHeader>
       <CardContent className="grid gap-2">

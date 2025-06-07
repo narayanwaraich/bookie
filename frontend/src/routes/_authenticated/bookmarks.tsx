@@ -1,6 +1,13 @@
-import { createFileRoute, ErrorComponent } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  ErrorComponent,
+  useNavigate,
+  useRouterState,
+} from "@tanstack/react-router";
 import { BookmarkList } from "@/components/features/bookmarks/ui/BookmarkList";
 import { Loading } from "@/components/ui/Loading";
+import { AuthenticatedLayout } from "@/components/layout/AuthenticatedLayout";
+import { FolderTree } from "@/components/features/folders/ui/FolderTree";
 
 export const Route = createFileRoute("/_authenticated/bookmarks")({
   loader: async ({ context: { trpc, queryClient } }) => {
@@ -14,9 +21,27 @@ export const Route = createFileRoute("/_authenticated/bookmarks")({
 });
 
 function BookmarksPage() {
+  const router = useRouterState();
+  const navigate = useNavigate();
+
+  const handleFolderSelection = (folderId: string) => {
+    navigate({ to: "/folders/$folderId", params: { folderId } });
+  };
+
   return (
-    <div className="container mx-auto p-4">
+    <AuthenticatedLayout
+      sidebarContent={
+        <FolderTree
+          selectedFolderId={
+            router.location.pathname.startsWith("/folders/")
+              ? router.location.pathname.split("/").pop()
+              : undefined
+          }
+          onFolderSelect={handleFolderSelection}
+        />
+      }
+    >
       <BookmarkList />
-    </div>
+    </AuthenticatedLayout>
   );
 }
