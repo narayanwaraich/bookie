@@ -51,7 +51,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"; // Import Dropdown components
-import type { EditBookmarkFormInput as EditBookmark } from "./EditBookmarkForm";
+import type { EditBookmarkFormInput as EditBookmark } from "../forms/EditBookmarkForm";
 
 type BookmarkSearchResult = inferOutput<typeof trpc.bookmarks.search>;
 type Bookmark = BookmarkSearchResult["bookmarks"][number];

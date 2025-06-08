@@ -13,6 +13,8 @@ export default function Breadcrumbs() {
   //  Check if /folders/$folderid, extract id via router and return FolderPathBreadcrumb.tsx
 
   const matches = useMatches();
+  console.log(matches);
+
 
   // Create breadcrumbs from route matches
   // This is a simplified example; you might need more sophisticated logic for titles/paths

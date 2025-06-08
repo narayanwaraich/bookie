@@ -1,15 +1,6 @@
-import React from "react";
-import { Link, useMatches } from "@tanstack/react-router";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+import { Link } from "@tanstack/react-router";
 import { Separator } from "@/components/ui/separator";
-import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -21,13 +12,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/lib/auth"; // Assuming auth context provides user info and logout
-import { CircleUser, LogOut, Settings, Search, Bell } from "lucide-react"; // Added icons
+import { LogOut, Settings, Search, Bell } from "lucide-react"; // Added icons
 // import GlobalSearchInput from '@/components/features/search/GlobalSearchInput'; // Future: For a cmd+k style search
 // import NotificationsIndicator from '@/components/features/notifications/NotificationsIndicator'; // Future
 import Breadcrumbs from "./Breadcrumbs";
 
 export default function AppHeader() {
-  const { isMobile } = useSidebar();
   const auth = useAuth();
 
   const getInitials = (name?: string | null, username?: string | null) => {
