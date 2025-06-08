@@ -1,5 +1,5 @@
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import AppHeader from "./Header";
+import AppHeader from "./AppHeader";
 import AppSidebar from "./sidebar/AppSidebar";
 import { useSocketEvents } from "@/hooks/useSocketEvents";
 

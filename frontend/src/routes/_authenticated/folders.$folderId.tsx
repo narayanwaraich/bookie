@@ -13,18 +13,20 @@ const folderParamsSchema = z.object({
 });
 
 export const Route = createFileRoute("/_authenticated/folders/$folderId")({
-  parseParams: (params) => folderParamsSchema.parse(params),
-  // loaderDeps: ({ params: { folderId } }) => ({ folderId }),
-  loader: async ({ deps: { folderId }, context }) => {
+  params: {
+    parse: (params) => folderParamsSchema.parse(params),
+  },
+  // loaderDeps: ({ search: { folderId } }) => ({ folderId }),
+  loader: async ({ params, context }) => {
     const folderQueryOptions = trpc.folders.getById.queryOptions({
-      id: folderId,
+      id: params.folderId,
     });
     const folder =
       await context.queryClient.ensureQueryData(folderQueryOptions);
 
     // Pre-fetch bookmarks for this folder.
     const bookmarksQueryOptions = trpc.bookmarks.search.queryOptions({
-      folderId: folderId,
+      folderId: params.folderId,
       limit: 10,
     });
     await context.queryClient.ensureQueryData(bookmarksQueryOptions);
