@@ -465,6 +465,74 @@ export const searchBookmarks = async (
     )}`
   );
 
+  // Helper function to get all subfolder IDs recursively
+  const getAllSubfolderIds = async (
+    folderId: string
+  ): Promise<string[]> => {
+    try {
+      // Use a single optimized query to get all descendants
+      // This is much faster than multiple round trips for deep hierarchies
+      const allFolders = await prisma.$queryRaw<{ id: string }[]>`
+        WITH RECURSIVE folder_tree AS (
+          -- Base case: start with the target folder
+          SELECT id, "parentId"
+          FROM "Folder"
+          WHERE id = ${folderId}::uuid
+
+          UNION ALL
+
+          -- Recursive case: find children of folders already in the tree
+          SELECT f.id, f."parentId"
+          FROM "Folder" f
+          INNER JOIN folder_tree ft ON f."parentId" = ft.id
+        )
+        SELECT id::text as id FROM folder_tree
+      `;
+
+      return allFolders.map((folder) => folder.id);
+    } catch (error) {
+      logger.error(
+        `Error getting subfolders for folder ${folderId}:`,
+        error
+      );
+
+      // Fallback to iterative approach if CTE fails
+      logger.info('Falling back to iterative folder traversal...');
+      return await getAllSubfolderIdsIterative(folderId);
+    }
+  };
+
+  // Fallback function using iterative approach
+  const getAllSubfolderIdsIterative = async (
+    folderId: string
+  ): Promise<string[]> => {
+    const allFolderIds = [folderId];
+
+    const getSubfoldersRecursively = async (
+      parentId: string
+    ): Promise<void> => {
+      try {
+        const children = await prisma.folder.findMany({
+          where: { parentId: parentId },
+          select: { id: true },
+        });
+
+        for (const child of children) {
+          allFolderIds.push(child.id);
+          await getSubfoldersRecursively(child.id);
+        }
+      } catch (error) {
+        logger.error(
+          `Error getting subfolders for parent ${parentId}:`,
+          error
+        );
+      }
+    };
+
+    await getSubfoldersRecursively(folderId);
+    return allFolderIds;
+  };
+
   if (query) {
     // FTS logic (no caching)
     const searchQuery = query.trim();
@@ -474,10 +542,17 @@ export const searchBookmarks = async (
       accessCondition,
       Prisma.sql`"fullTextSearch" @@ ${tsQuery}`,
     ];
-    if (searchParams.folderId)
-      conditions.push(
-        Prisma.sql`EXISTS (SELECT 1 FROM "FolderBookmark" fb WHERE fb."bookmarkId" = b.id AND fb."folderId" = ${searchParams.folderId}::uuid)`
+
+    if (searchParams.folderId) {
+      // Get all subfolder IDs including the parent folder
+      const allFolderIds = await getAllSubfolderIds(
+        searchParams.folderId
       );
+      conditions.push(
+        Prisma.sql`EXISTS (SELECT 1 FROM "FolderBookmark" fb WHERE fb."bookmarkId" = b.id AND fb."folderId" = ANY(${allFolderIds}::uuid[]))`
+      );
+    }
+
     if (searchParams.tagIds && searchParams.tagIds.length > 0) {
       const validTagIds = searchParams.tagIds.filter((id) =>
         /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(
@@ -571,7 +646,7 @@ export const searchBookmarks = async (
     // Cache standard Prisma search
     const cacheKey = BOOKMARK_SEARCH_CACHE_KEY(userId, searchParams);
     const cachedResult = await cacheWrap(cacheKey, async () => {
-      logger.debug(
+      logger.info(
         `Performing non-FTS search (DB) for user ${userId}`
       );
       const baseAccessFilter: Prisma.BookmarkWhereInput = {
@@ -597,10 +672,17 @@ export const searchBookmarks = async (
       const searchFilters: Prisma.BookmarkWhereInput[] = [
         baseAccessFilter,
       ];
-      if (searchParams.folderId)
+
+      if (searchParams.folderId) {
+        // Get all subfolder IDs including the parent folder
+        const allFolderIds = await getAllSubfolderIds(
+          searchParams.folderId
+        );
         searchFilters.push({
-          folders: { some: { folderId: searchParams.folderId } },
+          folders: { some: { folderId: { in: allFolderIds } } },
         });
+      }
+
       if (searchParams.tagIds && searchParams.tagIds.length > 0)
         searchFilters.push({
           tags: { some: { tagId: { in: searchParams.tagIds } } },

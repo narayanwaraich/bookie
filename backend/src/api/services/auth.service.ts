@@ -209,6 +209,8 @@ export const loginUser = async (credentials: LoginUserInput) => {
     where: { email },
   });
 
+  logger.info(`user: ${user}`);
+
   // Use AuthError for invalid credentials or inactive user
   if (!user || !user.isActive) {
     logger.warn(
@@ -220,6 +222,8 @@ export const loginUser = async (credentials: LoginUserInput) => {
   // Check password
   const isMatch = await bcrypt.compare(password, user.password);
 
+  logger.info(`isMatch: ${isMatch}`);
+
   if (!isMatch) {
     logger.warn(`Login failed for ${email}: Invalid password.`);
     throw new AuthError('Invalid credentials', 401); // Unauthorized
@@ -228,6 +232,9 @@ export const loginUser = async (credentials: LoginUserInput) => {
   // Generate tokens
   const token = generateToken(user.id, user.email, user.username);
   const refreshToken = generateRefreshToken(user.id);
+
+  logger.info(`token: ${token}`);
+  logger.info(`refreshToken: ${refreshToken}`);
 
   // Update user with refresh token and last login
   await prisma.user.update({

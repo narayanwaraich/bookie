@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useMatches } from "@tanstack/react-router";
+import { Link, useMatches, useMatchRoute } from "@tanstack/react-router";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,14 +8,15 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { FolderPathBreadcrumb } from "../features/folders/ui/FolderPathBreadcrumb";
 
 export default function Breadcrumbs() {
-  //  Check if /folders/$folderid, extract id via router and return FolderPathBreadcrumb.tsx
+  const matchRoute = useMatchRoute();
+  const folderParams = matchRoute({ to: "/folders/$folderId" });
+  if (folderParams)
+    return <FolderPathBreadcrumb currentFolderId={folderParams.folderId} />;
 
   const matches = useMatches();
-  console.log(matches);
-
-
   // Create breadcrumbs from route matches
   // This is a simplified example; you might need more sophisticated logic for titles/paths
   const breadcrumbItems = matches

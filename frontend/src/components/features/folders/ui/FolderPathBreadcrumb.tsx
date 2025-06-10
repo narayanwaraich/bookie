@@ -58,7 +58,7 @@ export function FolderPathBreadcrumb({
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbLink asChild>
-            <Link to="/folders">All Folders</Link>
+            <Link to="/bookmarks">Bookmarks</Link>
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />

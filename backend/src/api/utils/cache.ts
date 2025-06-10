@@ -22,7 +22,7 @@ export const cacheWrap = async <T>(
     // 1. Check cache first
     const cachedData = await redisClient.get(key);
     if (cachedData) {
-      logger.debug(`[Cache]: HIT for key "${key}"`);
+      logger.info(`[Cache]: HIT for key "${key}"`);
       try {
         // Attempt to parse cached data (assuming it's JSON)
         return JSON.parse(cachedData) as T;

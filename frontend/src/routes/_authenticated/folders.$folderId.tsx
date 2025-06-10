@@ -1,5 +1,4 @@
 // src/routes/_authenticated/folders.$folderId.tsx
-import React from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { trpc } from "@/lib/api";
 import { z } from "zod";
@@ -9,7 +8,6 @@ import { AuthenticatedLayout } from "@/components/layout/AuthenticatedLayout";
 import { FolderTree } from "@/components/features/folders/ui/FolderTree";
 import { BookmarkList } from "@/components/features/bookmarks/ui/BookmarkList";
 
-
 const folderParamsSchema = z.object({
   folderId: z.string().uuid("Invalid folder ID."),
 });
@@ -18,9 +16,7 @@ export const Route = createFileRoute("/_authenticated/folders/$folderId")({
   params: {
     parse: (params) => folderParamsSchema.parse(params),
   },
-  // loaderDeps: ({ search: { folderId } }) => ({ folderId }),
   loader: async ({ params, context }) => {
-
     const folderId = params.folderId;
     const folderQueryOptions = trpc.folders.getById.queryOptions({
       id: folderId,
@@ -45,7 +41,7 @@ export const Route = createFileRoute("/_authenticated/folders/$folderId")({
 });
 
 function FolderDetailPage() {
-  const { folderId, folder } = Route.useLoaderData(); // Get both folder and tree
+  const { folderId, folder } = Route.useLoaderData();
 
   if (!folder) {
     return <ErrorDisplay message="Folder not found." />;
@@ -56,17 +52,17 @@ function FolderDetailPage() {
   const handleFolderSelection = (folderId: string) => {
     navigate({ to: "/folders/$folderId", params: { folderId } });
   };
-  
-  return(
-  <AuthenticatedLayout
-    sidebarContent={
-      <FolderTree
-        selectedFolderId={folderId}
-        onFolderSelect={handleFolderSelection}
-      />
-    }
-  >
-    <BookmarkList initialFolderId={folderId} />
-  </AuthenticatedLayout>
-  )
+
+  return (
+    <AuthenticatedLayout
+      sidebarContent={
+        <FolderTree
+          selectedFolderId={folderId}
+          onFolderSelect={handleFolderSelection}
+        />
+      }
+    >
+      <BookmarkList initialFolderId={folderId} />
+    </AuthenticatedLayout>
+  );
 }
