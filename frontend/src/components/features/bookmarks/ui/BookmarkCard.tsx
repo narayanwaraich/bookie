@@ -89,10 +89,10 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
   return (
     // Add ring if selected
     <Card
-      className={`relative ${isGrid ? "w-full" : "w-full"} hover:shadow-md transition-shadow ${isSelected ? "ring-2 ring-primary" : ""}`}
+      className={`relative gap-1 text-sm font-normal py-0 ${isGrid ? "w-full" : "w-full"} hover:shadow-md transition-shadow ${isSelected ? "ring-2 ring-primary" : ""}`}
     >
       {/* Checkbox for selection */}
-      <div className="absolute top-2 left-2 z-10">
+      {/* <div className="absolute top-2 left-2 z-10">
         <Checkbox
           id={`select-${bookmark.id}`}
           checked={isSelected}
@@ -100,10 +100,10 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
           aria-label={`Select bookmark ${bookmark.title || bookmark.url}`}
           onClick={(e) => e.stopPropagation()} // Prevent card click when clicking checkbox
         />
-      </div>
+      </div> */}
       {isGrid && bookmark.previewImage && (
         // Add margin-top to prevent overlap with checkbox
-        <div className="relative h-48 w-full overflow-hidden mt-8">
+        <div className="h-48 w-full overflow-hidden rounded-t-xl">
           <img
             src={bookmark.previewImage}
             alt={bookmark.title}
@@ -111,15 +111,10 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
           />
         </div>
       )}
-      {/* Adjust padding based on image presence */}
-      <CardHeader
-        className={`p-4 ${isGrid && bookmark.previewImage ? "pt-2" : "pt-8"}`}
-      >
+      <CardHeader className={`p-4 gap-1 pb-0 `}>
         <div className="flex items-start justify-between">
           {/* Adjust margin-left based on view mode for checkbox space */}
-          <div
-            className={`flex items-center space-x-2 ${isGrid ? "ml-0" : "ml-8"}`}
-          >
+          <div className={`flex items-center space-x-2`}>
             {bookmark.favicon && (
               <img src={bookmark.favicon} alt="" className="w-4 h-4" />
             )}
@@ -128,15 +123,14 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
               href={bookmark.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-semibold line-clamp-2 hover:underline"
+              className="font-normal line-clamp-1 hover:underline text-gray-900"
               onClick={(e) => e.stopPropagation()}
             >
               {bookmark.title || bookmark.url}
             </a>
           </div>
-          <DropdownMenu>
+          {/* <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              {/* Make button smaller and non-expanding */}
               <Button
                 variant="ghost"
                 size="icon"
@@ -145,7 +139,6 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
                 <MoreVertical className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            {/* Stop propagation on menu items */}
             <DropdownMenuContent align="end">
               <DropdownMenuItem
                 onClick={(e) => {
@@ -196,22 +189,19 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
                 </AlertDialogContent>
               </AlertDialog>
             </DropdownMenuContent>
-          </DropdownMenu>
+          </DropdownMenu> */}
         </div>
-        {bookmark.description && (
-          // Adjust margin for checkbox space
+        {/* {bookmark.description && (
           <p
-            className={`text-sm text-muted-foreground mt-2 line-clamp-2 ${isGrid ? "ml-0" : "ml-8"}`}
+            className={`text-sm text-gray-500 mt-2 line-clamp-1 ${isGrid ? "ml-0" : "ml-8"}`}
           >
             {bookmark.description}
           </p>
-        )}
+        )} */}
       </CardHeader>
-      <CardContent className="p-4 pt-0">
+      <CardContent className="p-4 pt-0 pb-0 flex-1">
         {/* Re-enable tags/folders display, adjust margin */}
-        <div
-          className={`flex flex-wrap gap-1 mt-2 ${isGrid ? "ml-0" : "ml-8"}`}
-        >
+        <div className={`flex flex-wrap gap-1`}>
           {bookmark.folders?.map((folderMembership) => (
             <Badge
               key={folderMembership.folder.id}
@@ -235,10 +225,7 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
           ))}
         </div>
       </CardContent>
-      {/* Adjust margin for checkbox space */}
-      <CardFooter
-        className={`p-4 pt-2 text-xs text-muted-foreground ${isGrid ? "ml-0" : "ml-8"}`}
-      >
+      <CardFooter className={`p-4 pt-2 text-xs text-muted-foreground`}>
         <div className="flex items-center space-x-4">
           <span>
             {/* Convert date string before formatting */}
@@ -256,7 +243,6 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
               })}
             </span>
           )}
-          <span>{bookmark.visitCount} visits</span>
         </div>
       </CardFooter>
     </Card>
