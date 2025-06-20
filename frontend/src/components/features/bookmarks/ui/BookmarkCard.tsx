@@ -13,9 +13,10 @@ import {
   MoreVertical,
   ExternalLink,
   Pencil,
+  Share,
   Trash2,
-  Folder, // Re-enabled
-  Tag, // Re-enabled
+  Folder,
+  Tag,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -89,7 +90,7 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
   return (
     // Add ring if selected
     <Card
-      className={`relative gap-1 text-sm font-normal py-0 ${isGrid ? "w-full" : "w-full"} hover:shadow-md transition-shadow ${isSelected ? "ring-2 ring-primary" : ""}`}
+      className={`relative group gap-1 text-sm font-normal py-0 ${isGrid ? "w-full" : "w-full"} hover:shadow-md transition-shadow ${isSelected ? "ring-2 ring-primary" : ""}`}
     >
       {/* Checkbox for selection */}
       {/* <div className="absolute top-2 left-2 z-10">
@@ -225,24 +226,19 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
           ))}
         </div>
       </CardContent>
-      <CardFooter className={`p-4 pt-2 text-xs text-muted-foreground`}>
-        <div className="flex items-center space-x-4">
-          <span>
-            {/* Convert date string before formatting */}
-            Added{" "}
-            {formatDistanceToNow(new Date(bookmark.createdAt), {
-              addSuffix: true,
-            })}
-          </span>
-          {bookmark.lastVisited && (
-            <span>
-              {/* Convert date string before formatting */}
-              Last visited{" "}
-              {formatDistanceToNow(new Date(bookmark.lastVisited), {
-                addSuffix: true,
-              })}
-            </span>
-          )}
+      <CardFooter
+        className={`p-4 pt-2 text-xs text-muted-foreground justify-between`}
+      >
+        <p>
+          Added{" "}
+          {formatDistanceToNow(new Date(bookmark.createdAt), {
+            addSuffix: true,
+          })}
+        </p>
+        <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex space-x-2">
+          <Share className="w-4 h-4 text-muted-foreground hover:text-primary cursor-pointer transition-colors" />
+          <Pencil className="w-4 h-4 text-muted-foreground hover:text-primary cursor-pointer transition-colors" />
+          <Trash2 className="w-4 h-4 text-muted-foreground hover:text-destructive cursor-pointer transition-colors" />
         </div>
       </CardFooter>
     </Card>
