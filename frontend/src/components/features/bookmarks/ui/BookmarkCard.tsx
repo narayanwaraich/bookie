@@ -90,7 +90,7 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
   return (
     // Add ring if selected
     <Card
-      className={`relative group gap-1 text-sm font-normal py-0 ${isGrid ? "w-full" : "w-full"} hover:shadow-md transition-shadow ${isSelected ? "ring-2 ring-primary" : ""}`}
+      className={`relative group gap-1 text-sm font-normal py-0 hover:shadow-md transition-shadow ${isSelected ? "ring-2 ring-primary" : ""} rounded-b-sm`}
     >
       {/* Checkbox for selection */}
       {/* <div className="absolute top-2 left-2 z-10">
@@ -200,34 +200,39 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
           </p>
         )} */}
       </CardHeader>
-      <CardContent className="p-4 pt-0 pb-0 flex-1">
-        {/* Re-enable tags/folders display, adjust margin */}
-        <div className={`flex flex-wrap gap-1`}>
+      <CardContent className="p-4 pt-0 pb-0 flex flex-col flex-1 gap-1 ">
+        <div className="flex flex-wrap gap-1 items-center">
+          {bookmark.folders.length > 0 && (
+            <Folder className="mr-1 h-4 w-4 text-muted-foreground" />
+          )}
           {bookmark.folders?.map((folderMembership) => (
             <Badge
               key={folderMembership.folder.id}
-              variant="secondary"
-              className="text-xs"
+              variant="outline"
+              className="text-xs text-muted-foreground font-normal"
             >
-              <Folder className="mr-1 h-3 w-3" />
               {folderMembership.folder.name}
             </Badge>
           ))}
+        </div>
+        <div className={`flex flex-wrap gap-1 items-center`}>
+          {bookmark.tags.length > 0 && (
+            <Tag className="mr-1 h-4 w-4 text-muted-foreground" />
+          )}
           {bookmark.tags?.map((tagMembership) => (
             <Badge
               key={tagMembership.tag.id}
               variant="outline"
-              className="text-xs"
+              className="text-xs text-accent-foreground font-normal"
               style={{ backgroundColor: tagMembership.tag.color || undefined }}
             >
-              <Tag className="mr-1 h-3 w-3" />
               {tagMembership.tag.name}
             </Badge>
           ))}
         </div>
       </CardContent>
       <CardFooter
-        className={`p-4 pt-2 text-xs text-muted-foreground justify-between`}
+        className={`p-4 pt-2 pr-2 text-xs text-muted-foreground justify-between`}
       >
         <p>
           Added{" "}
@@ -235,10 +240,19 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
             addSuffix: true,
           })}
         </p>
-        <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex space-x-2">
-          <Share className="w-4 h-4 text-muted-foreground hover:text-primary cursor-pointer transition-colors" />
-          <Pencil className="w-4 h-4 text-muted-foreground hover:text-primary cursor-pointer transition-colors" />
-          <Trash2 className="w-4 h-4 text-muted-foreground hover:text-destructive cursor-pointer transition-colors" />
+        <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex leading-none divide-x">
+          <div className="flex items-end space-x-0.5 px-2 py-2 text-muted-foreground hover:text-blue-500 cursor-pointer transition-colors hover:shadow-xl/5 transition-shadow ">
+            <Share className="w-4 h-4" />
+            <span>Share</span>
+          </div>
+          <div className="flex items-end space-x-0.5 px-2 py-2 text-muted-foreground hover:text-emerald-500 cursor-pointer transition-colors hover:shadow-xl/5 transition-shadow ">
+            <Pencil className="w-4 h-4" />
+            <span>Edit</span>
+          </div>
+          <div className="flex items-end space-x-0.5 px-2 py-2 text-muted-foreground hover:text-red-400 cursor-pointer transition-colors hover:shadow-xl/5 transition-shadow ">
+            <Trash2 className="w-4 h-4" />
+            <span>Delete</span>
+          </div>
         </div>
       </CardFooter>
     </Card>
