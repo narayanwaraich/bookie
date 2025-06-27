@@ -110,6 +110,10 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+@theme {
+  --shadow-btn-sm: 0px 10px 20px -10px rgba(0 0 0 / 0.1);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

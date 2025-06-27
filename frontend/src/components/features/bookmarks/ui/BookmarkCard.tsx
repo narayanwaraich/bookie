@@ -18,12 +18,6 @@ import {
   Folder,
   Tag,
 } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { formatDistanceToNow } from "date-fns";
 import {
   AlertDialog,
@@ -88,12 +82,10 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
   const isGrid = viewMode === "grid";
 
   return (
-    // Add ring if selected
     <Card
       className={`relative group gap-1 text-sm font-normal py-0 hover:shadow-md transition-shadow ${isSelected ? "ring-2 ring-primary" : ""} rounded-b-sm`}
     >
-      {/* Checkbox for selection */}
-      {/* <div className="absolute top-2 left-2 z-10">
+      <div className="absolute top-2 left-2 z-10 hidden group-hover:block">
         <Checkbox
           id={`select-${bookmark.id}`}
           checked={isSelected}
@@ -101,10 +93,9 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
           aria-label={`Select bookmark ${bookmark.title || bookmark.url}`}
           onClick={(e) => e.stopPropagation()} // Prevent card click when clicking checkbox
         />
-      </div> */}
+      </div>
       {isGrid && bookmark.previewImage && (
-        // Add margin-top to prevent overlap with checkbox
-        <div className="h-48 w-full overflow-hidden rounded-t-xl">
+        <div className="h-48 w-full overflow-hidden rounded-t-xl group-hover:brightness-80 group-hover:opacity-80 transition">
           <img
             src={bookmark.previewImage}
             alt={bookmark.title}
@@ -114,12 +105,10 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
       )}
       <CardHeader className={`p-4 gap-1 pb-0 `}>
         <div className="flex items-start justify-between">
-          {/* Adjust margin-left based on view mode for checkbox space */}
           <div className={`flex items-center space-x-2`}>
             {bookmark.favicon && (
               <img src={bookmark.favicon} alt="" className="w-4 h-4" />
             )}
-            {/* Make title a link, stop propagation */}
             <a
               href={bookmark.url}
               target="_blank"
@@ -130,67 +119,6 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
               {bookmark.title || bookmark.url}
             </a>
           </div>
-          {/* <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8 flex-shrink-0"
-              >
-                <MoreVertical className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem
-                onClick={(e) => {
-                  e.stopPropagation();
-                  window.open(bookmark.url, "_blank");
-                }}
-              >
-                <ExternalLink className="mr-2 h-4 w-4" />
-                Open
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onEdit(bookmark);
-                }}
-              >
-                <Pencil className="mr-2 h-4 w-4" />
-                Edit
-              </DropdownMenuItem>
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <DropdownMenuItem
-                    onSelect={(e) => e.preventDefault()}
-                    onClick={(e) => e.stopPropagation()}
-                    className="text-red-600 hover:text-red-600 focus:text-red-600"
-                  >
-                    <Trash2 className="mr-2 h-4 w-4" />
-                    Delete
-                  </DropdownMenuItem>
-                </AlertDialogTrigger>
-                <AlertDialogContent onClick={(e) => e.stopPropagation()}>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      This action will permanently delete the bookmark titled "
-                      {bookmark.title || bookmark.url}". This cannot be undone.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction
-                      onClick={handleDelete}
-                      className="bg-red-600 hover:bg-red-700"
-                    >
-                      Delete
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            </DropdownMenuContent>
-          </DropdownMenu> */}
         </div>
         {/* {bookmark.description && (
           <p
@@ -241,18 +169,55 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
           })}
         </p>
         <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex leading-none divide-x">
-          <div className="flex items-end space-x-0.5 px-2 py-2 text-muted-foreground hover:text-blue-500 cursor-pointer transition-colors hover:shadow-xl/5 transition-shadow ">
+          <div
+            className="flex items-end space-x-0.5 p-2 text-muted-foreground hover:text-foreground cursor-pointer transition-colors hover:shadow-btn-sm transition-shadow"
+            onClick={(e) => {
+              e.stopPropagation();
+              window.open(bookmark.url, "_blank");
+            }}
+          >
             <Share className="w-4 h-4" />
             <span>Share</span>
           </div>
-          <div className="flex items-end space-x-0.5 px-2 py-2 text-muted-foreground hover:text-emerald-500 cursor-pointer transition-colors hover:shadow-xl/5 transition-shadow ">
+          <div
+            className="flex items-end space-x-0.5 p-2 text-muted-foreground hover:text-foreground cursor-pointer transition-colors hover:shadow-btn-sm transition-shadow"
+            onClick={(e) => {
+              e.stopPropagation();
+              onEdit(bookmark);
+            }}
+          >
             <Pencil className="w-4 h-4" />
             <span>Edit</span>
           </div>
-          <div className="flex items-end space-x-0.5 px-2 py-2 text-muted-foreground hover:text-red-400 cursor-pointer transition-colors hover:shadow-xl/5 transition-shadow ">
-            <Trash2 className="w-4 h-4" />
-            <span>Delete</span>
-          </div>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <div
+                onClick={(e) => e.stopPropagation()} // Prevents any parent onClick handlers from firing
+                className="flex items-end space-x-0.5 p-2 text-muted-foreground hover:text-foreground cursor-pointer transition-colors hover:shadow-btn-sm transition-shadow"
+              >
+                <Trash2 className="w-4 h-4" />
+                <span>Delete</span>
+              </div>
+            </AlertDialogTrigger>
+            <AlertDialogContent onClick={(e) => e.stopPropagation()}>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action will permanently delete the bookmark titled "
+                  {bookmark.title || bookmark.url}". This cannot be undone.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={handleDelete}
+                  className="bg-red-600 hover:bg-red-700"
+                >
+                  Delete
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       </CardFooter>
     </Card>
