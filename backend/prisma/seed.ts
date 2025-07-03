@@ -1,11 +1,66 @@
 import { PrismaClient, Role, User, Folder, Tag, Collection, Bookmark, Device } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import { faker } from '@faker-js/faker';
+import * as fs from 'fs';
+import * as path from 'path';
 
 const prisma = new PrismaClient();
 
+// Get preview images from the public folder
+function getPreviewImages(): string[] {
+  const publicPath = path.join(__dirname, '../../frontend/public');
+  try {
+    const files = fs.readdirSync(publicPath);
+    // Filter for common image extensions
+    const imageFiles = files.filter(file => 
+      /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(file)
+    );
+    return imageFiles.map(file => `/${file}`); // Return with leading slash for web paths
+  } catch (error) {
+    console.warn('Could not read public folder, using default preview images');
+    // Fallback to some default preview image paths
+    return [
+      '/preview1.jpg',
+      '/preview2.jpg',
+      '/preview3.jpg',
+      '/preview4.jpg',
+      '/preview5.jpg'
+    ];
+  }
+}
+
+// Tailwind color palette with consistent shade (500)
+const tailwindColors = [
+  'slate-500',
+  'gray-500',
+  'zinc-500',
+  'neutral-500',
+  'stone-500',
+  'red-500',
+  'orange-500',
+  'amber-500',
+  'yellow-500',
+  'lime-500',
+  'green-500',
+  'emerald-500',
+  'teal-500',
+  'cyan-500',
+  'sky-500',
+  'blue-500',
+  'indigo-500',
+  'violet-500',
+  'purple-500',
+  'fuchsia-500',
+  'pink-500',
+  'rose-500'
+];
+
 async function main() {
   console.log(`Start seeding ...`);
+
+  // Get available preview images
+  const previewImages = getPreviewImages();
+  console.log(`Found ${previewImages.length} preview images`);
 
   // --- Clean up existing data (optional, use with caution) ---
   console.log('Deleting existing data (if any)...');
@@ -60,7 +115,7 @@ async function main() {
           name: folderName,
           userId: user.id,
           icon: faker.helpers.arrayElement(folderIcons),
-          color: faker.color.rgb(),
+          color: faker.helpers.arrayElement(tailwindColors), // Using Tailwind colors
           parentId: null,
         },
       });
@@ -76,7 +131,7 @@ async function main() {
             name: nestedFolderName,
             userId: user.id,
             icon: faker.helpers.arrayElement(folderIcons),
-            color: faker.color.rgb(),
+            color: faker.helpers.arrayElement(tailwindColors), // Using Tailwind colors
             parentId: folder.id,
           },
         });
@@ -106,7 +161,7 @@ async function main() {
         data: {
           name: tagName,
           userId: user.id,
-          color: faker.color.rgb(),
+          color: faker.helpers.arrayElement(tailwindColors), // Using Tailwind colors
         },
       });
       tags.push(tag);
@@ -151,7 +206,6 @@ async function main() {
     }
   }
 
-
   // --- Create Bookmarks (at least 10 per user, linked to folders, tags, collections) ---
   const bookmarks: Bookmark[] = [];
   const domainTypes = ['com', 'org', 'net', 'io', 'co', 'dev', 'app'];
@@ -176,6 +230,7 @@ async function main() {
           description: faker.datatype.boolean(0.7) ? faker.lorem.paragraph() : null, // 70% have description
           userId: user.id,
           favicon: `https://www.google.com/s2/favicons?domain=${domain}.${domainType}`,
+          previewImage: faker.helpers.arrayElement(previewImages), // Random preview image
           visitCount: faker.number.int({ min: 0, max: 200 }),
           createdAt: faker.date.past({ years: 1 }),
           updatedAt: faker.date.recent({ days: 30 }),
@@ -184,9 +239,10 @@ async function main() {
       bookmarks.push(bookmark);
       console.log(`Created bookmark: ${bookmark.title}`);
       
-      // Link to folders (0-2 folders)
+      // ENSURE every bookmark belongs to at least one folder
       if (userFolders.length > 0) {
-        const folderCount = faker.number.int({ min: 0, max: 2 });
+        // Always add to at least 1 folder, optionally add to 1 more
+        const folderCount = faker.number.int({ min: 1, max: 2 });
         const selectedFolders = faker.helpers.arrayElements(userFolders, folderCount);
         
         for (const folder of selectedFolders) {
