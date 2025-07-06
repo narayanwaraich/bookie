@@ -1,4 +1,5 @@
-- once any one bookmark's checkbox is selected, all other checkbox's must become visible.
+- Use windows photos app for 'bookmarks' view inspiration
+- once any one bookmark's checkbox is selected, all other checkbox's must become visible
 - preview | reader mode
 - archive
 - drag n drop
