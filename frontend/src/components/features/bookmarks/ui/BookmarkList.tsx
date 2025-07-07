@@ -52,6 +52,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"; // Import Dropdown components
 import type { EditBookmarkFormInput as EditBookmark } from "../forms/EditBookmarkForm";
+import { useSearchStore } from "@/lib/search/searchStore";
 
 type BookmarkSearchResult = inferOutput<typeof trpc.bookmarks.search>;
 type Bookmark = BookmarkSearchResult["bookmarks"][number];
@@ -87,7 +88,7 @@ export const BookmarkList: React.FC<BookmarkListProps> = ({
     null,
   );
   const [viewMode, setViewMode] = useState<ViewMode>("grid");
-  const [searchQuery, setSearchQuery] = useState("");
+  const { query: searchQuery } = useSearchStore();
   const debouncedSearchQuery = useDebounce(searchQuery, 300);
   const [sortBy, setSortBy] = useState<SortOption>("createdAt");
   const [sortOrder, setSortOrder] = useState<SortOrder>("desc");
@@ -453,7 +454,7 @@ export const BookmarkList: React.FC<BookmarkListProps> = ({
         {/* Filter/Sort Controls */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {/* Search Input */}
-          <div className="relative lg:col-span-1">
+          {/* <div className="relative lg:col-span-1">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Search bookmarks..."
@@ -464,7 +465,7 @@ export const BookmarkList: React.FC<BookmarkListProps> = ({
               }}
               className="pl-8 w-full"
             />
-          </div>
+          </div> */}
 
           {/* Sort Controls */}
           <div className="flex space-x-2">

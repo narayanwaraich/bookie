@@ -98,14 +98,14 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
     <Card
       className={`relative group gap-1 text-sm font-normal py-0 hover:shadow-md transition-shadow ${isSelected ? "ring-2 ring-primary" : ""} rounded-b-sm`}
     >
-      <div className="absolute top-2 left-2 z-10 bg-white/20 hidden group-hover:flex backdrop-blur-xs rounded-md p-1 shadow-md">
+      <div className="absolute top-2 left-2 z-10 bg-black/20 hidden group-hover:flex backdrop-blur-xs rounded-md p-1 shadow-md">
         <Checkbox
           id={`select-${bookmark.id}`}
           checked={isSelected}
           onCheckedChange={handleCheckboxChange}
           aria-label={`Select bookmark ${bookmark.title || bookmark.url}`}
           onClick={(e) => e.stopPropagation()}
-          className="border-white/20"
+          className="border-white/40"
         />
       </div>
 
@@ -116,7 +116,7 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
             alt={bookmark.title}
             className="object-cover w-full h-full transition-transform duration-300 ease-in-out group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors duration-300 pointer-events-none" />
+          <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300 pointer-events-none" />
         </div>
       )}
       <CardHeader className={`p-4 pb-0 `}>
