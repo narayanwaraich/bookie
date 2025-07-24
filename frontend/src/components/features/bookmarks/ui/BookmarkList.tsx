@@ -4,7 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 import { Loading } from "@/components/ui/Loading";
 import { ErrorDisplay } from "@/components/ui/ErrorDisplay";
 import { trpc } from "@/lib/api";
-import type { inferOutput } from "@trpc/tanstack-react-query";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -15,7 +14,14 @@ import {
 } from "@/components/ui/dialog";
 import { AddBookmarkForm } from "../forms/AddBookmarkForm";
 import { EditBookmarkForm } from "../forms/EditBookmarkForm";
-import { PlusCircle, Grid, List, Search } from "lucide-react";
+import {
+  PlusCircle,
+  Trash2,
+  Tag as TagIcon,
+  Folder as FolderIcon,
+  XSquare,
+  SquareCheck,
+} from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/lib/queryClient";
 import { toast } from "sonner";
@@ -31,7 +37,6 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Trash2, Tag, Folder as FolderIcon } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -53,35 +58,22 @@ import {
 } from "@/components/ui/dropdown-menu"; // Import Dropdown components
 import type { EditBookmarkFormInput as EditBookmark } from "../forms/EditBookmarkForm";
 import { useSearchStore } from "@/lib/search/searchStore";
-
-type BookmarkSearchResult = inferOutput<typeof trpc.bookmarks.search>;
-type Bookmark = BookmarkSearchResult["bookmarks"][number];
-
-type TagListResult = inferOutput<typeof trpc.tags.list>;
-type Tag = TagListResult["data"][number];
-
-type FolderListResult = inferOutput<typeof trpc.folders.list>;
-type Folder = FolderListResult["data"][number];
-
-type ViewMode = "grid" | "list";
-type SortOption =
-  | "createdAt"
-  | "updatedAt"
-  | "lastVisited"
-  | "visitCount"
-  | "title";
-type SortOrder = "asc" | "desc";
-
-const ITEMS_PER_PAGE = 12;
-
-interface BookmarkListProps {
-  initialFolderId?: string; // New prop to set the folder context
-  showFolderFilter?: boolean; // New prop to control visibility of folder filter
-}
+import type {
+  SortOption,
+  SortOrder,
+  ViewMode,
+  Bookmark,
+  Tag,
+  Folder,
+  BookmarkListProps,
+} from "../types";
+import { ITEMS_PER_PAGE } from "../constants";
+import { SortDropdown } from "../filters/Sort";
+import { ViewModeDropdown } from "../filters/ViewMode";
 
 export const BookmarkList: React.FC<BookmarkListProps> = ({
   initialFolderId,
-  showFolderFilter = true,
+  showFolderFilter = false,
 }) => {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [editingBookmark, setEditingBookmark] = useState<EditBookmark | null>(
@@ -351,7 +343,7 @@ export const BookmarkList: React.FC<BookmarkListProps> = ({
                     size="sm"
                     disabled={bulkActionMutation.isPending}
                   >
-                    <Tag className="mr-1 h-4 w-4" /> Add Tag
+                    <TagIcon className="mr-1 h-4 w-4" /> Add Tag
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
@@ -417,24 +409,9 @@ export const BookmarkList: React.FC<BookmarkListProps> = ({
         <div
           className={`flex items-center justify-between ${selectedBookmarkIds.size > 0 ? "pt-12" : ""}`}
         >
-          <CardTitle>My Bookmarks ({totalBookmarks})</CardTitle>
+          <CardTitle>{totalBookmarks} bookmarks</CardTitle>
+
           <div className="flex items-center space-x-2">
-            <Button
-              variant={viewMode === "grid" ? "default" : "outline"}
-              size="icon"
-              onClick={() => setViewMode("grid")}
-              title="Grid View"
-            >
-              <Grid className="h-4 w-4" />
-            </Button>
-            <Button
-              variant={viewMode === "list" ? "default" : "outline"}
-              size="icon"
-              onClick={() => setViewMode("list")}
-              title="List View"
-            >
-              <List className="h-4 w-4" />
-            </Button>
             <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
               <DialogTrigger asChild>
                 <Button size="sm">
@@ -449,6 +426,41 @@ export const BookmarkList: React.FC<BookmarkListProps> = ({
                 <AddBookmarkForm onSuccess={() => setIsAddDialogOpen(false)} />
               </DialogContent>
             </Dialog>
+            {bookmarks.length > 0 && (
+              <div className="flex items-center justify-between py-2 px-1">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleSelectAllOnPage(!areAllOnPageSelected)}
+                  aria-label={
+                    areAllOnPageSelected
+                      ? "Cancel selection"
+                      : "Select all bookmarks on this page"
+                  }
+                  className="gap-2"
+                >
+                  {areAllOnPageSelected ? (
+                    <>
+                      <XSquare className="w-4 h-4" />
+                      Cancel
+                    </>
+                  ) : (
+                    <>
+                      <SquareCheck className="w-4 h-4" />
+                      Select all
+                    </>
+                  )}
+                </Button>
+              </div>
+            )}
+            <SortDropdown
+              sortBy={sortBy}
+              setSortBy={setSortBy}
+              sortOrder={sortOrder}
+              setSortOrder={setSortOrder}
+              setCurrentPage={setCurrentPage}
+            />
+            <ViewModeDropdown viewMode={viewMode} setViewMode={setViewMode} />
           </div>
         </div>
         {/* Filter/Sort Controls */}
@@ -466,43 +478,6 @@ export const BookmarkList: React.FC<BookmarkListProps> = ({
               className="pl-8 w-full"
             />
           </div> */}
-
-          {/* Sort Controls */}
-          <div className="flex space-x-2">
-            <Select
-              value={sortBy}
-              onValueChange={(value) => {
-                setSortBy(value as SortOption);
-                setCurrentPage(1);
-              }}
-            >
-              <SelectTrigger className="w-full sm:w-[150px]">
-                <SelectValue placeholder="Sort by" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="createdAt">Date Added</SelectItem>
-                <SelectItem value="updatedAt">Date Updated</SelectItem>
-                <SelectItem value="lastVisited">Last Visited</SelectItem>
-                <SelectItem value="visitCount">Visit Count</SelectItem>
-                <SelectItem value="title">Title</SelectItem>
-              </SelectContent>
-            </Select>
-            <Select
-              value={sortOrder}
-              onValueChange={(value) => {
-                setSortOrder(value as SortOrder);
-                setCurrentPage(1);
-              }}
-            >
-              <SelectTrigger className="w-full sm:w-[120px]">
-                <SelectValue placeholder="Order" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="desc">Descending</SelectItem>
-                <SelectItem value="asc">Ascending</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
 
           {/* Folder Filter - Conditionally render based on showFolderFilter prop */}
           {showFolderFilter && (
@@ -558,21 +533,6 @@ export const BookmarkList: React.FC<BookmarkListProps> = ({
       </CardHeader>
 
       <CardContent>
-        {/* Select All Checkbox */}
-        {bookmarks.length > 0 && (
-          <div className="flex items-center space-x-2 py-2 px-1 border-b mb-4">
-            <Checkbox
-              id="select-all-page"
-              checked={areAllOnPageSelected}
-              onCheckedChange={handleSelectAllOnPage}
-              aria-label="Select all bookmarks on this page"
-            />
-            <label htmlFor="select-all-page" className="text-sm font-medium">
-              Select all on page
-            </label>
-          </div>
-        )}
-
         {/* Bookmark Grid/List */}
         {bookmarks.length > 0 ? (
           <div

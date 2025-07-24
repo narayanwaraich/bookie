@@ -8,12 +8,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox"; // Added Checkbox import
 import { Badge } from "@/components/ui/badge";
-import type { inferOutput } from "@trpc/tanstack-react-query";
 import {
   MoreVertical,
   ExternalLink,
   Pencil,
-  Share,
   Trash2,
   Folder,
   Tag,
@@ -45,17 +43,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-type BookmarkSearchResult = inferOutput<typeof trpc.bookmarks.search>;
-type Bookmark = BookmarkSearchResult["bookmarks"][number];
-
-interface BookmarkCardProps {
-  bookmark: Bookmark;
-  onEdit: (bookmark: Bookmark) => void;
-  viewMode: "grid" | "list";
-  isSelected: boolean; // Added prop
-  onSelectChange: (bookmarkId: string, isSelected: boolean) => void; // Added prop
-}
+import type { BookmarkCardProps } from "../types";
 
 export const BookmarkCard: React.FC<BookmarkCardProps> = ({
   bookmark,
@@ -105,7 +93,7 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
           onCheckedChange={handleCheckboxChange}
           aria-label={`Select bookmark ${bookmark.title || bookmark.url}`}
           onClick={(e) => e.stopPropagation()}
-          className="border-white/40"
+          className="border-white/60"
         />
       </div>
 

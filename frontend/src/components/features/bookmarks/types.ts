@@ -49,13 +49,18 @@ export interface BookmarkListProps {
   showFolderFilter?: boolean;
 }
 
-export interface BookmarkContextValue {
-  filters: BookmarkFilters;
-  selection: BookmarkSelection;
+export interface BookmarkCardProps {
+  bookmark: Bookmark;
+  onEdit: (bookmark: Bookmark) => void;
   viewMode: ViewMode;
-  updateFilters: (updates: Partial<BookmarkFilters>) => void;
-  updateSelection: (updates: Partial<BookmarkSelection>) => void;
-  setViewMode: (mode: ViewMode) => void;
-  resetFilters: () => void;
-  clearSelection: () => void;
+  isSelected: boolean; // Added prop
+  onSelectChange: (bookmarkId: string, isSelected: boolean) => void; // Added prop
 }
+
+// Form-specific types
+export type EditBookmarkFormInput = {
+  id: string;
+  title: string;
+  description?: string;
+  notes?: string;
+};
