@@ -293,139 +293,123 @@ export const BookmarkList: React.FC<BookmarkListProps> = ({
   }
 
   return (
-    <Card>
-      <CardHeader className="space-y-4 relative pb-2">
-        {" "}
-        {/* Added relative and pb-2 */}
-        {/* Bulk Action Bar - Conditionally Rendered */}
-        {selectedBookmarkIds.size > 0 && (
-          <div className="absolute top-0 left-0 right-0 bg-primary/10 p-2 flex items-center justify-between z-20 rounded-t-lg">
-            <span className="text-sm font-medium text-primary">
-              {selectedBookmarkIds.size} selected
+    <Card className="gap-4">
+      <CardHeader className="relative pb-2">
+        {/* Existing Header Content - Add pt-12 if bulk bar is shown */}
+        <div className={`flex items-center justify-between`}>
+          <CardTitle>{totalBookmarks} bookmarks </CardTitle>
+          {selectedBookmarkIds.size > 0 && (
+            <span className="text-sm font-medium text-primary flex-1 pl-2">
+              ( {selectedBookmarkIds.size} selected )
             </span>
-            <div className="space-x-2 flex items-center">
-              {/* Move to Folder Dropdown */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    disabled={bulkActionMutation.isPending}
-                  >
-                    <FolderIcon className="mr-1 h-4 w-4" /> Move to Folder
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuLabel>Select Folder</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  {foldersResult?.data && foldersResult.data.length > 0 ? (
-                    foldersResult.data.map((folder) => (
-                      <DropdownMenuItem
-                        key={folder.id}
-                        onSelect={() => handleBulkMoveToFolder(folder.id)}
-                      >
-                        {folder.name}
-                      </DropdownMenuItem>
-                    ))
-                  ) : (
-                    <DropdownMenuItem disabled>
-                      No folders found
-                    </DropdownMenuItem>
-                  )}
-                </DropdownMenuContent>
-              </DropdownMenu>
-
-              {/* Add Tag Dropdown */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    disabled={bulkActionMutation.isPending}
-                  >
-                    <TagIcon className="mr-1 h-4 w-4" /> Add Tag
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuLabel>Select Tag</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  {tagsResult?.data && tagsResult.data.length > 0 ? (
-                    tagsResult.data.map((tag) => (
-                      <DropdownMenuItem
-                        key={tag.id}
-                        onSelect={() => handleBulkAddTag(tag.id)}
-                      >
-                        {tag.name}
-                      </DropdownMenuItem>
-                    ))
-                  ) : (
-                    <DropdownMenuItem disabled>No tags found</DropdownMenuItem>
-                  )}
-                </DropdownMenuContent>
-              </DropdownMenu>
-
-              {/* Delete Button with Confirmation */}
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    disabled={
-                      bulkActionMutation.isPending ||
-                      selectedBookmarkIds.size === 0
-                    }
-                  >
-                    <Trash2 className="mr-1 h-4 w-4" />
-                    Delete ({selectedBookmarkIds.size})
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>
-                      Are you absolutely sure?
-                    </AlertDialogTitle>
-                    <AlertDialogDescription>
-                      This action will permanently delete{" "}
-                      {selectedBookmarkIds.size} selected bookmark(s). This
-                      cannot be undone.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction
-                      onClick={handleBulkDelete}
-                      className="bg-red-600 hover:bg-red-700"
+          )}
+          <div className="flex items-center space-x-2">
+            {selectedBookmarkIds.size > 0 && (
+              <>
+                {/* Move to Folder Dropdown */}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="sm"
                       disabled={bulkActionMutation.isPending}
                     >
-                      {bulkActionMutation.isPending ? "Deleting..." : "Delete"}
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            </div>
-          </div>
-        )}
-        {/* Existing Header Content - Add pt-12 if bulk bar is shown */}
-        <div
-          className={`flex items-center justify-between ${selectedBookmarkIds.size > 0 ? "pt-12" : ""}`}
-        >
-          <CardTitle>{totalBookmarks} bookmarks</CardTitle>
+                      <FolderIcon className="mr-1 h-4 w-4" /> Move to Folder
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuLabel>Select Folder</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    {foldersResult?.data && foldersResult.data.length > 0 ? (
+                      foldersResult.data.map((folder) => (
+                        <DropdownMenuItem
+                          key={folder.id}
+                          onSelect={() => handleBulkMoveToFolder(folder.id)}
+                        >
+                          {folder.name}
+                        </DropdownMenuItem>
+                      ))
+                    ) : (
+                      <DropdownMenuItem disabled>
+                        No folders found
+                      </DropdownMenuItem>
+                    )}
+                  </DropdownMenuContent>
+                </DropdownMenu>
 
-          <div className="flex items-center space-x-2">
-            <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-              <DialogTrigger asChild>
-                <Button size="sm">
-                  <PlusCircle className="mr-2 h-4 w-4" />
-                  Add Bookmark
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                  <DialogTitle>Add New Bookmark</DialogTitle>
-                </DialogHeader>
-                <AddBookmarkForm onSuccess={() => setIsAddDialogOpen(false)} />
-              </DialogContent>
-            </Dialog>
+                {/* Add Tag Dropdown */}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      disabled={bulkActionMutation.isPending}
+                    >
+                      <TagIcon className="mr-1 h-4 w-4" /> Add Tag
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuLabel>Select Tag</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    {tagsResult?.data && tagsResult.data.length > 0 ? (
+                      tagsResult.data.map((tag) => (
+                        <DropdownMenuItem
+                          key={tag.id}
+                          onSelect={() => handleBulkAddTag(tag.id)}
+                        >
+                          {tag.name}
+                        </DropdownMenuItem>
+                      ))
+                    ) : (
+                      <DropdownMenuItem disabled>
+                        No tags found
+                      </DropdownMenuItem>
+                    )}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+
+                {/* Delete Button with Confirmation */}
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      disabled={
+                        bulkActionMutation.isPending ||
+                        selectedBookmarkIds.size === 0
+                      }
+                    >
+                      <Trash2 className="mr-1 h-4 w-4" />
+                      Delete ({selectedBookmarkIds.size})
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Are you absolutely sure?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action will permanently delete{" "}
+                        {selectedBookmarkIds.size} selected bookmark(s). This
+                        cannot be undone.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={handleBulkDelete}
+                        className="bg-red-600 hover:bg-red-700"
+                        disabled={bulkActionMutation.isPending}
+                      >
+                        {bulkActionMutation.isPending
+                          ? "Deleting..."
+                          : "Delete"}
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </>
+            )}
             {bookmarks.length > 0 && (
               <div className="flex items-center justify-between py-2 px-1">
                 <Button
@@ -463,68 +447,40 @@ export const BookmarkList: React.FC<BookmarkListProps> = ({
             <ViewModeDropdown viewMode={viewMode} setViewMode={setViewMode} />
           </div>
         </div>
-        {/* Filter/Sort Controls */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {/* Search Input */}
-          {/* <div className="relative lg:col-span-1">
-            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search bookmarks..."
-              value={searchQuery}
-              onChange={(e) => {
-                setSearchQuery(e.target.value);
-                setCurrentPage(1);
-              }}
-              className="pl-8 w-full"
-            />
-          </div> */}
-
-          {/* Folder Filter - Conditionally render based on showFolderFilter prop */}
-          {showFolderFilter && (
-            <Select
-              value={selectedFolderId ?? "all"}
-              onValueChange={(value) => {
-                if (!initialFolderId) {
-                  // Allow change only if not contextually set
-                  setSelectedFolderId(value === "all" ? undefined : value);
+        <div className="flex space-x-2">
+          <div className="flex flex-1 flex-wrap gap-2">
+            {tagsResult?.data.map((tag: Tag) => (
+              <Badge
+                key={tag.id}
+                variant={selectedTags.includes(tag.id) ? "default" : "outline"}
+                className="cursor-pointer"
+                onClick={() => {
+                  setSelectedTags((prev) =>
+                    prev.includes(tag.id)
+                      ? prev.filter((id) => id !== tag.id)
+                      : [...prev, tag.id],
+                  );
                   setCurrentPage(1);
-                }
-              }}
-              disabled={!!initialFolderId} // Disable if folderId is passed as prop
-            >
-              <SelectTrigger className="w-full lg:col-span-1">
-                <SelectValue placeholder="Filter by folder" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Folders</SelectItem>
-                {foldersResult?.data.map((folder: Folder) => (
-                  <SelectItem key={folder.id} value={folder.id}>
-                    {folder.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          )}
-        </div>
-        {/* Tag Filter Badges */}
-        <div className="flex flex-wrap gap-2 pt-2">
-          {tagsResult?.data.map((tag: Tag) => (
-            <Badge
-              key={tag.id}
-              variant={selectedTags.includes(tag.id) ? "default" : "outline"}
-              className="cursor-pointer"
-              onClick={() => {
-                setSelectedTags((prev) =>
-                  prev.includes(tag.id)
-                    ? prev.filter((id) => id !== tag.id)
-                    : [...prev, tag.id],
-                );
-                setCurrentPage(1);
-              }}
-            >
-              {tag.name}
-            </Badge>
-          ))}
+                }}
+              >
+                {tag.name}
+              </Badge>
+            ))}
+          </div>
+          <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+            <DialogTrigger asChild>
+              <Button size="sm">
+                <PlusCircle className="mr-2 h-4 w-4" />
+                Add Bookmark
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Add New Bookmark</DialogTitle>
+              </DialogHeader>
+              <AddBookmarkForm onSuccess={() => setIsAddDialogOpen(false)} />
+            </DialogContent>
+          </Dialog>
         </div>
         {/* Loading Indicator */}
         {isFetching && (

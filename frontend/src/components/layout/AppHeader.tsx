@@ -29,20 +29,10 @@ export default function AppHeader() {
   };
 
   return (
-    <header className="flex h-12 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
-      <div className="flex w-full items-center gap-2 px-4">
-        {/* <SidebarTrigger className="-ml-1" />
-        <Separator
-          orientation="vertical"
-          className="mr-2 data-[orientation=vertical]:h-4"
-        /> */}
-        {/* {isMobile && <SidebarTrigger className="-ml-1" />}
-      {!isMobile && <Separator orientation="vertical" className="h-6" />} */}
-
-        <Breadcrumbs />
-
-        {/* <div className="ml-auto flex items-center gap-2"> */}
-        <div className="relative flex-1">
+    <header className="flex h-12 shrink-0 items-center justify-between transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12 px-4 my-2">
+      <Breadcrumbs />
+      <div className="flex gap-2">
+        <div className="relative">
           {/* Future: <GlobalSearchInput /> */}
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <input
@@ -55,13 +45,11 @@ export default function AppHeader() {
             className="w-full rounded-lg bg-background pl-8 h-9 border border-input"
           />
         </div>
-
         {/* Future: <NotificationsIndicator /> */}
         <Button variant="outline" size="icon" className="h-9 w-9">
           <Bell className="h-4 w-4" />
           <span className="sr-only">Toggle notifications</span>
         </Button>
-
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
@@ -98,7 +86,6 @@ export default function AppHeader() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      {/* </div> */}
     </header>
   );
 }
