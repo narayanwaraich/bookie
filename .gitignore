@@ -8,3 +8,6 @@ frontend/dist/
 backend/node_modules/
 backend/.env
 backend/dist/
+
+extension/node_modules/
+extension/dist/
